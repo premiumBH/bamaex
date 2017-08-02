@@ -1,0 +1,5 @@
+// invert both files name
+D:\xampp\htdocs\bamaex\application\controllers\Admin.php
+D:\xampp\htdocs\bamaex\application\controllers\Client.php
+//
+D:\xampp\htdocs\bamaex\application\views\backend.php

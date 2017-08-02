@@ -1,0 +1,214 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+
+
+class User extends CI_Controller {
+
+
+
+	/**
+
+	 * Index Page for this controller.
+
+	 *
+
+	 * Maps to the following URL
+
+	 * 		http://example.com/index.php/welcome
+
+	 *	- or -
+
+	 * 		http://example.com/index.php/welcome/index
+
+	 *	- or -
+
+	 * Since this controller is set as the default controller in
+
+	 * config/routes.php, it's displayed at http://example.com/
+
+	 *
+
+	 * So any other public methods not prefixed with an underscore will
+
+	 * map to /index.php/welcome/<method_name>
+
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+
+	 */
+
+	 
+
+	public function __construct() {
+
+		parent::__construct();
+
+		$this->load->database();
+
+		$this->load->helper('url');
+
+	//	$this->load->helper('dynmic-css-js');
+
+		$this->load->model('User_model');
+
+		$this->load->model('Admin_model');
+
+		$this->load->library('session');
+
+        $this->load->helper('cookie');		
+
+		 
+
+			
+
+	}
+
+	 
+
+	public function index()
+
+	{
+
+      $this->load->view('backend');
+
+	}
+
+	public function create() {
+
+	    $data['first_name']=$this->input->post('first_name');
+
+	    $data['last_name']=$this->input->post('last_name');
+
+	    $data['email']=$this->input->post('email');
+
+	    $data['mobile']=$this->input->post('mobile');
+
+            $data['staff_level_id']=$this->input->post('staff_level_id');
+
+            $data['password']=$this->input->post('password');
+
+            $data['add_new_user']=$this->input->post('add_new_user');
+
+            $data['update_user']=$this->input->post('update_user');
+
+            $data['country'] = $this->input->post('country');
+
+	    //echo json_encode($data);
+
+	    if(isset($data['add_new_user'])) {
+
+	        $result=$this->User_model->create($data);
+
+	      //  echo json_encode($result);
+
+	        if($result['status']==true) {
+
+	         $this->load->view('page/Dashboard/user', $result);
+
+	        } 
+
+			else {
+
+	         $this->load->view('page/create-user', $result);
+
+	        } 
+
+	        
+
+	    }  
+
+		else if(isset($data['update_user']))
+
+		{
+
+			$result=$this->User_model->update($data);
+
+	      //  echo json_encode($result);
+
+	        if($result['status']==true) {
+
+
+
+	          $this->load->view('page/Dashboard/user', $result);
+
+	        } else {
+
+	         $this->load->view('page/create-user', $result);
+
+	        } 
+
+		}
+
+	  else {
+
+	        $result['msg'] = 'Please inter correct values';	
+
+	        $this->load->view('page/create-user', $result);
+
+	    }
+
+		
+
+	}
+
+	public function settings() {
+
+		$this->load->view('page/settings');
+
+	}
+
+	public function profile() {
+
+		$this->load->view('page/profile');
+
+	}
+
+	public function account() {
+
+		$this->load->view('page/account');
+
+	}
+
+	public function logout() {
+
+		$this->session->sess_destroy();
+
+		redirect(CTRL);
+
+	}
+
+
+
+   public function is_logged_in()
+
+	{
+
+				        $data["msg"]="initial";
+
+	    	//	$this->loadView('admin/login', $data);
+
+				
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			
+
+             $username = ($this->session->userdata['username']);
+
+             $email = ($this->session->userdata['email']);
+
+			 // echo $username;
+
+            } else {
+
+		        redirect(CTRL);
+
+               }
+
+			   
+
+	}
+
+}
+

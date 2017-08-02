@@ -1,0 +1,102 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Dashboard extends CI_Controller {
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 */
+	 
+	public function __construct() {
+		parent::__construct();
+		$this->load->database();
+		$this->load->helper('url');
+	//	$this->load->helper('dynmic-css-js');
+		$this->load->model('User_model');
+		$this->load->model('Admin_model');
+		$this->load->library('session');
+        $this->load->helper('cookie');			 
+
+	}
+	 
+	public function index()
+	{
+$this->load->view('backend');
+	//  
+	}
+	public function user()
+	{
+		 $data1['UserId'] = ($this->session->userdata['UserId']);
+		 if($data1['UserId'] != '')
+		 {
+		   $data['result1'] = $this->User_model->get_users($data1);	
+	        $this->load->view('page/Dashboard/user', $data);
+		 }
+	}
+	public function client()
+	{
+	        $this->load->view('page/Dashboard/client');
+	}
+	public function package()
+	{
+	        $this->load->view('page/Dashboard/package');
+	}
+	public function create_order()
+	{  $this->load->view('client/create-order');#crate Order Functions
+	        #$this->load->view('page/create_order');#crate Order Functions
+	}
+	public function service()
+	{
+	        $this->load->view('page/Dashboard/service');
+	}
+	public function order_status()
+	{
+	        $this->load->view('page/Dashboard/order_status');
+	}
+	public function total_prospects()
+	{
+	        $this->load->view('page/Dashboard/total-prospects');
+	}
+	public function orders_in_progress()
+	{
+	        $this->load->view('page/Dashboard/orders-in-progress');
+	}
+	public function orders_pending()
+	{
+	        $this->load->view('page/Dashboard/orders-pending');
+	}
+	public function pending_payments()
+	{
+	        $this->load->view('page/Dashboard/pending-payments');
+	}
+	public function order_origanated()
+	{
+	        $this->load->view('page/Dashboard/order-origanated');
+	}
+	public function deliveries_in_progress()
+	{
+	        $this->load->view('page/Dashboard/deliveries-in-progress');
+	}
+	public function amount_due()
+	{
+	        $this->load->view('page/Dashboard/amount-due');
+	}
+
+
+}
+
+
+?>

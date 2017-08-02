@@ -1,0 +1,105 @@
+<?php
+	class User_model extends CI_Model {
+		
+	
+		public function __construct() {
+			parent::__construct();
+			$this->load->database();
+			$this->load->helper('date');
+			$this->load->library('encrypt');
+		}
+		
+		
+		public function create($data)
+		{
+			$dt = date('Y-m-d H:i:s');
+			$fn = $data['first_name'];
+			$ln = $data['last_name'];
+			$em = $data['email'];
+			$mb = $data['mobile'];
+			$pass = $this->encrypt->encode($data['password']);
+			$sl = $data['staff_level_id'];
+			  $sqlQuery="INSERT INTO `user`(`varFirstName`, `varLastName`, `varEmailId`, `varMobileNo`, `varPassword`, `intUserTypeId`, `dtCreated`) VALUES('$fn', '$ln', '$em','$mb', '$pass', $sl, '$dt')";
+			$result = $this->db->query($sqlQuery);
+			$insert_id = $this->db->insert_id();
+			$owid = $this->session->userdata['UserId'];
+			  $sqlQuery="INSERT INTO `user_owner`(`intUserId`, `intOwnerUserId`) VALUES($insert_id, $owid)";
+			$result = $this->db->query($sqlQuery);
+
+				return true;
+			
+		}
+		public function update($data)
+		{
+			$dt = date('Y-m-d H:i:s');
+			$id = $data['update_user'];
+			$fn = $data['first_name'];
+			$ln = $data['last_name'];
+			$em = $data['email'];
+			$mb = $data['mobile'];
+			$pass = $this->encrypt->encode($data['password']);
+			$sl = $data['staff_level_id'];
+			  $sqlQuery="UPDATE `user` SET varFirstName = '$fn', varLastName = '$ln', varEmailId = '$em', varMobileNo = '$mb', varPassword = '$pass', intUserTypeId = $sl, dtCreated = '$dt' where intUserId = $id";
+			$result = $this->db->query($sqlQuery);
+			
+				return true;
+		}
+		
+		public function login($data) {
+			 $sqlQuery=" SELECT "
+			                ."`intUserId` as UserId,"
+			                ." `varFirstName` as FirstName,"
+			                ." `varLastName` as LastName,"
+			                ." `varEmailId` as EmailId,"
+							."`varPassword` as UserPass, "
+			                ." (SELECT `varUserTypeName` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserType,"
+			                ." (SELECT `varUserTypeCode` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserTypeCode "
+			        ."FROM `user` where `enumStatus`='1' AND `varEmailId`='".$data['emailId']."'";
+			//$sqlQuery 	="SELECT * FROM user_regist WHERE varEmailId='".$emailId."'";
+			$result = $this->db->query($sqlQuery);
+		
+			if($result->num_rows()>0) {
+				$response['status']="true";
+				$response['userinfo']=$result->result();
+				if($this->encrypt->decode($response['userinfo'][0]->UserPass) == $data['password'])
+				return $response;
+			} else {
+				$response['status']=false;
+				$response['msg']='User does not exist';
+				
+				return $response;
+			}
+			//return json_encode($data);
+			//return json_encode($result);
+		}
+		public function get_users($data) {
+			$id = $data['UserId'];
+			
+
+			 $sqlQuery="SELECT * FROM user_owner WHERE intOwnerUserId = $id UNION SELECT * FROM user_owner WHERE intOwnerUserId IN (SELECT intUserId FROM user_owner WHERE intOwnerUserId = $id)";
+			$result = $this->db->query($sqlQuery);
+			if($result->num_rows()>0) {
+				$rs = array();
+				$response['users']=$result->result();
+				foreach($response['users'] as $us)
+				{
+					$rs[] = $us->intUserId;
+				
+				}
+				$ids = "(" . implode(",", $rs) . ")";
+			 $sqlQuery="SELECT * FROM user LEFT JOIN user_type ON user_type.intUserTypeId=user.intUserTypeId where user.intUserId IN $ids AND user.intUserTypeId != 1";
+			    $result = $this->db->query($sqlQuery);
+				$response1['status']="true";
+ 				$response1['users']=$result->result();
+				 // print_r($response1['users']);
+				return $response1;
+			} else {
+				$response['status']=false;
+				$response['msg']='Users does not exist';
+				
+				return $response;
+			}
+			
+		}
+		
+}
