@@ -21,12 +21,16 @@ class AccessControl extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();
+        $isLoggedIn = $this->session->userdata('logged_in');
+        if(!$isLoggedIn){
+            redirect(SITE.'backend');
+        }
 		$this->load->database();
-		$this->load->helper('url');
+
 	//	$this->load->helper('dynmic-css-js');
 		$this->load->model('User_model');
 		$this->load->model('Admin_model');
-		$this->load->library('session');
+
         $this->load->helper('cookie');		
 			
 	}
@@ -99,6 +103,10 @@ $this->load->view('backend');
 	        $data1['result1'] = $this->Admin_model->get_pages($data1);	
 	         $this->load->view('page/Access Control/pages', $data1);
 	    }
+	}
+    public function delete_page($pageId){
+       $this->Admin_model->deletePage($pageId);
+       redirect(SITE.'pages');
 	}
 //  update user roles start
 

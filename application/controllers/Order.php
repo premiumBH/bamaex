@@ -26,14 +26,18 @@ class Order extends CI_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
+        $isLoggedIn = $this->session->userdata('logged_in');
+        if(!$isLoggedIn){
+            redirect(SITE.'backend');
+        }
 		$this->load->database();
-		$this->load->helper('url');
+
 		$this->load->model('User_model');
 		$this->load->model('Admin_model');
                 $this->load->model('Zone_model');
                 $this->load->model('Country_model');
                 $this->load->model('Client_model');
-		$this->load->library('session');
+
                 $this->load->helper('cookie');	
         }
         public function getReceiver()

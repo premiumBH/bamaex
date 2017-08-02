@@ -31,6 +31,12 @@
 			}
 			
 		}
+
+        public function deletePage($id){
+            $this->db->where('intID', $id);
+            $this->db->delete('access_control');
+            return true;
+		}
 		public function get_user_type($data) {
 			 $sqlQuery=" SELECT "
 			                ."intUserTypeId AS role_id,"

@@ -21,12 +21,13 @@ class Staff extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();
+
 		$this->load->database();
-		$this->load->helper('url');
+
 	//	$this->load->helper('dynmic-css-js');
 		$this->load->model('User_model');
 		$this->load->model('Staff_model');
-		$this->load->library('session');
+
         $this->load->helper('cookie');		
 		 
 			

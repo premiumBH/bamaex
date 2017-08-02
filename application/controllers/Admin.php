@@ -21,8 +21,12 @@ class Admin extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();
+        $isLoggedIn = $this->session->userdata('logged_in');
+        if($isLoggedIn){
+            redirect(SITE.'dashboard');
+        }
 		$this->load->database();
-		$this->load->helper('url');
+
 	//	$this->load->helper('dynmic-css-js');
 		$this->load->model('User_model');
 		$this->load->model('Zone_model');
@@ -31,7 +35,7 @@ class Admin extends CI_Controller {
 		$this->load->model('Client_rates_model');
 		$this->load->model('Client_type');
                 $this->load->library('encrypt');
-		$this->load->library('session');
+
         $this->load->helper('cookie');		
 		 
 			
@@ -62,14 +66,15 @@ $this->load->view('backend');
 );
 
 $this->session->set_userdata($newdata);
+redirect(SITE.'dashboard');
 	            $this->onLoginSuccess();
 	        } else {
-		        $this->loadView('client/login', $result);
+		        $this->loadView('admin/login', $result);
 	        } 
 	        
 	    } else {
 	        $dataset['msg']="Emailid Password should not balnk";
-	        $this->loadView('client/login',$dataset);
+	        $this->loadView('admin/login',$dataset);
 	    }
 	}
 	public function loadView($view,$sendData){
@@ -77,7 +82,7 @@ $this->session->set_userdata($newdata);
 	}
 	public function onLoginSuccess(){
 		
-	   $this->load->view('client/home');
+	   $this->load->view('admin/home');
 	}
         public  function create()
         {
@@ -151,7 +156,7 @@ $this->session->set_userdata($newdata);
             }
             else {
                 $data['level_id'] = 'CONTACT';
-                 $this->load->view('client/create', $data);
+                 $this->load->view('admin/create', $data);
             }
         }
         public function update()
@@ -180,7 +185,7 @@ $this->session->set_userdata($newdata);
             }
             $data['countries']=$this->Country_model->get_countries();
             $data['client_id']=$client_id;
-            $this->load->view('client/create', $data);
+            $this->load->view('admin/create', $data);
         }
         public function toProspect()
         {
@@ -194,7 +199,7 @@ $this->session->set_userdata($newdata);
                 $data['address'] = '';
                 $data['email'] = '';
                 $data['phone_no'] = '';
-                $this->load->view('client/prospect',$data);
+                $this->load->view('admin/prospect',$data);
             }
             else
             {

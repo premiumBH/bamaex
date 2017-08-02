@@ -51,6 +51,7 @@
 												.'<td><input class="icheck" name="other['.$result->Id.']" '.$other.' type="checkbox"></td>'
 												.'<td>'.$result->dt.'</td>'
 												.'<td><a href="'.CTRL.'page/create?edit-id='.$result->Id.'"><input value="Edit" class="btn red" type="button"></a></td>'
+                                                .'<td><a href="'.CTRL.'AccessControl/delete_page/'.$result->Id.'" class="btn red">Delete</a></td>'
 											    .'</tr>';
 										} 
 										echo '</tbody></table>'."<input type='submit' name='action' value='Update Permission' class='btn green'>";

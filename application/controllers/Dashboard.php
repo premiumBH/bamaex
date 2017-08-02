@@ -24,16 +24,19 @@ class Dashboard extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();
-		$this->load->database();
-		$this->load->helper('url');
-	//	$this->load->helper('dynmic-css-js');
-		$this->load->model('User_model');
-		$this->load->model('Admin_model');
-                $this->load->model('Zone_model');
-                $this->load->model('Country_model');
-                $this->load->model('Client_model');
-		$this->load->library('session');
-        $this->load->helper('cookie');	
+        $isLoggedIn = $this->session->userdata('logged_in');
+        if(!$isLoggedIn){
+            redirect(SITE.'backend');
+        }
+        $this->load->database();
+
+        //	$this->load->helper('dynmic-css-js');
+        $this->load->model('User_model');
+        $this->load->model('Admin_model');
+        $this->load->model('Zone_model');
+        $this->load->model('Country_model');
+        $this->load->model('Client_model');
+        $this->load->helper('cookie');
 
       
 
@@ -51,7 +54,7 @@ class Dashboard extends CI_Controller {
 	 
 	public function index()
 	{
-            $this->load->view('backend');
+        $this->load->view('admin/home');
 	}
 	public function user()
 	{
