@@ -193,7 +193,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <span class="badge badge-danger">1</span>
                                         </a>
                                     </li>
-                                    <li>
+                                    <!--<li>
                                         <a href="app_calendar.html">
                                             <i class="icon-calendar"></i> My Calendar </a>
                                     </li>
@@ -208,14 +208,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <i class="icon-rocket"></i> My Tasks
                                             <span class="badge badge-success"> 7 </span>
                                         </a>
-                                    </li>
+                                    </li>-->
                                     <li class="divider"> </li>
-                                    <li>
+                                    <!--<li>
                                         <a href="page_user_lock_1.html">
                                             <i class="icon-lock"></i> Lock Screen </a>
-                                    </li>
+                                    </li>-->
                                     <li>
-                                        <a href="<?=CTRL?>logout">
+                                        <a href="<?=SITE?>/dashboard/logout">
                                             <i class="icon-key"></i> Log Out </a>
                                     </li>
                                 </ul>

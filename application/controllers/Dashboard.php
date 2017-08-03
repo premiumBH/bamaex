@@ -56,6 +56,14 @@ class Dashboard extends CI_Controller {
 	{
         $this->load->view('admin/home');
 	}
+
+    public function logout(){
+
+        $this->session->sess_destroy();
+        session_destroy ();
+	    redirect(SITE.'backend');
+
+	}
 	public function user()
 	{
             $data1['UserId'] = ($this->session->userdata['UserId']);
@@ -65,6 +73,7 @@ class Dashboard extends CI_Controller {
               $this->load->view('page/Dashboard/user', $data);
             }
 	}
+
 	public function client()
 	{
             $data['clients'] = $this->Client_model->getClients();
