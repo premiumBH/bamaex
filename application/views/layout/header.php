@@ -189,6 +189,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <ul class="dropdown-menu-v2" role="menu">
                                     <li>
                                         <a href="page_user_profile_1.html">
+                                            <?php
+                                            $userType       = $this->session->userdata('UserType');
+                                            if($userType != '' )
+                                                echo $userType;
+                                            ?>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="page_user_profile_1.html">
                                             <i class="icon-user"></i> My Profile
                                             <span class="badge badge-danger">1</span>
                                         </a>

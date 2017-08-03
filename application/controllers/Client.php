@@ -50,7 +50,7 @@ $this->load->view('backend');
 	        $result=$this->User_model->login($data);
 			
 	      //  echo json_encode($result);
-	        if(($result['status']==true) && (($result['userinfo'][0]->UserType == 'Admin') || ($result['userinfo'][0]->UserType == 'Administrator'))) {
+	        if(($result['status']==true) && (($result['userinfo'][0]->UserType == 'Client') || ($result['userinfo'][0]->UserType == 'Client'))) {
      $newdata = array(
         'UserId'     => $result['userinfo'][0]->UserId,
         'username'  => $result['userinfo'][0]->FirstName. ' '. $result['userinfo'][0]->FirstName,
@@ -59,15 +59,15 @@ $this->load->view('backend');
         'logged_in' => TRUE
 );
 
-$this->session->set_userdata($newdata);
-	            $this->onLoginSuccess();
+                $this->session->set_userdata($newdata);
+                redirect(SITE.'dashboard');
 	        } else {
-		        $this->loadView('admin/login', $result);
+		        $this->loadView('client/login', $result);
 	        } 
 	        
 	    } else {
 	        $dataset['msg']="Emailid Password should not balnk";
-	        $this->loadView('admin/login',$dataset);
+	        $this->loadView('client/login',$dataset);
 	    }
 	}
 	public function loadView($view,$sendData){

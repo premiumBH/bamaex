@@ -48,7 +48,7 @@
                 <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
                     <div class="login-content">
                         <h1>Client login panel</h1>                        
-                        <form action="<?=CTRL?>admin/login" method="post" autocomplete="off">
+                        <form action="<?=CTRL?>client/login" method="post" autocomplete="off">
                             <div class="alert alert-danger display-hide">
                                 <button class="close" data-close="alert"></button>
                                 <span>Enter any username and password. </span>
