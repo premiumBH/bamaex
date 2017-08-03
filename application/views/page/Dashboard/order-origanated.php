@@ -72,6 +72,11 @@ $this->load->view('layout/container');
 
                             <div class="tab-pane active" id="tab1">
                                 <h3 class="block">Sender Details:Your Address Info </h3>
+                                <div class="form-group form-md-line-input has-success">
+                                    <div class="col-md-9">
+                                        <label class="error" for="form_control_1">Please fill the mandatory fields.</label>
+                                    </div>
+                                </div>
                                 <div class="form-body">
                                     <div class="form-group form-md-line-input has-success">
                                         <label class="col-md-3 control-label" for="form_control_1">Address Lines</label>
@@ -107,6 +112,7 @@ $this->load->view('layout/container');
                                             <span class="help-block">Company Name goes here...</span>
                                         </div>
                                     </div>
+                                <div id="sender">
                                     <div class="form-group form-md-line-input" style="display: none">
                                         <label class="col-md-3 control-label" for="form_control_1">Reference No</label>
                                         <div class="col-md-9">
@@ -117,7 +123,7 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">City</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">City*</label>
                                         <div class="col-md-9">
                                             <input type="text" name="sender_city" value="<?php echo $city; ?>" class="form-control" placeholder="">
                                             <div class="form-control-focus"> </div>
@@ -125,7 +131,7 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>
                                     <div class="form-group form-md-line-input has-success">
-                                        <label class="col-md-3 control-label" for="form_control_1">Country</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Country*</label>
                                         <div class="col-md-9">
                                             <select class="form-control" name="sender_country_id">
                                             <?php
@@ -151,7 +157,7 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>
                                     <div class="form-group form-md-line-input has-error">
-                                        <label class="col-md-3 control-label" for="form_control_1">Address</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Address*</label>
                                         <div class="col-md-9">
                                             <textarea class="form-control" name="sender_address" value="" required rows="3"><?php echo $address; ?></textarea>
                                             <div class="form-control-focus"> </div>
@@ -187,13 +193,14 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>                    
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">Mobile Number</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Mobile Number*</label>
                                         <div class="col-md-9">
                                             <input type="text" name="sender_mobile" value="<?php echo $mobile; ?>" class="form-control" placeholder="Mobile Number">
                                             <div class="form-control-focus"> </div>
                                             <span class="help-block">Mobile Number Type here...</span>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                            
@@ -237,8 +244,9 @@ $this->load->view('layout/container');
                                             <span class="help-block">Account Number goes here...</span>
                                         </div>
                                     </div>
+                                <div id="receiver">
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">City</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">City*</label>
                                         <div class="col-md-9">
                                             <input type="text" name="receiver_city" value="<?php echo $receiver_city;?>" class="form-control" placeholder="">
                                             <div class="form-control-focus"> </div>
@@ -246,7 +254,7 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>
                                     <div class="form-group form-md-line-input has-success">
-                                        <label class="col-md-3 control-label" for="form_control_1">Country</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Country*</label>
                                         <div class="col-md-9">
                                             <select class="form-control" name="receiver_country_id" >
                                                 <?php
@@ -272,7 +280,7 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>
                                     <div class="form-group form-md-line-input has-error">
-                                        <label class="col-md-3 control-label" for="form_control_1">Address</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Address*</label>
                                         <div class="col-md-9">
                                             <textarea class="form-control" name="receiver_address" value="<?php echo $receiver_address;?>" required rows="3"></textarea>
                                             <div class="form-control-focus"> </div>
@@ -308,13 +316,14 @@ $this->load->view('layout/container');
                                         </div>
                                     </div>                    
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">Mobile Number</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Mobile Number*</label>
                                         <div class="col-md-9">
                                             <input type="text" name="receiver_mobile" value="<?php echo $receiver_mobile;?>" class="form-control" placeholder="Mobile Number">
                                             <div class="form-control-focus"> </div>
                                             <span class="help-block">Mobile Number Type here...</span>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab3">
@@ -348,8 +357,9 @@ $this->load->view('layout/container');
                                             <span class="help-block">Title goes here...</span>
                                         </div>
                                 </div>
+                            <div id="package">
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Type</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Type*</label>
                                     <div class="col-md-9">
                                         <input type="text" name="type" value="<?php echo $type;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -357,7 +367,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Weight</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Weight*</label>
                                     <div class="col-md-9">
                                         <input type="text" name="weight" value="<?php echo $weight;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -381,7 +391,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Packages</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Packages*</label>
                                     <div class="col-md-9">
                                         <input type="text" name="packages" value="<?php echo $packages;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -389,7 +399,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Service Type</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Service Type*</label>
                                     <div class="col-md-9">
                                         <select name="service_id" class="form-control">
                                          <?php
@@ -405,8 +415,9 @@ $this->load->view('layout/container');
                                         <span class="help-block">breath value here...</span>
                                     </div>
                                 </div>
+                            </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Payment Type</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Payment Type*</label>
                                     <div class="col-md-9">
                                         <select name="payment_id" class="form-control">
                                          <?php
@@ -454,8 +465,9 @@ $this->load->view('layout/container');
                                             <span class="help-block">Title goes here...</span>
                                         </div>
                                 </div>
+                            <div id="person"> 
                                <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Contact Person Mobile</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Contact Person Mobile*</label>
                                     <div class="col-md-9">
                                         <input type="text" name="contact_person_mobile" value="<?php echo $contact_person_mobile;?>" class="form-control" placeholder="Phone Number">
                                         <input type="hidden" name="new_order" value="new_order" class="form-control" placeholder="">
@@ -464,8 +476,9 @@ $this->load->view('layout/container');
                                         <span class="help-block">Contact Person Mobile Type here...</span>
                                     </div>
                                 </div>
+                            </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-3">Pickup Date</label>
+                                    <label class="control-label col-md-3">Pickup Date*</label>
                                     <div class="col-md-3">
                                         <div class="input-group input-medium date date-picker" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
                                             <input name="date" type="text" class="form-control" readonly>
@@ -476,11 +489,11 @@ $this->load->view('layout/container');
                                             </span>
                                         </div>
                                         <!-- /input-group -->
-                                        <span class="help-block"> Select date </span>
+                                        <span class="help-block"> Select Date </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                   <label class="control-label col-md-3">Pickup Time</label>
+                                   <label class="control-label col-md-3">Pickup Time*</label>
                                    <div class="col-md-3">
                                        <div class="input-group">
                                            <input type="text" name="time" class="form-control timepicker timepicker-no-seconds">
@@ -813,6 +826,18 @@ $this->load->view('layout/container');
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label name="breath"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="font-weight:bold">Packages</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label name="packages"></label>
                                 </div>
                             </div>
                         </div>

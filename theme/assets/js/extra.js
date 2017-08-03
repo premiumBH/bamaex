@@ -1,39 +1,96 @@
 $(document).ready(function(){
         
+        $('#sender').hide();
+        $('#receiver').hide();
+        $('#package').hide();
+        $('#person').hide();
+        $('.error').hide();
         $('.one').click();
-        
+        $('.button-submit').hide();
         $('.button-next').click(function()
         {
             obj = $('a[aria-expanded=true]');
             current = obj.attr('class').split(' ')[1];
             if(current == 'one')
             {
-                $('.two').click();
+                name = $('input[name=sender_city]').val();
+                country = $('select[name=sender_country_id]').val();
+                address = $('textarea[name=sender_address]').val()
+                email = $('input[name=sender_email]').val();
+                mobile = $('input[name=sender_mobile]').val();
+                //line = $('input[name=sender_address_line]').val();
+                //if(line.length == 0 || name.length == 0 || country.length == 0 || address.length == 0 || email.length == 0 || mobile.length == 0)
+                if(name.length == 0 || country.length == 0 || address.length == 0 || email.length == 0 || mobile.length == 0)
+                {
+                    $('.error').show();
+                }
+                else
+                {   
+                    $('.two').click();
+                }
             }
             else if(current == 'two')
             {
-                $('.three').click();
+                //line = $('input[name=receiver_address_line]').val();
+                name = $('input[name=receiver_city]').val();
+                country = $('select[name=receiver_country_id]').val();
+                address = $('textarea[name=receiver_address]').val()
+                email = $('input[name=receiver_email]').val();
+                mobile = $('input[name=receiver_mobile]').val();
+                //if(line.length == 0 || name.length == 0 || country.length == 0 || address.length == 0 || email.length == 0 || mobile.length == 0)
+                if(name.length == 0 || country.length == 0 || address.length == 0 || email.length == 0 || mobile.length == 0)
+                {
+                    $('.error').show();
+                }
+                else
+                {
+                    $('.three').click();
+                }
             }
             else if(current == 'three')
             {
-                $('.four').click();
+                type = $('input[name=type]').val();
+                weight = $('input[name=weight]').val();
+                package = $('input[name=packages]').val();
+                if(type.length == 0 || weight.length == 0 || package.length == 0)
+                {
+                    $('.error').show();
+                }
+                else
+                {
+                    $('.four').click();
+                }
             }
             else if(current == 'four')
             {
-                $('.one').click();
+                mobile = $('input[name=contact_person_mobile]').val();
+                date = $('input[name=date]').val();
+                time = $('input[name=time]').val();
+                
+                if(mobile.length == 0 || date.length == 0 || time.length == 0)
+                {
+                    $('.error').show();
+                }
+                
+                $('.button-submit').show();
+                
             }
             
             //aria-expanded
         });
         $('.button-previous').click(function()
         {
+            
+            if($('.view').css('visibility') === 'visible')
+            {
+                $('.button-submit').attr('onclick' , '');
+                $('.view').fadeOut();
+                $('.edit').fadeIn();
+            }
             obj = $('a[aria-expanded=true]');
             current = obj.attr('class').split(' ')[1];
-            if(current == 'one')
-            {
-                $('.four').click();
-            }
-            else if(current == 'two')
+            
+            if(current == 'two')
             {
                 $('.one').click();
             }
@@ -58,20 +115,25 @@ $(document).ready(function(){
 	$('#addSenderfield').change(function(){
 		$('.hiddeen-div0').hide();
 		$('#' + $(this).val()).show();
+                
+                $('#sender').fadeIn(500);
 	});
 	$('#addNewfield').change(function(){
 		$('.hiddeen-div').hide();
 		$('#' + $(this).val()).show();
+               $('#receiver').fadeIn(500);
 	});
         
         $('#addNewConsignment').change(function(){
 		$('.hiddeen-div1').hide();
 		$('#' + $(this).val()).show();
+                $('#package').fadeIn(500);
 	});
         
         $('#addContact').change(function(){
 		$('.hiddeen-div2').hide();
 		$('#' + $(this).val()).show();
+                $('#person').fadeIn(500);
 	});
         
 //        $('#addPickup').change(function(){
@@ -96,7 +158,6 @@ $(document).ready(function(){
                             $.each(arr,function(i,val){
                                 console.log(val);
                                 console.log(val.id);
-                                $('input[name=receiver_account_id]').val(val.account_id);
                                 $('input[name=receiver_city]').val(val.city);
                                 $('select[name=receiver_country_id]').val(val.country_id);
                                 $('textarea[name=receiver_address]').val(val.address)
@@ -104,6 +165,7 @@ $(document).ready(function(){
                                 $('input[name=receiver_email]').val(val.email);
                                 $('input[name=receiver_phone_no]').val(val.phone_no);
                                 $('input[name=receiver_mobile]').val(val.mobile);
+                                $('input[name=receiver_address_line]').val(val.address_line);
                                 
                             });
                             
@@ -111,7 +173,6 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    $('input[name=receiver_account_id]').val('');
                     $('input[name=receiver_city]').val('');
                     $('select[name=receiver_country_id]').val('1');
                     $('textarea[name=receiver_address]').val('')
@@ -137,7 +198,6 @@ $(document).ready(function(){
                             $.each(arr,function(i,val){
                                 console.log(val);
                                 console.log(val.id);
-                                $('input[name=sender_account_id]').val(val.account_id);
                                 $('input[name=sender_city]').val(val.city);
                                 $('select[name=sender_country_id]').val(val.country_id);
                                 $('textarea[name=sender_address]').val(val.address)
@@ -145,6 +205,7 @@ $(document).ready(function(){
                                 $('input[name=sender_email]').val(val.email);
                                 $('input[name=sender_phone_no]').val(val.phone_no);
                                 $('input[name=sender_mobile]').val(val.mobile);
+                                $('input[name=sender_address_line]').val(val.address_line);
                                 
                             });
                             
@@ -152,7 +213,6 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    $('input[name=sender_account_id]').val('');
                     $('input[name=sender_city]').val('');
                     $('select[name=sender_country_id]').val('1');
                     $('textarea[name=sender_address]').val('')
@@ -181,6 +241,8 @@ $(document).ready(function(){
                                 $('input[name=weight]').val(val.weight);
                                 $('input[name=height]').val(val.height);
                                 $('input[name=breath]').val(val.breath);
+                                $('input[name=packages]').val(val.no_of_packages);
+                                $('input[name=title]').val(val.title);
                                 
                             });
                             
@@ -192,6 +254,7 @@ $(document).ready(function(){
                     $('input[name=weight]').val('');
                     $('input[name=height]').val('');
                     $('input[name=breath]').val('');
+                    $('input[name=title]').val('');
                 }
         });
         $('#addContact').change(function(){
@@ -210,6 +273,7 @@ $(document).ready(function(){
                                 console.log(val);
                                 console.log(val.id);
                                 $('input[name=contact_person_mobile]').val(val.person_mobile);
+                                $('input[name=contact_person_name]').val(val.person_name);
                                 
                                 
                             });
@@ -284,6 +348,7 @@ $(document).ready(function(){
                 $('label[name=weight]').text($('input[name=weight]').val());
                 $('label[name=height]').text($('input[name=height]').val());
                 $('label[name=breath]').text($('input[name=breath]').val());
+                $('label[name=packages]').text($('input[name=packages]').val());
                 
 //                $('label[name=name]').text($('select[name=sender_country_id]  option:selected').text());
                 sender_company_name = $('input[name=contact_person_name]').val();
@@ -305,7 +370,7 @@ $(document).ready(function(){
                 $('.edit').fadeOut(500);
                 $('.view').fadeIn(500);
                 
-                $('.button-submit').attr('onclick' , 'document.getElementById("form1").submit();');
+               $('.button-submit').attr('onclick' , 'document.getElementById("form1").submit();');
                 $('.button-submit').text('Confirm Order');
                 
             }

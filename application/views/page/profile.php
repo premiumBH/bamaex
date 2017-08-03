@@ -40,19 +40,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">Phone number</label>
+                                        <label class="control-label">Phone Number</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-phone"></i>
                                             </span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Address</label>
-                                        <textarea class="form-control" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -63,35 +57,51 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">State</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label class="control-label">Country</label>
                                         <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="control-label">Profle Picture</label>
-                                    <div style="width: 100%" class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="input-group">
-                                            <div class="form-control uneditable-input input-fixed" data-trigger="fileinput">
-                                                <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                                <span class="fileinput-filename"> </span>
-                                            </div>
-                                            <span class="input-group-addon btn default btn-file">
-                                                <span class="fileinput-new"> Select file </span>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="control-label">Profile Picture</label>
+                                        </div>
+                                    </div>                                    
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                        <div>
+                                            <span class="btn default btn-file">
+                                                <span class="fileinput-new"> Select image </span>
                                                 <span class="fileinput-exists"> Change </span>
                                                 <input type="file" name="..."> </span>
-                                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="control-label">Comapny Logo</label>
+                                        </div>
+                                    </div>                                    
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+                                        <div>
+                                            <span class="btn default btn-file">
+                                                <span class="fileinput-new"> Select image </span>
+                                                <span class="fileinput-exists"> Change </span>
+                                                <input type="file" name="..."> </span>
+                                            <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-actions right">
+                        <div class="form-actions text-right">
                             <button type="submit" class="btn green">Submit</button>
                             <button type="button" class="btn default">Cancel</button>
                         </div>

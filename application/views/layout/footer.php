@@ -78,7 +78,10 @@
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="<?=THEME?>/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
-        <!-- END THEME LAYOUT SCRIPTS -->        
+        <!-- END THEME LAYOUT SCRIPTS --> 
+        <script src="<?=THEME?>/assets/pages/scripts/datatables.min.js" type="text/javascript"></script>
+        <script src="<?=THEME?>/assets/pages/scripts/datatables.bootstrap.js" type="text/javascript"></script>
+        <script src="<?=THEME?>/assets/pages/scripts/table-datatables-buttons.min.js" type="text/javascript"></script>       
 		<script>            
 		$(document).ready(function()
 		{                
