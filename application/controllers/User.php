@@ -202,15 +202,35 @@ class User extends CI_Controller {
             $insert                         = array();
             $insert['city']                 = $city;
             if($_FILES['profileImage']['name']){
-                $logoImagePath                  = $this->uploadImage('profileImage');
-                $insert['profile_image']        = $logoImagePath;
+                $profileImage                  = $this->uploadImage('profileImage');
+                $this->session->set_userdata('profileImage', $profileImage);
+                $insert['profile_image']        = $profileImage;
             }
             if($_FILES['companyLogo']['name']){
-                $adminImagePath                 = $this->uploadImage('companyLogo');
-                $insert['company_logo']         = $adminImagePath;
+                $companyLogo                    = $this->uploadImage('companyLogo');
+                $insert['company_logo']         = $companyLogo;
             }
 
             if($loggedInUserAddress){
+                //deleting previous files
+                if($_FILES['profileImage']['name']) {
+                    $preProfileImage = $loggedInUserData[0]->profile_image;
+                    if ($preProfileImage != '') {
+                        if (is_file(realpath('.') . $preProfileImage) && file_exists(realpath('.') . $preProfileImage)) {
+                            unlink(realpath('.') . $preProfileImage);
+                        }
+                    }
+                }
+                if($_FILES['companyLogo']['name']) {
+                    $preCompany_logo = $loggedInUserData[0]->company_logo;
+                    if ($preCompany_logo != '') {
+                        if (is_file(realpath('.') . $preCompany_logo) && file_exists(realpath('.') . $preCompany_logo)) {
+                            unlink(realpath('.') . $preCompany_logo);
+                        }
+                    }
+                }
+
+                //updating data
                 $insert['address_id']    = $loggedInUserData[0]->address_id;
                 $this->User_model->updateUserAddress($insert);
             }else{
