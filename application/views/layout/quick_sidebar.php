@@ -13,42 +13,42 @@
                         <span class="badge badge-danger">7</span>
                     </div>
                 </button> 
-        <a href="javascript:;" class="page-quick-sidebar-toggler">
+        <a href="javascript:void(0);" class="page-quick-sidebar-toggler">
             <i class="icon-login"></i>
         </a>-->
         <div class="page-quick-sidebar-wrapper" data-close-on-body-click="false">
             <div class="page-quick-sidebar">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab"> Users
+                        <a href="javascript:void(0);" data-target="#quick_sidebar_tab_1" data-toggle="tab"> Users
                             <span class="badge badge-danger">2</span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-target="#quick_sidebar_tab_2" data-toggle="tab"> Alerts
+                        <a href="javascript:void(0);" data-target="#quick_sidebar_tab_2" data-toggle="tab"> Alerts
                             <span class="badge badge-success">7</span>
                         </a>
                     </li>
                     <li class="dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> More
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"> More
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu pull-right">
                             <li>
-                                <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                                <a href="javascript:void(0);" data-target="#quick_sidebar_tab_3" data-toggle="tab">
                                     <i class="icon-bell"></i> Alerts </a>
                             </li>
                             <li>
-                                <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                                <a href="javascript:void(0);" data-target="#quick_sidebar_tab_3" data-toggle="tab">
                                     <i class="icon-info"></i> Notifications </a>
                             </li>
                             <li>
-                                <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                                <a href="javascript:void(0);" data-target="#quick_sidebar_tab_3" data-toggle="tab">
                                     <i class="icon-speech"></i> Activities </a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="javascript:;" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                                <a href="javascript:void(0);" data-target="#quick_sidebar_tab_3" data-toggle="tab">
                                     <i class="icon-settings"></i> Settings </a>
                             </li>
                         </ul>
@@ -159,7 +159,7 @@
                         <div class="page-quick-sidebar-item">
                             <div class="page-quick-sidebar-chat-user">
                                 <div class="page-quick-sidebar-nav">
-                                    <a href="javascript:;" class="page-quick-sidebar-back-to-list">
+                                    <a href="javascript:void(0);" class="page-quick-sidebar-back-to-list">
                                         <i class="icon-arrow-left"></i>Back</a>
                                 </div>
                                 <div class="page-quick-sidebar-chat-user-messages">
@@ -167,7 +167,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar3.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Bob Nilson</a>
+                                            <a href="javascript:void(0);" class="name">Bob Nilson</a>
                                             <span class="datetime">20:15</span>
                                             <span class="body"> When could you send me the report ? </span>
                                         </div>
@@ -176,7 +176,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar2.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Ella Wong</a>
+                                            <a href="javascript:void(0);" class="name">Ella Wong</a>
                                             <span class="datetime">20:15</span>
                                             <span class="body"> Its almost done. I will be sending it shortly </span>
                                         </div>
@@ -185,7 +185,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar3.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Bob Nilson</a>
+                                            <a href="javascript:void(0);" class="name">Bob Nilson</a>
                                             <span class="datetime">20:15</span>
                                             <span class="body"> Alright. Thanks! :) </span>
                                         </div>
@@ -194,7 +194,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar2.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Ella Wong</a>
+                                            <a href="javascript:void(0);" class="name">Ella Wong</a>
                                             <span class="datetime">20:16</span>
                                             <span class="body"> You are most welcome. Sorry for the delay. </span>
                                         </div>
@@ -203,7 +203,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar3.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Bob Nilson</a>
+                                            <a href="javascript:void(0);" class="name">Bob Nilson</a>
                                             <span class="datetime">20:17</span>
                                             <span class="body"> No probs. Just take your time :) </span>
                                         </div>
@@ -212,7 +212,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar2.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Ella Wong</a>
+                                            <a href="javascript:void(0);" class="name">Ella Wong</a>
                                             <span class="datetime">20:40</span>
                                             <span class="body"> Alright. I just emailed it to you. </span>
                                         </div>
@@ -221,7 +221,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar3.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Bob Nilson</a>
+                                            <a href="javascript:void(0);" class="name">Bob Nilson</a>
                                             <span class="datetime">20:17</span>
                                             <span class="body"> Great! Thanks. Will check it right away. </span>
                                         </div>
@@ -230,7 +230,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar2.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Ella Wong</a>
+                                            <a href="javascript:void(0);" class="name">Ella Wong</a>
                                             <span class="datetime">20:40</span>
                                             <span class="body"> Please let me know if you have any comment. </span>
                                         </div>
@@ -239,7 +239,7 @@
                                         <img class="avatar" alt="" src="<?=THEME?>assets/layouts/layout/img/avatar3.jpg" />
                                         <div class="message">
                                             <span class="arrow"></span>
-                                            <a href="javascript:;" class="name">Bob Nilson</a>
+                                            <a href="javascript:void(0);" class="name">Bob Nilson</a>
                                             <span class="datetime">20:17</span>
                                             <span class="body"> Sure. I will check and buzz you if anything needs to be corrected. </span>
                                         </div>
@@ -284,7 +284,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href="javascript:void(0);">
                                         <div class="col1">
                                             <div class="cont">
                                                 <div class="cont-col1">
@@ -375,7 +375,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href="javascript:void(0);">
                                         <div class="col1">
                                             <div class="cont">
                                                 <div class="cont-col1">
@@ -418,7 +418,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href="javascript:void(0);">
                                         <div class="col1">
                                             <div class="cont">
                                                 <div class="cont-col1">
@@ -509,7 +509,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href="javascript:void(0);">
                                         <div class="col1">
                                             <div class="cont">
                                                 <div class="cont-col1">
