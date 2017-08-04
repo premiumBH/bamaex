@@ -56,7 +56,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Password</label>
-                                        <input type="text" name="password" value="<?php echo (isset($userData->varPassword) && $userData->varPassword!= '')?$userData->varPassword:'';?>" class="form-control">
+                                        <input type="password" name="password" value="<?php echo (isset($userData->varPassword) && $userData->varPassword!= '')?$userData->varPassword:'';?>" class="form-control">
 
                                     </div>
                                 </div>
