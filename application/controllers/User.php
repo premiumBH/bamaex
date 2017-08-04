@@ -55,6 +55,7 @@ class User extends CI_Controller {
 	//	$this->load->helper('dynmic-css-js');
 
 		$this->load->model('User_model');
+		$this->load->model('Country_model');
 
 		$this->load->model('Admin_model');
 
@@ -163,10 +164,104 @@ class User extends CI_Controller {
 	}
 
 	public function profile() {
+        $loggedInUserId         = $this->session->userdata('UserId');
+        $loggedInUserData       = $this->User_model->getUserById($loggedInUserId);
+        $loggedInUserAddress    = $this->User_model->getUserAddressByUserId($loggedInUserId);
+        if($loggedInUserAddress){
+            $mergeArray = array_merge((array)$loggedInUserData[0], (array)$loggedInUserAddress[0]);
+            $loggedInUserData[0] = (object)$mergeArray;
+        }
+        $viewData                           = array();
+        $viewData['userData']              = $loggedInUserData[0];
+        $viewData['counties']              = $this->Country_model->get_countries();
 
-		$this->load->view('page/profile');
+        $this->form_validation->set_rules('submit', 'Submit', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'callback_emailExist');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('page/profile',$viewData);
+        }else{
+            $userId                     = $this->input->post('userId');
+            $firstName                  = $this->input->post('firstName');
+            $lastName                   = $this->input->post('lastName');
+            $email                      = $this->input->post('email');
+            $phone                      = $this->input->post('phone');
+            $country                    = $this->input->post('country');
+            $city                       = $this->input->post('city');
 
+
+            $insert                                 = array();
+            $insert['intUserId']                    = $userId;
+            $insert['varFirstName']                 = $firstName;
+            $insert['varLastName']                  = $lastName;
+            $insert['varEmailId']                   = $email;
+            $insert['varMobileNo']                  = $phone;
+            $insert['country_id']                   = $country;
+
+            $this->User_model->updateUser($insert);
+
+            $insert                         = array();
+            $insert['city']                 = $city;
+            if($_FILES['profileImage']['name']){
+                $logoImagePath                  = $this->uploadImage('profileImage');
+                $insert['profile_image']        = $logoImagePath;
+            }
+            if($_FILES['companyLogo']['name']){
+                $adminImagePath                 = $this->uploadImage('companyLogo');
+                $insert['company_logo']         = $adminImagePath;
+            }
+
+            if($loggedInUserAddress){
+                $insert['address_id']    = $loggedInUserData[0]->address_id;
+                $this->User_model->updateUserAddress($insert);
+            }else{
+                $insert['user_id']    = $userId;
+                $this->User_model->insertUserAddress($insert);
+            }
+            $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Profile has updated</div>');
+            redirect(SITE.'user/profile');
+        }
 	}
+
+    public function emailExist($email){
+        $userId = $this->input->post('userId');
+        $isEmailExist = $this->User_model->userEmailExistExceptId($userId , $email);
+        if ($isEmailExist) {
+            $this->form_validation->set_message('emailExist', 'The {field} already exist');
+            return FALSE;
+        }
+        else {
+            return TRUE;
+        }
+    }
+
+    public function uploadImage($fileName){
+
+
+        $path 	                        = realpath('.').'/theme/assets/userProfile';
+        if(!is_dir($path)) {
+            mkdir($path,0777);
+        }
+        $config['upload_path']          = $path;
+        $config['allowed_types']        = 'gif|jpg|png';
+        $config['allowed_types']        = '*';
+        $config['max_size']             = '51200';
+        $config['max_width']            = '5000';
+        $config['max_height']           = '5000';
+        $config['remove_spaces']        = TRUE;
+        $config['encrypt_name']         = TRUE;
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload($fileName)) {
+            $error = array('error' => $this->upload->display_errors());
+            echo "<pre>"; print_r($error); exit;
+        }
+        else{
+            $data = array('upload_data' => $this->upload->data());
+            $filePath   = $data['upload_data']['full_path'];
+            $filePath   = '/theme/'.explode('theme/', $filePath)['1'];
+            return $filePath;
+        }
+    }
 
 	public function account() {
 

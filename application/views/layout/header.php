@@ -49,7 +49,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="<?=THEME?>assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="<?=THEME?>assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="<?=THEME?>assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="<?=THEME?>assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?=THEME?>assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="<?=THEME?>assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME LAYOUT STYLES -- >
         <link href="<?=THEME?>assets/layouts/layout6/css/layout.min.css" rel="stylesheet" type="text/css" />
@@ -185,10 +189,22 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!-- BEGIN USER PROFILE -->
                             <div class="btn-group-img btn-group">
                                 <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                    <img src="<?=THEME?>assets/layouts/layout5/img/avatar1.jpg" alt=""> </button>
+                                    <?php
+                                    $profileImage = $this->session->userdata('profileImage');
+                                    if(isset($profileImage) && $profileImage != ''){?>
+                                        <?php if(is_file(realpath('.').$profileImage) && file_exists(realpath('.').$profileImage)){?>
+                                            <img src="<?php echo SITE.$profileImage;?>" alt="">
+                                        <?php }else{?>
+                                            <img src="<?=THEME?>assets/layouts/layout5/img/avatar1.jpg" alt="">
+                                        <?php }?>
+                                    <?php }else{?>
+                                        <img src="<?=THEME?>assets/layouts/layout5/img/avatar1.jpg" alt="">
+                                    <?php }?>
+
+                                </button>
                                 <ul class="dropdown-menu-v2" role="menu">
                                     <li>
-                                        <a href="page_user_profile_1.html">
+                                        <a href="javascript:void(0);">
                                             <?php
                                             $userType       = $this->session->userdata('UserType');
                                             if($userType != '' )
@@ -197,7 +213,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="page_user_profile_1.html">
+                                        <a href="<?php echo SITE.'user/profile';?>">
                                             <i class="icon-user"></i> My Profile
                                             <span class="badge badge-danger">1</span>
                                         </a>

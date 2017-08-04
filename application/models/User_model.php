@@ -209,6 +209,44 @@
 
 		}
 
+        public function getUserById($id){
+            $this->db->where('intUserId', $id);
+            $query		= $this->db->get('user');
+            $Result 	= $query->result();
+            return $Result;
+            
+		}
+        public function getUserAddressByUserId($id){
+            $this->db->where('user_id', $id);
+            $query		= $this->db->get('user_address');
+            $Result 	= $query->result();
+            return $Result;
+        }
+
+        public function insertUserAddress($data){
+            $this->db->insert('user_address', $data);
+            return $this->db->insert_id();
+        }
+
+        public function updateUserAddress( $data){
+
+            $this->db->where('address_id', $data['address_id']);
+            $this->db->update('user_address',$data);
+        }
+
+        public function userEmailExistExceptId($id,$email){
+            $this->db->where('varEmailId', $email);
+            $this->db->where('intUserId !=', $id);
+            $query		= $this->db->get('user');
+            $Result 	= $query->result();
+            return $Result;
+        }
+
+        public function updateUser( $data){
+            $this->db->where('intUserId', $data['intUserId']);
+            $this->db->update('user',$data);
+        }
+
 		
 
 }

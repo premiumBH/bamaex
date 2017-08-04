@@ -51,12 +51,21 @@ $this->load->view('backend');
 			
 	      //  echo json_encode($result);
 	        if(($result['status']==true) && (($result['userinfo'][0]->UserType == 'Client') || ($result['userinfo'][0]->UserType == 'Client'))) {
-     $newdata = array(
-        'UserId'     => $result['userinfo'][0]->UserId,
-        'username'  => $result['userinfo'][0]->FirstName. ' '. $result['userinfo'][0]->FirstName,
-        'email'     => $result['userinfo'][0]->EmailId,
-        'UserType'     => $result['userinfo'][0]->UserType,
-        'logged_in' => TRUE
+
+                $address                = $this->User_model->getUserAddressByUserId($result['userinfo'][0]->UserId);
+                if(!empty($address)){
+                    $userProfileImage   = $address[0]->profile_image;
+                }else{
+                    $userProfileImage   = '';
+                }
+
+	            $newdata = array(
+                        'UserId'     => $result['userinfo'][0]->UserId,
+                        'username'  => $result['userinfo'][0]->FirstName. ' '. $result['userinfo'][0]->FirstName,
+                        'email'     => $result['userinfo'][0]->EmailId,
+                        'UserType'     => $result['userinfo'][0]->UserType,
+                        'profileImage'=>$userProfileImage,
+                        'logged_in' => TRUE
 );
 
                 $this->session->set_userdata($newdata);
