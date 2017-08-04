@@ -168,9 +168,9 @@
       padding: 0;
       border-radius: 0;
       line-height: normal;
-      background: #333c43;
+      /*background: #333c43;*/
       height: 60px;
-      border-left: 1px solid #384047; }
+      /*border-left: 1px solid #384047;*/ }
       .page-header .topbar-actions .btn-group-img .btn > span {
         padding: 9px;
         line-height: 1.4;

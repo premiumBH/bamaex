@@ -58,7 +58,7 @@ class User extends CI_Controller {
 		$this->load->model('Country_model');
 
 		$this->load->model('Admin_model');
-
+        $this->load->library('encrypt');
 
 
         $this->load->helper('cookie');		
@@ -171,9 +171,10 @@ class User extends CI_Controller {
             $mergeArray = array_merge((array)$loggedInUserData[0], (array)$loggedInUserAddress[0]);
             $loggedInUserData[0] = (object)$mergeArray;
         }
+        $loggedInUserData[0]->varPassword   = $this->encrypt->decode($loggedInUserData[0]->varPassword);
         $viewData                           = array();
-        $viewData['userData']              = $loggedInUserData[0];
-        $viewData['counties']              = $this->Country_model->get_countries();
+        $viewData['userData']               = $loggedInUserData[0];
+        $viewData['counties']               = $this->Country_model->get_countries();
 
         $this->form_validation->set_rules('submit', 'Submit', 'required');
         $this->form_validation->set_rules('email', 'Email', 'callback_emailExist');
@@ -184,9 +185,12 @@ class User extends CI_Controller {
             $firstName                  = $this->input->post('firstName');
             $lastName                   = $this->input->post('lastName');
             $email                      = $this->input->post('email');
+            $password                   = $this->input->post('password');
             $phone                      = $this->input->post('phone');
             $country                    = $this->input->post('country');
             $city                       = $this->input->post('city');
+
+
 
 
             $insert                                 = array();
@@ -194,8 +198,11 @@ class User extends CI_Controller {
             $insert['varFirstName']                 = $firstName;
             $insert['varLastName']                  = $lastName;
             $insert['varEmailId']                   = $email;
+            $insert['varPassword']                  = $this->encrypt->encode($password);
             $insert['varMobileNo']                  = $phone;
             $insert['country_id']                   = $country;
+
+
 
             $this->User_model->updateUser($insert);
 
@@ -281,6 +288,26 @@ class User extends CI_Controller {
             $filePath   = '/theme/'.explode('theme/', $filePath)['1'];
             return $filePath;
         }
+    }
+
+    public function update_password(){
+        $this->form_validation->set_rules('submit', 'Submit', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('page/updatePassword');
+        }else{
+            $userId                                 = $this->input->post('userId');
+            $password                               = $this->input->post('password');
+            $insert                                 = array();
+            $insert['intUserId']                    = $userId;
+            $insert['varPassword']                  = $this->encrypt->encode($password);
+
+            $this->User_model->updateUser($insert);
+            $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Password has updated</div>');
+            redirect(SITE.'user/update_password');
+
+        }
+        
     }
 
 	public function account() {

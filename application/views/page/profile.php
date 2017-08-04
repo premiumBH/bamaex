@@ -55,6 +55,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="control-label">Password</label>
+                                        <input type="text" name="password" value="<?php echo (isset($userData->varPassword) && $userData->varPassword!= '')?$userData->varPassword:'';?>" class="form-control">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="control-label">City</label>
                                         <input type="text" name="city" value="<?php echo (isset($userData->city) && $userData->city!= '')?$userData->city:'';?>" class="form-control">
                                     </div>
@@ -70,6 +77,10 @@
                                             <?php }?>
 
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="margin: .1%;">
+                                    <div class="form-group" >
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -140,6 +151,7 @@
                         </div>
                         <div class="form-actions text-right">
                             <input type="submit"  name="submit" value="Submit" class="btn green">
+                            <!--<a href="<?php /*echo SITE.'users/update_password'*/?>" class="btn green"></a>-->
                             <button type="button" class="btn default">Cancel</button>
                         </div>
                     </form>
