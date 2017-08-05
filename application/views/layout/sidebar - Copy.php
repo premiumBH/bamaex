@@ -1,17 +1,17 @@
                 <div class="page-sidebar-wrapper">
                     <!-- BEGIN SIDEBAR -->
                     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-                    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed    
-                    
-                    operation="users" 
+                    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed
+
+                    operation="users"
                     -->
                     <div class="page-sidebar navbar-collapse collapse">
                         <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                        
+
    <?php
-$pages = array();   
+$pages = array();
    if (isset($this->session->userdata['logged_in'])) {
-			
+
              $UserType = ($this->session->userdata['UserType']);
 if($UserType == "Administrator" || $UserType == "Admin")
 {
@@ -29,20 +29,20 @@ if($UserType == "Other")
 {
 	$col = 'enumOther';
 }
-			 
+
 			$sqlQuery = " SELECT "
 			                ." varPageSlug AS PageSlug"
 			        ." FROM access_control where $col = 1";
 			$result = $this->db->query($sqlQuery);
-			
+
 			if($result->num_rows()>0) {
 				foreach($result->result() AS $result1)
-				{					
+				{
 				$pages[] = $result1->PageSlug;
 				}
-            } 
+            }
    }
-   ?>                     
+   ?>
                             <li class="nav-item start active open">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-home"></i>
@@ -59,8 +59,8 @@ if($UserType == "Other")
                                             <span class="selected"></span>
                                         </a>
                                     </li>
-                               <?php } ?> 
-                               <?php if(in_array('client', $pages)) { ?>    
+                               <?php } ?>
+                               <?php if(in_array('client', $pages)) { ?>
                                     <li class="nav-item start <?php if($this->uri->segment(1)=="client"){echo "active";}?>">
                                         <a  class="nav-link " href="<?php echo CTRL; ?>client">
                                             <i class="icon-layers"></i>
@@ -68,8 +68,8 @@ if($UserType == "Other")
                                             <span class="badge badge-success">1</span>
                                         </a>
                                     </li>
-                               <?php } ?> 
-                               <?php if(in_array('package', $pages)) { ?>    
+                               <?php } ?>
+                               <?php if(in_array('package', $pages)) { ?>
                                     <li class="nav-item start <?php if($this->uri->segment(1)=="package"){echo "active";}?>">
                                         <a  class="nav-link " href="<?php echo CTRL; ?>package">
                                             <i class="icon-layers"></i>
@@ -77,8 +77,8 @@ if($UserType == "Other")
                                             <span class="badge badge-danger">5</span>
                                         </a>
                                     </li>
-                               <?php } ?> 
-                               <?php if(in_array('service', $pages)) { ?>    
+                               <?php } ?>
+                               <?php if(in_array('service', $pages)) { ?>
                                     <li class="nav-item start <?php if($this->uri->segment(1)=="service"){echo "active";}?>">
                                         <a  class="nav-link " href="<?php echo CTRL; ?>service">
                                             <i class="icon-layers"></i>
@@ -86,8 +86,8 @@ if($UserType == "Other")
                                             <span class="badge badge-danger">5</span>
                                         </a>
                                     </li>
-                               <?php } ?> 
-                               <?php if(in_array('order_status', $pages)) { ?>    
+                               <?php } ?>
+                               <?php if(in_array('order_status', $pages)) { ?>
                                  <li class="nav-item start <?php if($this->uri->segment(1)=="order_status"){echo "active";}?>">
                                         <a  class="nav-link " href="<?php echo CTRL; ?>order_status">
                                             <i class="icon-layers"></i>
@@ -95,11 +95,11 @@ if($UserType == "Other")
                                             <span class="badge badge-danger">5</span>
                                         </a>
                                     </li>
-                               <?php } ?> 
+                               <?php } ?>
                                 </ul>
                             </li>
-                            
-                            
+
+
                             <li class="nav-item start active open">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-home"></i>
@@ -131,7 +131,7 @@ if($UserType == "Other")
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             <li class="nav-item start active open">
                                 <a href="javascript:;" class="nav-link nav-toggle">
                                     <i class="icon-home"></i>
@@ -147,8 +147,8 @@ if($UserType == "Other")
                                             <span class="selected"></span>
                                         </a>
                                     </li>
-                                 </ul>        
-                           </li>                    
+                                 </ul>
+                           </li>
                         </ul>
                         <!-- END SIDEBAR MENU -->
                     </div>

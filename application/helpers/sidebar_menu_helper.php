@@ -44,7 +44,7 @@ $ci->load->database();
 
 					{
 
-						$href = 'javascript:;';
+						$href = 'javascript:void(0);';
 
 						$arrow = 'arrow open';
 

@@ -26,7 +26,7 @@
                     <h2>Client Management</h2>
                 </div>
 	   </div>
-            <form action="<?=CTRL?>Client/create" method="POST" autocomplete="off">
+            <form action="<?=CTRL?>ClientManagement/create" method="POST" autocomplete="off">
                 <!--<div class="row">-->
                      <div class="col-md-6">
                          <div class="form-group">

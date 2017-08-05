@@ -12,7 +12,7 @@
 
 				   <div class="col-md-12">
 
-				  <a href="<?=CTRL?>Client/create"><input value="Create Client" class="btn green" type="button"></a><br /><br />
+				  <a href="<?=CTRL?>ClientManagement/create"><input value="Create Client" class="btn green" type="button"></a><br /><br />
 
                                     </div>
 
@@ -36,13 +36,13 @@
 
                                     <div class="tools">
 
-                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="javascript:void(0);" class="collapse" data-original-title="" title=""> </a>
 
                                         <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
 
-                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:void(0);" class="reload" data-original-title="" title=""> </a>
 
-                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                        <a href="javascript:void(0);" class="remove" data-original-title="" title=""> </a>
 
                                     </div>
 
@@ -93,15 +93,15 @@
                                                 echo '<td>'.$client->phone_no.'</td>';
                                                 echo '<td>'.$client->level_name.'</td>';
                     
-                                                echo '<td><a href="'.CTRL.'Client/update?edit-id='.$client->client_id.'"><input value="Edit" class="btn red" type="button"></a>';
+                                                echo '<td><a href="'.CTRL.'ClientManagement/update?edit-id='.$client->client_id.'"><input value="Edit" class="btn red" type="button"></a>';
                                                 if($client->level_name == 'CONTACT')
-                                                    echo '<a href="'.CTRL.'Client/toProspect?edit-id='.$client->client_id.'"><input value="Make Prospect" class="btn red" type="button"></a>';
+                                                    echo '<a href="'.CTRL.'ClientManagement/toProspect?edit-id='.$client->client_id.'"><input value="Make Prospect" class="btn red" type="button"></a>';
                                                 else if($client->level_name == 'PROSPECT')
-                                                    echo '<a href="'.CTRL.'Client/toClient?edit-id='.$client->client_id.'" onclick=""><input value="Make Client" class="btn red toUser" type="button"></a>';
+                                                    echo '<a href="'.CTRL.'ClientManagement/toClient?edit-id='.$client->client_id.'" onclick=""><input value="Make Client" class="btn red toUser" type="button"></a>';
                                                 else if($client->level_name == 'CLIENT')
-                                                    echo '<a href="'.CTRL.'Client/suspend?edit-id='.$client->client_id.'" onclick=""><input value="Suspend" class="btn red suspend" type="button"></a>';
+                                                    echo '<a href="'.CTRL.'ClientManagement/suspend?edit-id='.$client->client_id.'" onclick=""><input value="Suspend" class="btn red suspend" type="button"></a>';
                                                 else if($client->level_name == 'SUSPENDED')
-                                                    echo '<a href="'.CTRL.'Client/UnSuspend?edit-id='.$client->client_id.'" onclick=""><input value="Unsuspend" class="btn red unSuspend" type="button"></a>';
+                                                    echo '<a href="'.CTRL.'ClientManagement/UnSuspend?edit-id='.$client->client_id.'" onclick=""><input value="Unsuspend" class="btn red unSuspend" type="button"></a>';
                                                 echo '</td>';
                                                 echo '</tr>';
                                             }

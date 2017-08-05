@@ -80,7 +80,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search here" name="query">
                                     <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn md-skip submit">
+                                        <a href="javascript:void(0)" class="btn md-skip submit">
                                             <i class="fa fa-search"></i>
                                         </a>
                                     </span>
@@ -101,7 +101,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <li>
                                         <ul class="dropdown-menu-list scroller" style="height: 250px; padding: 0;" data-handle-color="#637283">
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-success md-skip">
                                                             <i class="fa fa-plus"></i>
@@ -110,7 +110,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-danger md-skip">
                                                             <i class="fa fa-bolt"></i>
@@ -119,7 +119,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-warning md-skip">
                                                             <i class="fa fa-bell-o"></i>
@@ -128,7 +128,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-info md-skip">
                                                             <i class="fa fa-bullhorn"></i>
@@ -137,7 +137,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-danger md-skip">
                                                             <i class="fa fa-bolt"></i>
@@ -146,7 +146,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-danger md-skip">
                                                             <i class="fa fa-bolt"></i>
@@ -155,7 +155,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-warning md-skip">
                                                             <i class="fa fa-bell-o"></i>
@@ -164,7 +164,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-info md-skip">
                                                             <i class="fa fa-bullhorn"></i>
@@ -173,7 +173,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:;">
+                                                <a href="javascript:void(0);">
                                                     <span class="details">
                                                         <span class="label label-sm label-icon label-danger md-skip">
                                                             <i class="fa fa-bolt"></i>
@@ -215,7 +215,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <li>
                                         <a href="<?php echo SITE.'user/profile';?>">
                                             <i class="icon-user"></i> My Profile
-                                            <span class="badge badge-danger">1</span>
                                         </a>
                                     </li>
                                     <!--<li>
