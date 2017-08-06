@@ -47,7 +47,7 @@
 <!-- BEGIN LOGIN -->
 <div class="content">
     <!-- BEGIN LOGIN FORM -->
-    <form class="login-form" action="<?=CTRL?>resetPassword" method="post">
+    <form class="login-form" action="<?=CTRL?>ResetPassword" method="post">
         <h3 class="form-title font-green">Reset Passwrod</h3>
         <?php echo validation_errors('<div class="alert alert-danger alert-dismissible"><button class="close" data-close="alert"></button>', '</div>'); ?>
         <?php echo $this->session->flashdata('success')?>

@@ -23,7 +23,7 @@ class ResetPassword extends CI_Controller {
         $this->load->model('User_model');
         $this->load->model('Admin_model');
 
-        $this->load->library('custom_email');
+        $this->load->library('Custom_email');
         $this->load->helper('cookie');
 
     }
@@ -53,7 +53,7 @@ class ResetPassword extends CI_Controller {
             $message        = '<b>Your new password is '.$password.'</b>';
             $this->custom_email->send_email($from, $to, $subject, $message);
             $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Password Reset Please Check Your Email</div>');
-            redirect(SITE.'resetpassword');
+            redirect(SITE.'ResetPassword');
         }
 
     }

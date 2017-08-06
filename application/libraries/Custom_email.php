@@ -5,7 +5,7 @@
  * Date: 8/2/2017
  * Time: 2:42 PM
  */
-class custom_email{
+class Custom_email{
 
     private $Obj;
     public function __construct(){

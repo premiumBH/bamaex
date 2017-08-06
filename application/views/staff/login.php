@@ -61,7 +61,7 @@
                     <div class="input-icon">
                         <i class="fa fa-lock"></i>
                         <input class="form-control placeholder-no-fix" type='password' name='password' size='35' required/>
-                        <small><a href="<?php echo SITE.'resetpassword'?>" style="float: right; color: #eee">Reset Passoword?</a></small>
+                        <small><a href="<?php echo SITE.'ResetPassword'?>" style="float: right; color: #eee">Reset Passoword?</a></small>
                     </div>
                 </div>
                 <div class="form-actions">
