@@ -58,11 +58,11 @@
                 <div class="form-actions">
                      <input type='submit' name='action' value='Login' class="btn green uppercase">                    
                 </div>               
-                <div class="create-account">
+<!--                <div class="create-account">
                     <p>
                         <a href="javascript:;" id="register-btn" class="uppercase">Create an account</a>
                     </p>
-                </div>
+                </div>-->
             </form>
             <!-- END LOGIN FORM -->
             <!-- BEGIN REGISTRATION FORM -->
