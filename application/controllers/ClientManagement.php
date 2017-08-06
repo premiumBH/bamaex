@@ -149,6 +149,16 @@ class ClientManagement extends CI_Controller {
         $data['client_id']=$client_id;
         $this->load->view('admin/create', $data);
     }
+
+    public function deleteClient($clientId){
+	    $clientData = $this->Client_model->getClientDetailsByID($clientId);
+	    if($clientData && isset($clientData[0]->intUserId) && $clientData[0]->intUserId != ''){
+	        $userId = $clientData[0]->intUserId;
+        }
+	    $this->Client_model->deleteClient($clientId, $userId);
+        $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Client has deleted successfully</div>');
+	    redirect(SITE.'dashboard/client');
+    }
     public function toProspect()
     {
         //print_r($_POST);
@@ -227,7 +237,7 @@ class ClientManagement extends CI_Controller {
 
         $this->db->insert('user' , $user);
         $user_id = $this->db->insert_id();
-        $this->Client_model->updatePropect($client_id);
+        $this->Client_model->updatePropect($client_id, $user_id);
 
         $msg = wordwrap($msg,70);
         mail($client_email,"Login Credentials",$msg);

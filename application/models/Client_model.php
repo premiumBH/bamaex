@@ -126,8 +126,11 @@
                 }
                 
                 
-                public function updatePropect($client_id)
+                public function updatePropect($client_id,$userId = false)
                 {
+                    if($userId){
+                        $client['intUserId'] = $userId;
+                    }
                     $client['level_id'] = '3';
                     $this->db->where('client_id',$client_id);
                     $this->db->update('client_table',$client);
@@ -144,4 +147,24 @@
                     $this->db->where('client_id',$client_id);
                     $this->db->update('client_table',$client);
                 }
+
+        public function deleteClient($id, $userId){
+
+            $this->db->where('intUserId',$userId);
+            $this->db->delete('user');
+
+            $this->db->where('client_id',$id);
+            $this->db->delete('client_table');
+
+            $this->db->where('client_id',$id);
+            $this->db->delete('client_rates');
+
+            $this->db->where('client_id',$id);
+            $this->db->delete('client_contact_secondry');
+
+            $this->db->where('client_id',$id);
+            $this->db->delete('client_contact_primary');
+
+            return true;
+        }
 	}

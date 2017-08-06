@@ -21,7 +21,7 @@
 				 
 
 					<div class="clearfix">&nbsp;</div>
-
+                    <?php echo $this->session->set_flashdata('success');?>
 					<div class="row">
 
 					<div class="col-md-12">
@@ -94,6 +94,10 @@
                                                 echo '<td>'.$client->level_name.'</td>';
                     
                                                 echo '<td><a href="'.CTRL.'ClientManagement/update?edit-id='.$client->client_id.'"><input value="Edit" class="btn red" type="button"></a>';
+                                                if($this->session->userdata('logged_in') == 'Administrator'  || $this->session->userdata('logged_in') == 'Admin') {
+                                                    $confirmDelete = "return confirm('Are you sure!')";
+                                                    echo '<a href="' . CTRL . 'ClientManagement/deleteClient/' . $client->client_id . '" class="btn red" onclick="'.$confirmDelete.'" >Delete</a>';
+                                                }
                                                 if($client->level_name == 'CONTACT')
                                                     echo '<a href="'.CTRL.'ClientManagement/toProspect?edit-id='.$client->client_id.'"><input value="Make Prospect" class="btn red" type="button"></a>';
                                                 else if($client->level_name == 'PROSPECT')

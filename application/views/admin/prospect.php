@@ -11,7 +11,7 @@ $this->load->view('layout/container');
                     <h2>Prospect Management</h2>
                 </div>
 	   </div>
-            <form action="<?=CTRL?>Client/toProspect" method="POST" autocomplete="off">
+            <form action="<?=CTRL?>ClientManagement/toProspect" method="POST" autocomplete="off">
                
                      <div class="col-md-6">
                          <div class="form-group">
