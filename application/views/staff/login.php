@@ -60,7 +60,9 @@
                     <label class="control-label visible-ie8 visible-ie9">Password</label>
                     <div class="input-icon">
                         <i class="fa fa-lock"></i>
-                        <input class="form-control placeholder-no-fix" type='password' name='password' size='35' required/> </div>
+                        <input class="form-control placeholder-no-fix" type='password' name='password' size='35' required/>
+                        <small><a href="<?php echo SITE.'resetpassword'?>" style="float: right; color: #eee">Reset Passoword?</a></small>
+                    </div>
                 </div>
                 <div class="form-actions">
                     <input type='submit' name='action' value='Login' class="btn green pull-right">

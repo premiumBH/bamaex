@@ -234,9 +234,11 @@
             $this->db->update('user_address',$data);
         }
 
-        public function userEmailExistExceptId($id,$email){
+        public function userEmailExistExceptId($id = false,$email){
             $this->db->where('varEmailId', $email);
-            $this->db->where('intUserId !=', $id);
+            if($id){
+                $this->db->where('intUserId !=', $id);
+            }
             $query		= $this->db->get('user');
             $Result 	= $query->result();
             return $Result;

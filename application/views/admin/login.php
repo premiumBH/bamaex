@@ -52,7 +52,9 @@
                     <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="EmailId" name="emailId" required/> </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Password</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" />
+                    <small><a href="<?php echo SITE.'resetpassword'?>" style="float: right;">Reset Passoword?</a></small>
+                </div>
                 <div class="form-actions">
                      <input type='submit' name='action' value='Login' class="btn green uppercase">                    
                 </div>               
