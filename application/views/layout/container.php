@@ -20,16 +20,13 @@
                             </button>
                             <ul class="dropdown-menu-v2">
                                 <li>
-                                    <a href="start.html">Application</a>
-                                </li>
-                                <li>
-                                    <a href="start.html">Reports</a>
-                                </li>
-                                <li>
-                                    <a href="start.html">Templates</a>
-                                </li>
-                                <li>
                                     <a href="start.html">Settings</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo SITE.'notification'?>">Notifications</a>
+                                </li>
+                                <li>
+                                    <a href="start.html">Administration</a>
                                 </li>
                             </ul>
                         </div>
