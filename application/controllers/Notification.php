@@ -5,7 +5,7 @@
  * Date: 8/7/2017
  * Time: 6:48 PM
  */
-class notification extends CI_Controller{
+class Notification extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $isLoggedIn = $this->session->userdata('logged_in');
