@@ -1,5 +1,5 @@
 $(document).ready(function(){
-        
+        $('.timepicker').timepicker();
         $('#sender').hide();
         $('#receiver').hide();
         $('#package').hide();
@@ -49,7 +49,7 @@ $(document).ready(function(){
             }
             else if(current == 'three')
             {
-                type = $('input[name=type]').val();
+                type = $('select[name=type]').val();
                 weight = $('input[name=weight]').val();
                 package = $('input[name=packages]').val();
                 if(type.length == 0 || weight.length == 0 || package.length == 0)
@@ -81,26 +81,34 @@ $(document).ready(function(){
         $('.button-previous').click(function()
         {
             
-            if($('.view').css('visibility') === 'visible')
+            if($('.view').css('visibility') == 'visible')
             {
+                console.log('HERE');
                 $('.button-submit').attr('onclick' , '');
+                $('.button-submit').text('View Summary');
+                $('.button-submit').hide();
+                
                 $('.view').fadeOut();
                 $('.edit').fadeIn();
+                $('.four').click();
             }
-            obj = $('a[aria-expanded=true]');
-            current = obj.attr('class').split(' ')[1];
-            
-            if(current == 'two')
+            else
             {
-                $('.one').click();
-            }
-            else if(current == 'three')
-            {
-                $('.two').click();
-            }
-            else if(current == 'four')
-            {
-                $('.three').click();
+                obj = $('a[aria-expanded=true]');
+                current = obj.attr('class').split(' ')[1];
+
+                if(current == 'two')
+                {
+                    $('.one').click();
+                }
+                else if(current == 'three')
+                {
+                    $('.two').click();
+                }
+                else if(current == 'four')
+                {
+                    $('.three').click();
+                }
             }
             
             //aria-expanded
@@ -156,16 +164,18 @@ $(document).ready(function(){
                         .done(function( msg ) {
                             var arr = $.parseJSON(msg);
                             $.each(arr,function(i,val){
-                                console.log(val);
-                                console.log(val.id);
+                                
                                 $('input[name=receiver_city]').val(val.city);
                                 $('select[name=receiver_country_id]').val(val.country_id);
                                 $('textarea[name=receiver_address]').val(val.address)
                                 $('input[name=receiver_postal_code]').val(val.postal_code);
                                 $('input[name=receiver_email]').val(val.email);
-                                $('input[name=receiver_phone_no]').val(val.phone_no);
+                                $('input[name=receiver_name]').val(val.name);
+                                $('input[name=receiver_state]').val(val.state);
+                                $('input[name=receiver_company_name]').val(val.company_name);
                                 $('input[name=receiver_mobile]').val(val.mobile);
                                 $('input[name=receiver_address_line]').val(val.address_line);
+                                $('input[name=new_receiver]').val('existing_receiver');
                                 
                             });
                             
@@ -178,8 +188,12 @@ $(document).ready(function(){
                     $('textarea[name=receiver_address]').val('')
                     $('input[name=receiver_postal_code]').val('');
                     $('input[name=receiver_email]').val('');
-                    $('input[name=receiver_phone_no]').val('');
+                    $('input[name=receiver_name]').val('');
+                    $('input[name=receiver_state]').val('');
+                    $('input[name=receiver_company_name]').val('');
                     $('input[name=receiver_mobile]').val('');
+                    $('input[name=new_receiver]').val('');
+                    $('input[name=receiver_address_line]').val('');
                 }
         });
         $('#addSenderfield').change(function(){
@@ -203,10 +217,11 @@ $(document).ready(function(){
                                 $('textarea[name=sender_address]').val(val.address)
                                 $('input[name=sender_postal_code]').val(val.postal_code);
                                 $('input[name=sender_email]').val(val.email);
-                                $('input[name=sender_phone_no]').val(val.phone_no);
+                                $('input[name=sender_state]').val(val.state);
+                                $('input[name=sender_name]').val(val.name);
                                 $('input[name=sender_mobile]').val(val.mobile);
                                 $('input[name=sender_address_line]').val(val.address_line);
-                                
+                                $('input[name=new_sender]').val('existing_sender');
                             });
                             
                         });
@@ -218,8 +233,11 @@ $(document).ready(function(){
                     $('textarea[name=sender_address]').val('')
                     $('input[name=sender_postal_code]').val('');
                     $('input[name=sender_email]').val('');
-                    $('input[name=sender_phone_no]').val('');
+                    $('input[name=sender_name]').val('');
+                    $('input[name=sender_state]').val('');
                     $('input[name=sender_mobile]').val('');
+                    $('input[name=sender_address_line]').val('');
+                    $('input[name=new_sender]').val('');
                 }
         });
         $('#addNewConsignment').change(function(){
@@ -237,12 +255,15 @@ $(document).ready(function(){
                             $.each(arr,function(i,val){
                                 console.log(val);
                                 console.log(val.id);
-                                $('input[name=type]').val(val.type);
+                                $('select[name=type]').val(val.type);
                                 $('input[name=weight]').val(val.weight);
+                                $('input[name=width]').val(val.width);
                                 $('input[name=height]').val(val.height);
                                 $('input[name=breath]').val(val.breath);
                                 $('input[name=packages]').val(val.no_of_packages);
                                 $('input[name=title]').val(val.title);
+                               $('input[name=new_consignment]').val('existing_consignment');
+                                
                                 
                             });
                             
@@ -250,11 +271,13 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    $('input[name=type]').val('');
+                    $('select[name=type]').val('1');
                     $('input[name=weight]').val('');
+                    $('input[name=width]').val('');
                     $('input[name=height]').val('');
                     $('input[name=breath]').val('');
                     $('input[name=title]').val('');
+                    $('input[name=new_consignment]').val('');
                 }
         });
         $('#addContact').change(function(){
@@ -274,6 +297,8 @@ $(document).ready(function(){
                                 console.log(val.id);
                                 $('input[name=contact_person_mobile]').val(val.person_mobile);
                                 $('input[name=contact_person_name]').val(val.person_name);
+                                $('input[name=new_contact_person]').val('existing_contact_person');
+                                
                                 
                                 
                             });
@@ -283,6 +308,8 @@ $(document).ready(function(){
                 else
                 {
                     $('input[name=contact_person_mobile]').val('');
+                    $('input[name=contact_person_name]').val('');
+                    $('input[name=new_contact_person]').val('');
                                 
                 }
         });
@@ -291,7 +318,7 @@ $(document).ready(function(){
             eventclick = $('.button-submit').attr('onclick');
             if(eventclick == "")
             {
-                sender_company_name = $('input[name=sender_company_name]').val();
+                sender_company_name = $('input[name=sender_address_line]').val();
                 if(sender_company_name == '')
                 {
                     $('label[name=company1]').text($('select[name=sender_id]  option:selected').text());
@@ -299,20 +326,20 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    $('label[name=company1]').text($('input[name=sender_company_name]').val());
+                    $('label[name=company1]').text($('input[name=sender_address_line]').val());
 
                 }
-                $('label[name=account1]').text($('input[name=sender_account_id]').val());
                 $('label[name=city1]').text($('input[name=sender_city]').val());
                 $('label[name=country1]').text($('select[name=sender_country_id]  option:selected').text());
                 $('label[name=address1]').text($('textarea[name=sender_address]').val());
                 $('label[name=postcode1]').text($('input[name=sender_postal_code]').val());
                 $('label[name=email1]').text($('input[name=sender_email]').val());
-                $('label[name=phone1]').text($('input[name=sender_phone_no]').val());
+                $('label[name=name1]').text($('input[name=sender_name]').val());
+                $('label[name=state1]').text($('input[name=sender_state]').val());
                 $('label[name=mobile1]').text($('input[name=sender_mobile]').val());
                 
 //                $('label[name=company2]').text($('select[name=sender_country_id]  option:selected').text());
-                sender_company_name = $('input[name=receiver_company_name]').val();
+                sender_company_name = $('input[name=receiver_address_line]').val();
                 if(sender_company_name == '')
                 {
                     $('label[name=company2]').text($('select[name=receiver_id]  option:selected').text());
@@ -320,17 +347,18 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    $('label[name=company2]').text($('input[name=receiver_company_name]').val());
+                    $('label[name=company2]').text($('input[name=receiver_address_line]').val());
 
                 }
-                $('label[name=account2]').text($('input[name=receiver_account_id]').val());
                 $('label[name=city2]').text($('input[name=receiver_city]').val());
                 $('label[name=country2]').text($('select[name=receiver_country_id] option:selected').text());
                 $('label[name=address2]').text($('textarea[name=receiver_address]').val());
                 $('label[name=postcode2]').text($('input[name=receiver_postal_code]').val());
                 $('label[name=email2]').text($('input[name=receiver_email]').val());
-                $('label[name=phone2]').text($('input[name=receiver_phone_no]').val());
+                $('label[name=phone2]').text($('input[name=receiver_name]').val());
+                $('label[name=state2]').text($('input[name=receiver_state]').val());
                 $('label[name=mobile2]').text($('input[name=receiver_mobile]').val());
+                $('label[name=receiver_company]').text($('input[name=receiver_company_name]').val());
                 
 //                $('label[name=title]').text($('select[name=sender_country_id]  option:selected').text());
                 sender_company_name = $('input[name=title]').val();
@@ -344,9 +372,10 @@ $(document).ready(function(){
                     $('label[name=title]').text($('input[name=title]').val());
 
                 }
-                $('label[name=type]').text($('input[name=type]').val());
+                $('label[name=type]').text($('select[name=type] option:selected').text());
                 $('label[name=weight]').text($('input[name=weight]').val());
                 $('label[name=height]').text($('input[name=height]').val());
+                $('label[name=width]').text($('input[name=width]').val());
                 $('label[name=breath]').text($('input[name=breath]').val());
                 $('label[name=packages]').text($('input[name=packages]').val());
                 
@@ -366,6 +395,27 @@ $(document).ready(function(){
                 
                 $('label[name=date]').text($('input[name=date]').val());
                 $('label[name=time]').text($('input[name=time]').val());
+                $('label[name=remarks]').text($('input[name=remarks]').val());
+                $('label[name=payer]').text($('select[name=payer_id] option:selected').text());
+                
+                country1 = $('select[name=sender_country_id] option:selected').val();
+                country2 = $('select[name=receiver_country_id] option:selected').val();
+                weight = $('input[name=weight]').val();
+                client_id = $('input[name=client_id]').val();
+                $.ajax({
+                        method: "POST",
+                        url: "/Order/getBill",
+                        data: { client_id : client_id , sender_country : country1 , receiver_country : country2 , weight : weight }
+                      })
+                    .done(function( msg ) {
+                        if(msg != 'NAN')
+                        {
+                            $('label[name=order_bill]').text(msg+' BHD');
+                        }
+
+                });
+                
+                
                 
                 $('.edit').fadeOut(500);
                 $('.view').fadeIn(500);
