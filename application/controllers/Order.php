@@ -128,10 +128,10 @@ class Order extends CI_Controller {
                 echo 'No';
             }
         }
-        public function generateAirwaybill()
+        public function generateAirwaybill($serial_number)
         {
             
-           $serial_number = $this->input->get('ref-id');
+           //$serial_number = $this->input->get('ref-id');
            
            $order_details = $this->db->where('serial_number',$serial_number)->get('order_details')->result();
            //var_dump($order_details);die('HERE');
@@ -333,11 +333,11 @@ class Order extends CI_Controller {
             
             
 
-            $file_url = base_url().'uploads/'.$airway_bill.'.pdf';
-            header('Content-Type: application/pdf');
-            header("Content-Transfer-Encoding: Binary");
-            header("Content-disposition: attachment; filename=".$airway_bill.".pdf");
-            readfile($file_url);
+//            $file_url = base_url().'uploads/'.$airway_bill.'.pdf';
+//            header('Content-Type: application/pdf');
+//            header("Content-Transfer-Encoding: Binary");
+//            header("Content-disposition: attachment; filename=".$airway_bill.".pdf");
+//            readfile($file_url);
 ////            
 //            
 //            redirect(base_url().'Order/create');
@@ -626,13 +626,14 @@ class Order extends CI_Controller {
                 
                 new barCodeGenrator($code_number,0,APPPATH.'../uploads/'.$airway_bill.'.gif', 190, 130, true);
 //                redirect(base_url().'order/generateAirwaybill');
-                $data['serial_number'] = $order['serial_number'];
-                $data['order_id'] = $order_id;
-                $data['client_id'] = $date['client_id'];
-                
-                echo $this->load->view('Order/generatePDF' , $data , TRUE);
-                die();
-                //$this->generateAirwaybill($order['serial_number']);
+//                $data['serial_number'] = $order['serial_number'];
+//                $data['order_id'] = $order_id;
+//                $data['client_id'] = $date['client_id'];
+//                
+//                echo $this->load->view('Order/generatePDF' , $data , TRUE);
+//                die();
+                $this->generateAirwaybill($order['serial_number']);
+                $this->ListOrders();
                 
                 
             }
@@ -730,6 +731,61 @@ class Order extends CI_Controller {
                 $order['payers'] = $this->db->get('tax_payers')->result();
                 
                 $this->load->view('page/Dashboard/order-origanated' , $order);
+            
+        }
+        public function downloadAirway()
+        {
+            $airway_bill  = $this->input->get('ref-id');
+            $file_url = base_url().'uploads/'.$airway_bill.'.pdf';
+            header('Content-Type: application/pdf');
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=".$airway_bill.".pdf");
+            readfile($file_url);
+            
+        }
+        public function getBill()
+        {
+            if(($this->input->post('sender_country') != null) && ($this->input->post('receiver_country') != null) && ($this->input->post('weight') != null))
+            //if(isset($_POST['sender_country']) && isset($_POST['receiver_country']))
+            {
+                $sender_country = $this->input->post('sender_country');
+                $receiver_country = $this->input->post('receiver_country');
+                $weight = $this->input->post('weight');
+                $client_id = $this->input->post('client_id');
+                
+                $bill = '';
+                if($sender_country != $receiver_country)
+                {
+                    $zone_id = $this->db->where('id' ,$receiver_country )->get('country_table')->result()[0]->zone_id;
+                    $zone_rate = $this->db->where('client_id' , $date['client_id'])->where('zone_id' , $zone_id)->get('client_rates')->result()[0]->zone_rate; 
+                    $bill = floatval($weight) * floatval($zone_rate);
+                }
+                else
+                {
+                    $rate = $this->db->where('client_id' ,$client_id)->get('client_table')->result()[0]->domestic_rates;
+                    $bill = floatval($weight) * floatval($rate);               
+                }
+                
+                echo $bill;
+                
+            }
+            else
+            {
+                echo 'NAN';
+            }
+        }
+        public function ListOrders()
+        {
+            //order_details.*,order_sender.*,order_receiver.*,order_contact_person.
+//            $this->db->select('order_details.*');
+//            $this->db->from('order_details');
+//            $this->db->join('order_sender' , 'order_sender.id = order_details.sender_id');
+//            $this->db->join('order_receiver' , 'order_receiver.id = order_details.receiver_id');
+//            $this->db->order_by("order_details.order_id", "desc");
+//            $order['order'] = $this->db->get()->result();
+            $order['order'] = $this->db->query('select * from order_details,order_receiver,order_airway_bill where order_details.receiver_id = order_receiver.id and order_details.order_id = order_airway_bill.order_id order by order_details.order_id desc')->result();
+            
+            $this->load->view('Order/listOrders' ,$order);
             
         }
 }
