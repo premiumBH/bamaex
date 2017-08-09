@@ -410,7 +410,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Height (Inch)</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Height (cm)</label>
                                     <div class="col-md-9">
                                         <input type="text" name="height" value="<?php echo $height;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -418,7 +418,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Breath (Inch)</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Breath (cm)</label>
                                     <div class="col-md-9">
                                         <input type="text" name="breath" value="<?php echo $breath;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -426,7 +426,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                  <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Width (Inch)</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Width (cm)</label>
                                     <div class="col-md-9">
                                         <input type="text" name="width" value="<?php echo $width;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -1048,15 +1048,15 @@ $this->load->view('layout/container');
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="display: none">
+                        <div class="row" style="">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label style="font-weight:bold">Is Insured</label>
+                                    <label style="font-weight:bold">Total Bill</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label name="insured"></label>
+                                    <label name="order_bill"></label>
                                 </div>
                             </div>
                         </div>
