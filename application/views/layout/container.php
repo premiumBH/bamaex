@@ -20,7 +20,7 @@
                             </button>
                             <ul class="dropdown-menu-v2">
                                 <li>
-                                    <a href="start.html">Settings</a>
+                                    <a href="<?php echo SITE.'custom_setting'?>">Settings</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo SITE.'notification'?>">Notifications</a>

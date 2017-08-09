@@ -18,9 +18,9 @@ $this->load->view('layout/container');
     </div>
 </div>
 <?php echo validation_errors('<div class="alert alert-danger alert-dismissible">', '</div>'); ?>
-<form action="<?=CTRL?>notification/form/<?php echo isset($id)?$id:''?>" method="POST" autocomplete="off">
+<form action="<?=CTRL?>notification/sms_form/<?php echo isset($id)?$id:''?>" method="POST" autocomplete="off">
     <input type="hidden" name="id" value="<?php echo isset($notification)?$notification->id:''?>"/>
-    <input type="hidden" name="type" value="email"/>
+    <input type="hidden" name="type" value="sms"/>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">

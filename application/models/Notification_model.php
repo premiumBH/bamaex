@@ -16,18 +16,20 @@ class Notification_model extends CI_Model
         $this->load->helper('date');
     }
 
-    public function getNotificationCats($id = false){
+    public function getNotificationCats($id = false,  $type= false){
         if($id){
             $this->db->where('id', $id);
         }
+        $this->db->where('type', $type);
         $query		= $this->db->get('notification_category');
         $Result 	= $query->result();
         return $Result;
     }
-    public function getNotification($id = false){
+    public function getNotification($id = false, $type= false){
         if($id){
             $this->db->where('id', $id);
         }
+        $this->db->where('type', $type);
         $query		= $this->db->get('notification');
         $Result 	= $query->result();
         return $Result;
@@ -47,10 +49,11 @@ class Notification_model extends CI_Model
         return true;
     }
 
-    public function isNotificationExist($catId, $notifyId = false){
+    public function isNotificationExist($catId, $notifyId = false, $type = false){
         if($notifyId != ''){
             $this->db->where('id !=', $notifyId);
         }
+        $this->db->where('type', $type);
         $this->db->where('notify_cat_id', $catId);
         $this->db->where('status', 1);
         $query		= $this->db->get('notification');
