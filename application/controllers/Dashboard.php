@@ -70,15 +70,25 @@ class Dashboard extends CI_Controller {
         redirect(SITE.'backend');
 
     }
-	public function user()
-	{
-            $data1['UserId'] = ($this->session->userdata['UserId']);
-            if($data1['UserId'] != '')
-            {
-              $data['result1'] = $this->User_model->get_users($data1);	
-              $this->load->view('page/Dashboard/user', $data);
+    public function user()
+    {
+        $data1['UserId'] = ($this->session->userdata['UserId']);
+        if($data1['UserId'] != '')
+        {
+            $userData = $this->User_model->get_users($data1);
+            if(isset($userData['users'])){
+                $notAllowedIds = array(4,5);
+                foreach ($userData['users'] as $key => $userDataIn) {
+                    if(in_array($userDataIn->intUserTypeId,$notAllowedIds)){
+                        unset($userData['users'][$key]);
+                    }
+
+                }
+                $data['result1'] = $userData;
             }
-	}
+            $this->load->view('page/Dashboard/user', $data);
+        }
+    }
 	public function client()
 	{
             $data['clients'] = $this->Client_model->getClients();

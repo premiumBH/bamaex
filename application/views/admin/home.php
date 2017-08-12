@@ -13,7 +13,7 @@ $this->load->view('layout/container');
                 <div class="number">
                     <span data-counter="counterup" data-value="1349">0</span>
                 </div>
-                <div class="desc"> New Feedbacks </div>
+                <div class="desc"> Orders pending pickup </div>
             </div>
         </a>
     </div>
@@ -25,7 +25,7 @@ $this->load->view('layout/container');
             <div class="details">
                 <div class="number">
                     <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
-                <div class="desc"> Total Profit </div>
+                <div class="desc">Orders pending delivery</div>
             </div>
         </a>
     </div>
@@ -38,7 +38,7 @@ $this->load->view('layout/container');
                 <div class="number">
                     <span data-counter="counterup" data-value="549">0</span>
                 </div>
-                <div class="desc"> New Orders </div>
+                <div class="desc"> Orders delivered </div>
             </div>
         </a>
     </div>
@@ -50,7 +50,7 @@ $this->load->view('layout/container');
             <div class="details">
                 <div class="number"> +
                     <span data-counter="counterup" data-value="89"></span>% </div>
-                <div class="desc"> Brand Popularity </div>
+                <div class="desc"> Payments due </div>
             </div>
         </a>
     </div>

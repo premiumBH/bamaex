@@ -107,7 +107,10 @@ class User extends CI_Controller {
 
 	      //  echo json_encode($result);
 
-	        if($result['status']==true) {
+	        if($result==true) {
+
+                $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Successfully Created</div>');
+                redirect(SITE.'dashboard/user');
 
 	         $this->load->view('page/Dashboard/user', $result);
 
@@ -129,12 +132,11 @@ class User extends CI_Controller {
 
 			$result=$this->User_model->update($data);
 
-	      //  echo json_encode($result);
-
-	        if($result['status']==true) {
+	        if($result==true) {
 
 
-
+                $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Successfully Updated</div>');
+                redirect(SITE.'dashboard/user');
 	          $this->load->view('page/Dashboard/user', $result);
 
 	        } else {
@@ -156,6 +158,22 @@ class User extends CI_Controller {
 		
 
 	}
+
+    public function delete($id){
+        $this->User_model->deleteUser($id);
+        $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Successfully Delete</div>');
+        redirect(SITE.'dashboard/user');
+	}
+
+    public function changeStatus($id, $statusId){
+
+        $insert                                 = array();
+        $insert['intUserId']                    = $id;
+        $insert['enumStatus']                   = $statusId;
+        $this->User_model->updateUser($insert);
+        $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Status Updated</div>');
+        redirect(SITE.'dashboard/user');
+    }
 
 	public function settings() {
 

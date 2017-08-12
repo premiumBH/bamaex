@@ -181,7 +181,7 @@
 
 				$ids = "(" . implode(",", $rs) . ")";
 
-			 $sqlQuery="SELECT * FROM user LEFT JOIN user_type ON user_type.intUserTypeId=user.intUserTypeId where user.intUserId IN $ids AND user.intUserTypeId != 1";
+			 $sqlQuery="SELECT *, user.enumStatus AS userStatus FROM user LEFT JOIN user_type ON user_type.intUserTypeId=user.intUserTypeId where user.intUserId IN $ids AND user.intUserTypeId != 1";
 
 			    $result = $this->db->query($sqlQuery);
 
@@ -247,6 +247,11 @@
         public function updateUser( $data){
             $this->db->where('intUserId', $data['intUserId']);
             $this->db->update('user',$data);
+        }
+
+        public function deleteUser( $userId){
+            $this->db->where('intUserId',$userId);
+            $this->db->delete('user');
         }
 
 		
