@@ -32,6 +32,8 @@ if(isset($_REQUEST['edit-id']))
 
   {
 
+      $selectedUserType = '';
+
 	  $id1 = $_REQUEST['edit-id'];
 
 			$sqlQuery = "SELECT * FROM user LEFT JOIN user_type ON user_type.intUserTypeId=user.intUserTypeId where user.intUserId = $id1";
@@ -63,6 +65,7 @@ if(isset($_REQUEST['edit-id']))
 						$pass = $this->encrypt->decode($result11->varPassword);
 
 					    $cn   = $result11->country_id;
+                        $selectedUserType = $result11->intUserTypeId;
 
 						$sid1 = '<option value="'.$result11->intUserTypeId.'">'.$result11->varUserTypeName.'</option>';
 
@@ -222,17 +225,33 @@ else
 
 			$result = $this->db->query($sqlQuery);
 
+
+
 			
 
 			if($result->num_rows()>0) {
 
-				foreach($result->result() AS $result11)
+                if($_REQUEST['edit-id'] != ''){
+                    foreach($result->result() AS $result11)
 
-				{					
+                    {
+                        if(isset($selectedUserType) && $selectedUserType != $result11->id){
+                            if($result11->id != '5'){
+                                echo '<option value="'.$result11->id.'">'.$result11->name.'</option>';
+                            }
 
-				echo '<option value="'.$result11->id.'">'.$result11->name.'</option>';
+                        }
+                    }
+                }else{
+                    foreach($result->result() AS $result11)
+                    {
+                        if($result11->id != '5'){
+                            echo '<option value="'.$result11->id.'">'.$result11->name.'</option>';
+                        }
 
-				}
+                    }
+                }
+
 
             } 
 
