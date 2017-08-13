@@ -530,6 +530,7 @@ class Order extends CI_Controller {
                 $order['remarks'] = $date['remarks'];
                 $order['sender_reference'] = $date['sender_ref'];
                 $order['receiver_reference'] = $date['receiver_ref'];
+                $order['order_status'] = '1';
                 if(!isset($date['insured']))
                 {
                     $order['is_insurred'] = 0;
@@ -773,6 +774,30 @@ class Order extends CI_Controller {
             {
                 echo 'NAN';
             }
+        }
+        public function view_order()
+        {
+            $tracking_id = $this->input->get('ref-id');
+            $order_details = $this->db->where('order_tracking_id' , $tracking_id)->get('order_details')->result();
+            $sender_details = $this->db->where('id' , $order_details[0]->sender_id)->get('order_sender')->result();
+            $receiver_details = $this->db->where('id' , $order_details[0]->receiver_id)->get('order_receiver')->result();
+            $consignment_detail = $this->db->where('id' , $order_details[0]->consignment_id)->get('consignment_details')->result();
+            $contact_person = $this->db->where('person_id' , $order_details[0]->contact_person_id)->get('order_contact_person')->result();
+            $airway_bill = $this->db->where('order_id' , $order_details[0]->order_id)->get('order_airway_bill')->result();
+            $order_payments = $this->db->where('order_id' , $order_details[0]->order_id)->get('order_payments')->result();
+            $order['order_details'] = $order_details;
+            $order['order_sender'] = $sender_details;
+            $order['order_receiver'] = $receiver_details;
+            $order['order_consignment'] = $consignment_detail;
+            $order['order_contact'] = $contact_person;
+            $order['order_airway'] = $airway_bill;
+            $order['order_payments'] = $order_payments;
+            $order['payment_type'] = $this->db->where('id' , $order_details[0]->payment_type_id)->get('payment_types')->result();
+            $order['receiver_country'] = $this->db->where('id' , $receiver_details[0]->country_id)->get('country_table')->result();
+            $order['sender_country'] = $this->db->where('id' , $sender_details[0]->country_id)->get('country_table')->result();
+            $order['order_type'] = $this->db->where('id' , $consignment_detail[0]->type)->get('order_types')->result();
+            $order['shipments'] = $this->db->where('order_id' , $order_details[0]->order_id)->get('order_status_catalog')->result();
+            $this->load->view('Order/view_order' , $order);
         }
         public function ListOrders()
         {
