@@ -26,9 +26,9 @@
                             <th width="20%">Tracking ID</th>
                             <th> Shipment Date </th>
                             <th class="numeric"> Shipment Status </th>
-                            <th class="numeric"> Airway Bill</th>
-                            <th class="numeric"> Receiver Company </th>
-                            <th class="numeric text-center"> Standard Airway Bill </th>
+                            <th class="numeric"> Receiver Company</th>
+                            <th class="numeric"> Airway Bill </th>
+                            <th class="numeric text-center"> Download Airway Bill </th>
                             <th class="numeric text-center"> View </th>
                             <th class="numeric text-center"> Manifest </th>
                         </tr>
@@ -40,8 +40,19 @@
                     ?>
                         <tr>
                             <td> <?php echo $ordr->order_tracking_id; ?> </td>
-                            <td> <?php echo str_replace(' ', '-', $ordr->order_pickup_date) ; ?> </td>
-                            <td class="numeric"> Pending Pickup </td>
+                            <td> <?php echo explode(' ',$ordr->created_on)[0]; ?> </td>
+                            <?php
+                            if($ordr->order_status == 1)
+                            {
+                                echo '<td class="numeric"> Pending Pickup </td>';
+                            }
+                            else
+                            {
+                                echo '<td class="numeric"> Status Not  </td>';
+                            ?>
+                            <?php
+                            }
+                            ?>
                             <td class="numeric"> <?php echo $ordr->company_name; ?> </td>
                             <td class="numeric"> <?php echo $ordr->airway_bill; ?> </td>
                             <td class="numeric text-center"> 
@@ -50,7 +61,7 @@
                                 </a>
                             </td>
                             <td class="numeric text-center"> 
-                                <a href="" class="btn btn-outline btn-circle blue">
+                                <a href="<?php echo base_url().'Order\view_order?ref-id='.$ordr->order_tracking_id;?>" class="btn btn-outline btn-circle blue">
                                     <i class="fa fa-eye"></i> View 
                                 </a>
                             </td>
