@@ -41,6 +41,7 @@ $this->load->view('layout/container');
         <div class="col-md-12">
             <div class="form-group">
                 <label>Template</label>
+                <p style="text-align: right;">[user_first_name] , [user_last_name] , [user_email] , [user_password]</p>
                 <textarea class="ckeditor form-control" name="template" rows="6" data-error-container="#editor2_error"><?php echo isset($notification)?$notification->template:''?></textarea>
             </div>
         </div>

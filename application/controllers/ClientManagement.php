@@ -215,14 +215,6 @@ class ClientManagement extends CI_Controller {
 
         $password = mt_rand(100000,999999);
 
-        // Sending email
-
-        // the message
-        $msg = "Your Password is ".$password;
-
-        // use wordwrap() if lines are longer than 70 characters
-
-
         $user['varFirstName'] = $client[0]->company_name;
         $user['varLastName'] = '';//$client[0]->last_name;
         $user['varEmailId'] = $client[0]->email;
@@ -239,8 +231,14 @@ class ClientManagement extends CI_Controller {
         $user_id = $this->db->insert_id();
         $this->Client_model->updatePropect($client_id, $user_id);
 
-        $msg = wordwrap($msg,70);
-        mail($client_email,"Login Credentials",$msg);
+        $emailTo                        = array($client_email);
+        $shortCodeArray                 = array();
+        $shortCodeArray['firstName']    = $client[0]->company_name;
+        $shortCodeArray['lastName']     = '';
+        $shortCodeArray['userEmail']    = $client[0]->email;
+        $shortCodeArray['password']     = $password;
+
+        $this->custom_email->newClientEmailNotification($emailTo, $shortCodeArray);
 
         $owner_id = $this->session->userdata['UserId'];
         $owner['intUserId']= $user_id ;

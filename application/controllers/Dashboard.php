@@ -28,7 +28,7 @@ class Dashboard extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();
-        
+
         $this->load->database();
 
         //	$this->load->helper('dynmic-css-js');
@@ -44,9 +44,9 @@ class Dashboard extends CI_Controller {
         if(!$isLoggedIn){
             redirect(SITE.'backend');
         }
-        
 
-      
+
+
         $config['upload_path']          = './uploads/';
         $config['allowed_types']        = 'gif|jpg|png|xlsx';
         $config['max_size']             = 100;

@@ -36,7 +36,7 @@ class ResetPassword extends CI_Controller {
             //$this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Profile has updated</div>');
             $this->load->view('resetPassword/index');
         }else{
-            //Admin@gmail.com
+            //bZCfN0yX3Dxrt2cEFQMn3gMtQDBdHAxHUt7Jl6Yjy/UhqkD0zz9lOnKwVlRM9Di99GwubbUp5Z58VUMQvDFzfA==  -- 112233
             $password       = mt_rand(100000,999999);
 
             $email          = $_POST['email'];
@@ -48,12 +48,16 @@ class ResetPassword extends CI_Controller {
             $insert['intUserId']            = $id;
             $insert['varPassword']          = $this->encrypt->encode($password);
             $this->User_model->updateUser($insert);
-            $from           = 'admin@bamaex.net';
-            $to             = $email;
-            $subject        = 'Reset Password';
-            $message        = '<b>Your new password is '.$password.'</b>';
-            //echo "<pre>"; print_r($email); exit;
-            $this->custom_email->send_email($from, $to, $subject, $message);
+
+            $emailTo                        = array($email);
+            $shortCodeArray                 = array();
+            $shortCodeArray['firstName']    = $data[0]->varFirstName;
+            $shortCodeArray['lastName']     = $data[0]->varFirstName;;
+            $shortCodeArray['userEmail']    = $data[0]->varEmailId;;
+            $shortCodeArray['password']     = $password;
+
+            $this->custom_email->resetPasswordNotification($emailTo, $shortCodeArray);
+
             $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Password Reset Please Check Your Email</div>');
             redirect(SITE.'ResetPassword');
         }
