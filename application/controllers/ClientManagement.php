@@ -35,6 +35,7 @@ class ClientManagement extends CI_Controller {
         $this->load->model('Country_model');
         $this->load->model('Client_rates_model');
         $this->load->model('Client_type');
+        $this->load->library('Custom_email');
         $this->load->library('encrypt');
 
         $this->load->helper('cookie');			 

@@ -46,44 +46,47 @@ class Admin extends CI_Controller {
 $this->load->view('backend');
 	//  
 	}
-	public function login() {
-            
-	    $data['emailId']=$this->input->post('emailId');
-	    $data['password']=$this->input->post('password');
-	    //echo json_encode($data);
-	    if(isset($data['emailId']) && isset($data['password'])) {
-	        
-	        $result=$this->User_model->login($data);
-               // die(var_dump($result));
-	      //  echo json_encode($result);
-	        if(($result['status']==true)) {
-$address = $this->User_model->getUserAddressByUserId($result['userinfo'][0]->UserId);
-if(!empty($address)){
-$userProfileImage = $address[0]->profile_image;
-}else{
-$userProfileImage = '';
-}
-     $newdata = array(
-        'UserId'     => $result['userinfo'][0]->UserId,
-        'username'  => $result['userinfo'][0]->FirstName. ' '. $result['userinfo'][0]->FirstName,
-        'email'     => $result['userinfo'][0]->EmailId,
-        'UserType'     => $result['userinfo'][0]->UserType,
-        'profileImage'=>$userProfileImage,
-        'logged_in' => TRUE
-);
 
-$this->session->set_userdata($newdata);
-redirect(SITE.'dashboard');
-	            $this->onLoginSuccess();
-	        } else {
-		        $this->loadView('admin/login', $result);
-	        } 
-	        
-	    } else {
-	        $dataset['msg']="Emailid Password should not balnk";
-	        $this->loadView('admin/login',$dataset);
-	    }
-	}
+    public function login()
+    {
+
+        $data['emailId'] = $this->input->post('emailId');
+        $data['password'] = $this->input->post('password');
+        
+        if (isset($data['emailId']) && isset($data['password'])) {
+
+            $result = $this->User_model->login($data);
+            if (($result['status'] == true) && $result['userinfo'][0]->UserType != 'Agent' && $result['userinfo'][0]->UserType != 'Client') {
+                $address = $this->User_model->getUserAddressByUserId($result['userinfo'][0]->UserId);
+                if (!empty($address)) {
+                    $userProfileImage = $address[0]->profile_image;
+                } else {
+                    $userProfileImage = '';
+                }
+
+                $newdata = array(
+                    'UserId' => $result['userinfo'][0]->UserId,
+                    'username' => $result['userinfo'][0]->FirstName . ' ' . $result['userinfo'][0]->FirstName,
+                    'email' => $result['userinfo'][0]->EmailId,
+                    'UserType' => $result['userinfo'][0]->UserType,
+                    'profileImage' => $userProfileImage,
+                    'logged_in' => TRUE
+                );
+
+                $this->session->set_userdata($newdata);
+                redirect(SITE . 'dashboard');
+
+            } else {
+                $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible">Invalid Email Or Password</div>');
+                redirect(SITE . 'admin/login');
+            }
+
+        } else {
+            $dataset['msg'] = "Emailid Password should not balnk";
+            $this->loadView('admin/login', $dataset);
+        }
+    }
+
 	public function loadView($view,$sendData){
 	    $this->load->view($view, $sendData);
 	}

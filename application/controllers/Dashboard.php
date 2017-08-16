@@ -65,9 +65,20 @@ class Dashboard extends CI_Controller {
 	}
     public function logout(){
 
+	    $redirect = SITE.'backend';
+	    if($this->session->userdata('UserType') == 'Client'){
+            $redirect = SITE.'client/login';
+        }
+        else if($this->session->userdata('UserType') == 'Agent'){
+            $redirect = SITE.'agent/login';
+        }
+        else{
+            $redirect = SITE.'admin/login';
+        }
+
         $this->session->sess_destroy();
         session_destroy ();
-        redirect(SITE.'backend');
+        redirect($redirect);
 
     }
     public function user()

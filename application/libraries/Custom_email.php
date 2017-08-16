@@ -27,6 +27,7 @@ class Custom_email{
     }
 
     public function send_email($from, $to, $subject, $message){
+        $this->Obj->email->set_mailtype("html");
         $this->Obj->email->from($from);
         $this->Obj->email->to($to);
         $this->Obj->email->subject($subject);
@@ -55,11 +56,11 @@ class Custom_email{
     public function newClientEmailNotification($emailTo, $shortCodeArray){
         $code       = $this->newClientEmailCode;
         $type       = $this->typeEmail;
-        $template   = $this->getEmailTemplate($code, $type);
+        $templateData   = $this->getEmailTemplate($code, $type);
 
-        if($template){
-            $template       = $template[0]->template;
-            $subject        = $template[0]->name;
+        if($templateData){
+            $template       = $templateData[0]->template;
+            $subject        = $templateData[0]->name;
             $template       = $this->shortCodeReplace($template, $shortCodeArray);
         }else{
             $template   = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['userEmail'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
@@ -78,11 +79,11 @@ class Custom_email{
     public function resetPasswordNotification($emailTo, $shortCodeArray){
         $code       = $this->resetPasswordEmailCode;
         $type       = $this->typeEmail;
-        $template   = $this->getEmailTemplate($code, $type);
+        $templateData   = $this->getEmailTemplate($code, $type);
 
-        if($template){
-            $template       = $template[0]->template;
-            $subject        = $template[0]->name;
+        if($templateData){
+            $template       = $templateData[0]->template;
+            $subject        = $templateData[0]->name;
             $template       = $this->shortCodeReplace($template, $shortCodeArray);
         }else{
             $template   = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
@@ -104,11 +105,11 @@ class Custom_email{
     public function newConsignmentNotification($emailTo, $shortCodeArray){
         $code       = $this->newConsignmentEmailCode;
         $type       = $this->typeEmail;
-        $template   = $this->getEmailTemplate($code, $type);
+        $templateData   = $this->getEmailTemplate($code, $type);
 
-        if($template){
-            $template       = $template[0]->template;
-            $subject        = $template[0]->name;
+        if($templateData){
+            $template       = $templateData[0]->template;
+            $subject        = $templateData[0]->name;
             $template       = $this->shortCodeReplace($template, $shortCodeArray);
         }else{
             $template   = '';
@@ -128,11 +129,11 @@ class Custom_email{
     public function orderPickupNotificationToCourier($emailTo, $shortCodeArray){
         $code       = $this->orderPickupToCourierEmailCode;
         $type       = $this->typeEmail;
-        $template   = $this->getEmailTemplate($code, $type);
+        $templateData   = $this->getEmailTemplate($code, $type);
 
-        if($template){
-            $template       = $template[0]->template;
-            $subject        = $template[0]->name;
+        if($templateData){
+            $template       = $templateData[0]->template;
+            $subject        = $templateData[0]->name;
             $template       = $this->shortCodeReplace($template, $shortCodeArray);
         }else{
             $template   = '';
@@ -152,11 +153,11 @@ class Custom_email{
     public function deliveryNotification($emailTo, $shortCodeArray){
         $code       = $this->deliveryEmailCode;
         $type       = $this->typeEmail;
-        $template   = $this->getEmailTemplate($code, $type);
+        $templateData   = $this->getEmailTemplate($code, $type);
 
-        if($template){
-            $template       = $template[0]->template;
-            $subject        = $template[0]->name;
+        if($templateData){
+            $template       = $templateData[0]->template;
+            $subject        = $templateData[0]->name;
             $template       = $this->shortCodeReplace($template, $shortCodeArray);
         }else{
             $template   = '';

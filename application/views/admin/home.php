@@ -69,18 +69,26 @@ $this->load->view('layout/container');
                     <div class="row step-default">
                         <div class="col-md-4 bg-grey mt-step-col">
                             <div class="mt-step-number bg-white font-grey">1</div>
-                            <div class="mt-step-title uppercase font-grey-cascade">Create Order</div>
-                            <div class="mt-step-content font-grey-cascade">Create the Order</div>
+                            <div class="mt-step-title uppercase font-grey-cascade">Originate Order</div>
+                            <div class="mt-step-content font-grey-cascade">
+                                <a href="<?php echo SITE.'order/selectClient'?>" style="color:#95A5A6!important;">Single</a> |
+                                <a href="<?php echo SITE.'dashboard/selectClient'?>" style="color:#95A5A6!important;">Bulk</a></div>
                         </div>
                         <div class="col-md-4 bg-grey mt-step-col active">
                             <div class="mt-step-number bg-white font-grey">2</div>
                             <div class="mt-step-title uppercase font-grey-cascade">Track Order</div>
-                            <div class="mt-step-content font-grey-cascade">Track Your Items</div>
+                            <div class="mt-step-content font-grey-cascade">
+                                <a href="<?php echo SITE.'Order/ListOrders'?>" style="color:#fff!important;">Track Your Shipments</a>
+                            </div>
                         </div>
                         <div class="col-md-4 bg-grey mt-step-col ">
                             <div class="mt-step-number bg-white font-grey">3</div>
-                            <div class="mt-step-title uppercase font-grey-cascade">Check balance</div>
-                            <div class="mt-step-content font-grey-cascade">Receive item integration</div>
+                            <div class="mt-step-title uppercase font-grey-cascade">Order billing</div>
+                            <div class="mt-step-content font-grey-cascade">
+                                <a href="<?php echo SITE.'dashboard/pending-payments'?>" style="color:#95A5A6!important;">
+                                    Check Status Of Your Payment
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

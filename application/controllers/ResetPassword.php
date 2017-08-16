@@ -52,7 +52,7 @@ class ResetPassword extends CI_Controller {
             $emailTo                        = array($email);
             $shortCodeArray                 = array();
             $shortCodeArray['firstName']    = $data[0]->varFirstName;
-            $shortCodeArray['lastName']     = $data[0]->varFirstName;;
+            $shortCodeArray['lastName']     = $data[0]->varLastName;;
             $shortCodeArray['userEmail']    = $data[0]->varEmailId;;
             $shortCodeArray['password']     = $password;
 
