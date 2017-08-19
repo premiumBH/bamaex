@@ -39,10 +39,10 @@
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
 <div class="portfolio-content portfolio-1" style="text-align: center;">
-<a href="<?= CTRL ?>admin/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Admin</a>
-<a href="<?= CTRL ?>staff/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Staff</a>
+<a href="<?= CTRL ?>admin/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Staff</a>
+<!--<a href="<?/*= CTRL */?>staff/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Staff</a>-->
 <a href="<?= CTRL ?>client/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Client</a>
-<a href="javascript:;" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Agent</a>
+<a href="<?= CTRL ?>agent/login" class="cbp-singlePage cbp-l-caption-buttonLeft btn red uppercase btn red uppercase" rel="nofollow">Agent</a>
 
                         </div>
          </div>

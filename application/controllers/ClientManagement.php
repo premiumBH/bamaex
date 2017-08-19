@@ -35,6 +35,7 @@ class ClientManagement extends CI_Controller {
         $this->load->model('Country_model');
         $this->load->model('Client_rates_model');
         $this->load->model('Client_type');
+        $this->load->library('Notification_lib');
         $this->load->library('encrypt');
 
         $this->load->helper('cookie');			 
@@ -232,13 +233,14 @@ class ClientManagement extends CI_Controller {
         $this->Client_model->updatePropect($client_id, $user_id);
 
         $emailTo                        = array($client_email);
+        $smsTo                          = array($client[0]->phone_no);
         $shortCodeArray                 = array();
         $shortCodeArray['firstName']    = $client[0]->company_name;
         $shortCodeArray['lastName']     = '';
         $shortCodeArray['userEmail']    = $client[0]->email;
         $shortCodeArray['password']     = $password;
 
-        $this->custom_email->newClientEmailNotification($emailTo, $shortCodeArray);
+        $this->notification_lib->newClientEmailNotification($emailTo, $smsTo, $shortCodeArray);
 
         $owner_id = $this->session->userdata['UserId'];
         $owner['intUserId']= $user_id ;
@@ -248,6 +250,10 @@ class ClientManagement extends CI_Controller {
 
 
         redirect(base_url().'dashboard/client');
+    }
+
+    public function sendNotification(){
+        
     }
 
 	/*public function order_list()

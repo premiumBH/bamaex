@@ -63,7 +63,9 @@ $this->load->view('layout/container');
                         <tr>
                             <td>Name/Subject</td>
                             <td>Category</td>
+                            <td>User Type</td>
                             <td>Status</td>
+                            <td>Action</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -71,6 +73,7 @@ $this->load->view('layout/container');
                             <tr>
                                 <td><?php echo $notification->name?></td>
                                 <td><?php echo $notification->catName?></td>
+                                <td><?php echo $notification->userType?></td>
                                 <td><?php if($notification->status == 1){echo 'Active';}else{echo 'Inactive';} ?></td>
                                 <td>
                                     <a href="<?php echo SITE.'notification/form/'.$notification->id?>"  class="btn red "> Edit</a>
@@ -147,7 +150,9 @@ $this->load->view('layout/container');
                         <tr>
                             <td>Name/Subject</td>
                             <td>Category</td>
+                            <td>User Type</td>
                             <td>Status</td>
+                            <td>Action</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -155,6 +160,7 @@ $this->load->view('layout/container');
                             <tr>
                                 <td><?php echo $smsIn->name?></td>
                                 <td><?php echo $smsIn->catName?></td>
+                                <td><?php echo $smsIn->userType?></td>
                                 <td><?php if($smsIn->status == 1){echo 'Active';}else{echo 'Inactive';} ?></td>
                                 <td>
                                     <a href="<?php echo SITE.'notification/sms_form/'.$smsIn->id?>"  class="btn red "> Edit</a>

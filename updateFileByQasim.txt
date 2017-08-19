@@ -5,3 +5,11 @@ invert view folder of admin and client name
 D:\xampp\htdocs\bamaex\application\views\backend.php
 D:\xampp\htdocs\bamaex\application\views\admin\login.php
 D:\xampp\htdocs\bamaex\application\controllers\Dashboard.php
+
+
+
+
+http://bamaex.bahrain.gq/admin/login
+Login: Admin@gmail.com
+Passwrd: admin
+http://files.bahrain.gq/metronics/metronic_v4.7.5/theme/admin_6/
