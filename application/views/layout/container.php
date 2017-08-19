@@ -23,7 +23,10 @@
                                     <a href="<?php echo SITE.'custom_setting'?>">Settings</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo SITE.'notification'?>">Notifications</a>
+                                    <a href="<?php echo SITE. 'NotificationLib' ?>">Notifications</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo SITE.'notification/notification_control_list'?>">Notifications Control</a>
                                 </li>
                                 <li>
                                     <a href="start.html">Administration</a>

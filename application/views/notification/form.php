@@ -22,18 +22,28 @@ $this->load->view('layout/container');
     <input type="hidden" name="id" value="<?php echo isset($notification)?$notification->id:''?>"/>
     <input type="hidden" name="type" value="email"/>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Name/Subject</label>
-                <input type="text" name="name" value="<?php echo isset($notification)?$notification->name:''?>" class="form-control"/>
+                <input type="text" name="name" required value="<?php echo isset($notification)?$notification->name:''?>" class="form-control"/>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>Category</label>
-                <select class="form-control" name="notifyCatId" required>
+                <select class="form-control" name="notifyCatId" id="notifyCatId" required>
                     <?php foreach ($notificationCats as $notificationCat){?>
                         <option value="<?php echo $notificationCat->id?>" <?php if(isset($notification) && $notificationCat->id == $notification->notify_cat_id){echo 'selected';}?>> <?php echo $notificationCat->cat_name?></option>
+                    <?}?>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>User Type</label>
+                <select class="form-control" name="notifyUserType" id="notifyUserType" required>
+                    <?php foreach ($notifyUserType as $notifyUserTypeIn){?>
+                        <option value="<?php echo $notifyUserTypeIn->notification_users_type_id?>" <?php if(isset($notification) && $notifyUserTypeIn->notification_users_type_id == $notification->user_type){echo 'selected';}?>> <?php echo $notifyUserTypeIn->user_type?></option>
                     <?}?>
                 </select>
             </div>
@@ -42,7 +52,7 @@ $this->load->view('layout/container');
             <div class="form-group">
                 <label>Template</label>
                 <p style="text-align: right;">[user_first_name] , [user_last_name] , [user_email] , [user_password]</p>
-                <textarea class="ckeditor form-control" name="template" rows="6" data-error-container="#editor2_error"><?php echo isset($notification)?$notification->template:''?></textarea>
+                <textarea class="ckeditor form-control" required name="template" rows="6" data-error-container="#editor2_error"><?php echo isset($notification)?$notification->template:''?></textarea>
             </div>
         </div>
 
@@ -74,17 +84,22 @@ $this->load->view('layout/container');
 
 
 
-
-
-
-
-
-
-
-
-
 <?php
-
 $this->load->view('layout/footer');
-
 ?>
+
+<script>
+    $(function () {
+
+        $("#notifyCatId").change(function () {
+            var notifyCatId = $("#notifyCatId").val();
+            $.post( "<?php echo SITE?>notification/GetCategoryUserType", { notifyCatId: notifyCatId }, function( data ) {
+                if(data.error == 0){
+                    $("#notifyUserType").html();
+                    $("#notifyUserType").html(data.html);
+                }
+            }, "json");
+        })
+
+    })
+</script>

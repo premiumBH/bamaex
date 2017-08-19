@@ -23,7 +23,7 @@ class ResetPassword extends CI_Controller {
         $this->load->model('User_model');
         $this->load->model('Admin_model');
 
-        $this->load->library('Custom_email');
+        $this->load->library('NotificationLib');
         $this->load->helper('cookie');
 
     }
@@ -50,13 +50,14 @@ class ResetPassword extends CI_Controller {
             $this->User_model->updateUser($insert);
 
             $emailTo                        = array($email);
+            $smsTo                          = array($data[0]->varMobileNo);
             $shortCodeArray                 = array();
             $shortCodeArray['firstName']    = $data[0]->varFirstName;
-            $shortCodeArray['lastName']     = $data[0]->varLastName;;
-            $shortCodeArray['userEmail']    = $data[0]->varEmailId;;
+            $shortCodeArray['lastName']     = $data[0]->varLastName;
+            $shortCodeArray['userEmail']    = $data[0]->varEmailId;
             $shortCodeArray['password']     = $password;
 
-            $this->custom_email->resetPasswordNotification($emailTo, $shortCodeArray);
+            $this->custom_email->resetPasswordNotification($emailTo, $smsTo, $shortCodeArray);
 
             $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Password Reset Please Check Your Email</div>');
             redirect(SITE.'ResetPassword');
