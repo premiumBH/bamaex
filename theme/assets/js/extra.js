@@ -7,6 +7,9 @@ $(document).ready(function(){
         $('.error').hide();
         $('.one').click();
         $('.button-submit').hide();
+        $('#datetimepicker').parent().children().eq(0).children().eq(1).children().eq(0).attr("disabled","disabled");
+        $('.actions').hide();
+        
         $('.button-next').click(function()
         {
             obj = $('a[aria-expanded=true]');
@@ -81,10 +84,11 @@ $(document).ready(function(){
         $('.button-previous').click(function()
         {
             
-            if($('.view').css('visibility') == 'visible')
+            if($('.view').css('display') != 'none')
             {
                 console.log('HERE');
                 $('.button-submit').attr('onclick' , '');
+                $('.button-submit').attr('href' , 'javascript:void(0);');
                 $('.button-submit').text('View Summary');
                 $('.button-submit').hide();
                 
@@ -262,6 +266,7 @@ $(document).ready(function(){
                                 $('input[name=breath]').val(val.breath);
                                 $('input[name=packages]').val(val.no_of_packages);
                                 $('input[name=title]').val(val.title);
+                                $('input[name=description]').val(val.description);
                                $('input[name=new_consignment]').val('existing_consignment');
                                 
                                 
@@ -277,6 +282,7 @@ $(document).ready(function(){
                     $('input[name=height]').val('');
                     $('input[name=breath]').val('');
                     $('input[name=title]').val('');
+                    $('input[name=description]').val('');
                     $('input[name=new_consignment]').val('');
                 }
         });
@@ -378,6 +384,9 @@ $(document).ready(function(){
                 $('label[name=width]').text($('input[name=width]').val());
                 $('label[name=breath]').text($('input[name=breath]').val());
                 $('label[name=packages]').text($('input[name=packages]').val());
+                $('label[name=description]').text($('input[name=description]').val());
+                $('label[name=value]').text($('input[name=value]').val());
+                $('label[name=payment_to_collect]').text($('input[name=payment_to_collect]').val());
                 
 //                $('label[name=name]').text($('select[name=sender_country_id]  option:selected').text());
                 sender_company_name = $('input[name=contact_person_name]').val();
@@ -420,6 +429,7 @@ $(document).ready(function(){
                 $('.edit').fadeOut(500);
                 $('.view').fadeIn(500);
                 
+              
                $('.button-submit').attr('onclick' , 'document.getElementById("form1").submit();');
                 $('.button-submit').text('Confirm Order');
                 
