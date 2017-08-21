@@ -90,7 +90,7 @@ if(isset($message))
                             <?php
                                     $col_counter = $col_counter + 1;
                                     }
-                            ?>
+                            ?>      <th>Order Amount</th>
                                     <th> Edit </th>
                                     <th> Delete </th>
                             </tr>
@@ -120,6 +120,9 @@ if(isset($message))
 									$flag = 1;
 									
                                 }
+                                 ?>
+                    <td><?php echo $rows_amount[$row_count]; ?></td>
+                                <?php
 								if($flag == 1)
 								{
 								?>

@@ -434,7 +434,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Packages*</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Pieces*</label>
                                     <div class="col-md-9">
                                         <input type="text" name="packages" value="<?php echo $packages;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -442,7 +442,16 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Sender Reference*</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Description</label>
+                                        <div class="col-md-9">
+                                            <input type="text" name="description" value="<?php echo $description;?>" class="form-control" placeholder="" required>
+                                            <div class="form-control-focus"> </div>
+                                            <span class="help-block">Description here...</span>
+                                        </div>
+                                </div>
+                            </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-3 control-label" for="form_control_1">Sender Reference</label>
                                     <div class="col-md-9">
                                         <input type="text" name="sender_ref" value="<?php echo $sender_reference;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -450,7 +459,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Receiver Reference*</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Receiver Reference</label>
                                     <div class="col-md-9">
                                         <input type="text" name="receiver_ref" value="<?php echo $receiver_reference;?>" class="form-control" placeholder="" required>
                                         <div class="form-control-focus"> </div>
@@ -476,7 +485,8 @@ $this->load->view('layout/container');
                                         <span class="help-block">breath value here...</span>
                                     </div>
                                 </div>
-                            </div>
+                                
+                            
                                 <div class="form-group form-md-line-input">
                                     <label class="col-md-3 control-label" for="form_control_1">Payment Type*</label>
                                     <div class="col-md-9">
@@ -495,7 +505,7 @@ $this->load->view('layout/container');
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input">
-                                    <label class="col-md-3 control-label" for="form_control_1">Tax Payer*</label>
+                                    <label class="col-md-3 control-label" for="form_control_1">Duties*</label>
                                     <div class="col-md-9">
                                         <select name="payer_id" class="form-control">
                                          <?php
@@ -509,6 +519,42 @@ $this->load->view('layout/container');
                                         </select>
                                         <div class="form-control-focus"> </div>
                                         <span class="help-block">Tax Payer value here...</span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-3 control-label" for="form_control_1">Billing Type*</label>
+                                    <div class="col-md-9">
+                                        <select name="billing_id" class="form-control">
+                                         <?php
+                                         foreach($billing_types as $billing_type)
+                                         {
+                                         ?>
+                                            <option value="<?php echo $billing_type->id; ?>"><?php echo $billing_type->billing_type; ?></option>
+                                         <?php
+                                         }
+                                         ?>
+                                        </select>
+                                        <div class="form-control-focus"> </div>
+                                        <span class="help-block">Billing type value here...</span>
+                                    </div>
+                                </div>
+                                    
+                                
+                                
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-3 control-label" for="form_control_1">Value</label>
+                                    <div class="col-md-9">
+                                        <input type="text" name="value" value="<?php echo $value;?>" class="form-control" placeholder="" required>
+                                        <div class="form-control-focus"> </div>
+                                        <span class="help-block">Sender Reference here...</span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-3 control-label" for="form_control_1">Payment To Collect</label>
+                                    <div class="col-md-9">
+                                        <input type="text" name="payment_to_collect" value="<?php echo $payment_to_collect;?>" class="form-control" placeholder="" required>
+                                        <div class="form-control-focus"> </div>
+                                        <span class="help-block">Sender Reference here...</span>
                                     </div>
                                 </div>
                             </div>
@@ -579,7 +625,7 @@ $this->load->view('layout/container');
                                 <div class="form-group">
                                     <label class="control-label col-md-3">Pickup Date*</label>
                                     <div class="col-md-3">
-                                        <div class="input-group input-medium date date-picker" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                        <div class="input-group input-medium date date-picker" id="datetimepicker" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
                                             <input name="date" type="text" class="form-control" readonly>
                                             <span class="input-group-btn">
                                                 <button class="btn default" type="button">
@@ -945,6 +991,19 @@ $this->load->view('layout/container');
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label style="font-weight:bold">Consignment Description</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label name="description"></label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label style="font-weight:bold">Consignment Breath</label>
                                 </div>
                             </div>
@@ -1045,6 +1104,30 @@ $this->load->view('layout/container');
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label name="remarks"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="font-weight:bold">Value</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label name="value"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label style="font-weight:bold">Payment To Collect</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label name="payment_to_collect"></label>
                                 </div>
                             </div>
                         </div>

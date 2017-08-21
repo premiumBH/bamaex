@@ -66,7 +66,7 @@ if(isset($message))
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-settings font-red"></i>
-                    <span class="caption-subject font-red sbold uppercase">Editable Table</span>
+                    <span class="caption-subject font-red sbold uppercase">Editable1 Table</span>
                 </div>
             </div>
 			<?php
@@ -78,7 +78,7 @@ if(isset($message))
                    <thead>
                             <tr>
                             <?php
-                                    $col_counter = 0;
+                                    $col_counter = 1;
                                     foreach ($columns as $column)
                                     {
                                             if($column == '')
@@ -90,6 +90,7 @@ if(isset($message))
                                     $col_counter = $col_counter + 1;
                                     }
                             ?>
+                                    <th>Order Amount</th>
                                     <th> Edit </th>
                                     <th> Delete </th>
                             </tr>
@@ -119,6 +120,9 @@ if(isset($message))
 									$flag = 1;
 									
                                 }
+                                ?>
+                    <td><?php echo $rows_amount[$row_count]; ?></td>
+                                <?php
 								if($flag == 1)
 								{
 								?>
