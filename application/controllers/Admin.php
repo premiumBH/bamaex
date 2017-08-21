@@ -52,7 +52,7 @@ $this->load->view('backend');
 
         $data['emailId'] = $this->input->post('emailId');
         $data['password'] = $this->input->post('password');
-
+        
         if (isset($data['emailId']) && isset($data['password'])) {
 
             $result = $this->User_model->login($data);

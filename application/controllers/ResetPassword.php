@@ -23,7 +23,7 @@ class ResetPassword extends CI_Controller {
         $this->load->model('User_model');
         $this->load->model('Admin_model');
 
-        $this->load->library('NotificationLib');
+        $this->load->library('Notification_lib');
         $this->load->helper('cookie');
 
     }

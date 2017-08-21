@@ -228,6 +228,8 @@ class Dashboard extends CI_Controller {
                             break;
                         if($row == 1)
                         {
+                           //$rowData[0][] = "Amount";
+                            
                             $data['columns'] = $rowData[0];
                             //die(var_dump($data));
                         }
@@ -236,6 +238,19 @@ class Dashboard extends CI_Controller {
                             $message = $this->validateOrder($rowData[0]);
                             if($message == 'done')
                             {
+                                //$data['rows_amount'][] = $rows_amount;
+                                if($rowData[0][3] != $rowData[0][13])
+                                {
+                                    $zone_id = $this->db->where('id' ,$rowData[0][13] )->get('country_table')->result()[0]->zone_id;
+                                    $zone_rate = $this->db->where('client_id' , $client_id)->where('zone_id' , $zone_id)->get('client_rates')->result()[0]->zone_rate; 
+                                    $rows_amount[] = floatval($rowData[0][21]) * floatval($zone_rate);
+                                }
+                                else
+                                {
+                                    $rate = $this->db->where('client_id' ,$client_id)->get('client_table')->result()[0]->domestic_rates;
+                                    $rows_amount[] = floatval($rowData[0][21]) * floatval($rate);               
+                                }
+                                //$rows_amount[] = "Amount";
                                 $data['rows'][] = $rowData[0];
 
                             }
@@ -253,6 +268,7 @@ class Dashboard extends CI_Controller {
                         }
 
                     }
+                    $data['rows_amount'] = $rows_amount;
                     if($this->input->post('client_id') != null)
                     {
                         $client_id = $this->input->post('client_id');
@@ -308,16 +324,20 @@ class Dashboard extends CI_Controller {
                         $width = $row[23];
                         $breath = $row[24];
                         $packages = $row[25];
-                        $sender_reference = $row[26];
-                        $receiver_reference = $row[27];
-                        $payment_type = $row[28];
-                        $contact_name = $row[29];
-                        $contact_mobile = $row[30];
-                        $date = $row[31];
-                        $time = $row[32];
-                        $remarks = $row[33];
-                        $insured = $row[34];
-                        $tax_payer = $row[35];
+                        $description = $row[26];
+                        $sender_reference = $row[27];
+                        $receiver_reference = $row[28];
+                        $payment_type = $row[29];
+                        $billing_type = $row[30];
+                        $value = $row[31];
+                        $payment_to_collect = $row[32];
+                        $contact_name = $row[33];
+                        $contact_mobile = $row[34];
+                        $date = $row[35];
+                        $time = $row[36];
+                        $remarks = $row[37];
+                        $insured = $row[38];
+                        $tax_payer = $row[39];
 
 //                        $client_data = $this->db->where('email', $client_email)->where('level_id', 3)->get('client_table')->result();
 //                        $client_id = '';
@@ -387,6 +407,7 @@ class Dashboard extends CI_Controller {
                             $consignment['type'] = $this->db->where('type', $type)->get('order_types')->result()[0]->id;// $type;
                             $consignment['no_of_packages'] = $packages;
                             $consignment['width'] = $width;
+                            $consignment['description'] = $description;
                             $consignment['client_id'] = $client_id;
 
                             $this->db->insert('consignment_details', $consignment);
@@ -416,12 +437,15 @@ class Dashboard extends CI_Controller {
                         $order['sender_id'] = $sender_id;
                         $order['consignment_id'] = $consignment_id;
                         $order['payment_type_id'] = $this->db->where('payment_type' , $payment_type)->get('payment_types')->result()[0]->id;
+                        $order['billing_type'] = $this->db->where('billing_type' , $billing_type)->get('billing_types')->result()[0]->id;
                         $order['contact_person_id'] = $contact_person_id;
                         $order['created_by']='admin';
                         $order['updated_by']='admin';
                         $order['order_pickup_date'] = $date;
                         $order['order_pickup_time'] = $time;
                         $order['remarks'] = $remarks;
+                        $order['value'] = $value;
+                        $order['payment_to_collect'] = $payment_to_collect;
                         $order['sender_reference'] = $sender_reference;
                         $order['receiver_reference'] = $receiver_reference;
                         $order['tax_payer_id'] = $this->db->where('tax_payer' , $tax_payer)->get('tax_payers')->result()[0]->id;
@@ -472,14 +496,14 @@ class Dashboard extends CI_Controller {
                         # To get a shorter version of the hash, just use substr
                         $hash = substr($hash, 0, 8);
                         $order['order_tracking_id'] = $hash;
+                        $order['order_status'] = '1';
                         //die(print_r($order));
 
                         $this->db->insert('order_details',$order);
                         $order_id = $this->db->insert_id();
 
 
-                        //$airway_bill = $order['service_id'] . $this->db->where('country_name', $country1)->get('country_table')->result()[0]->country_code . $order['serial_number'] . $this->db->where('country_name', $country2)->get('country_table')->result()[0]->country_code .$order_id. $order['issuer_code'];
-                        $airway_bill = $order['issuer_code'] . $this->db->where('country_name', $country1)->get('country_table')->result()[0]->country_code.$this->db->where('country_name', $country2)->get('country_table')->result()[0]->country_code . $order['serial_number'] . $order['service_id'] .$order_id ;
+                        $airway_bill = $order['service_id'] . $this->db->where('country_name', $country1)->get('country_table')->result()[0]->country_code . $order['serial_number'] . $this->db->where('country_name', $country2)->get('country_table')->result()[0]->country_code .$order_id. $order['issuer_code'];
 
 
 

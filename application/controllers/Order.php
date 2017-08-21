@@ -268,7 +268,7 @@ class Order extends CI_Controller {
             
             $pdf->Image(APPPATH.'/libraries/PDFTemplate/logo.png',10,6,30,'PNG');
             $airway_bill = $airway_bill_details[0]->airway_bill;
-            $pdf->Image(APPPATH.'../uploads/'.$airway_bill.'.gif',150,1,'GIF');
+            $pdf->Image(APPPATH.'../uploads/'.$airway_bill.'.gif',150,1,'GIF' );
 
             //$pdf->SetY(10);
             if($receiver_country === $sender_company)
@@ -387,6 +387,7 @@ class Order extends CI_Controller {
             $date['title']=$this->input->post('title');
             $date['type']=$this->input->post('type');
             $date['packages']=$this->input->post('packages');
+            $date['description']=$this->input->post('description');
             
             $date['new_consignment']=$this->input->post('new_consignment');
             $date['existing_consignment']=$this->input->post('existing_consignment');
@@ -399,6 +400,9 @@ class Order extends CI_Controller {
             $date['person_id']=$this->input->post('person_id');
             
             $date['payment_id'] = $this->input->post('payment_id');
+            $date['billing_id'] = $this->input->post('billing_id');
+            $date['value'] = $this->input->post('value');
+            $date['payment_to_collect'] = $this->input->post('payment_to_collect');
 
             $date['time']=$this->input->post('time');
             $date['date']=$this->input->post('date');
@@ -490,6 +494,7 @@ class Order extends CI_Controller {
                     $consignment['client_id'] = $date['client_id'];
                     $consignment['type'] = $date['type'];
                     $consignment['no_of_packages'] = $date['packages'];
+                    $consignment['description'] = $date['description'];
                     
                     $this->db->insert('consignment_details',$consignment);
                     $consignment_id=$this->db->insert_id();
@@ -526,6 +531,9 @@ class Order extends CI_Controller {
                 $order['sender_id'] = $sender_id;
                 $order['consignment_id'] = $consignment_id;
                 $order['payment_type_id'] = $date['payment_id'];
+                $order['billing_type'] = $date['billing_id'];
+                $order['value'] = $date['value'];
+                $order['payment_to_collect'] = $date['payment_to_collect'];
                 $order['tax_payer_id'] = $date['payer_id'];
                 $order['remarks'] = $date['remarks'];
                 $order['sender_reference'] = $date['sender_ref'];
@@ -635,6 +643,7 @@ class Order extends CI_Controller {
 //                die();
                 $this->generateAirwaybill($order['serial_number']);
                 $this->ListOrders();
+                return;
                 
                 
             }
@@ -694,11 +703,14 @@ class Order extends CI_Controller {
                 $order['title']='';
                 $order['type']='';
                 $order['packages']='';
+                $order['description']='';
 
 
                 $order['contact_person_name']='';
                 $order['contact_person_mobile']='';
                 $order['person_id']='';
+                $order['value']='';
+                $order['payment_to_collect']='';
 
                 $order['pickup_address']='';
                 $order['pickup_id']='';
@@ -729,6 +741,7 @@ class Order extends CI_Controller {
                 
                 $order['services'] = $this->db->get('service_table')->result();
                 $order['payment_types'] = $this->db->get('payment_types')->result();
+                $order['billing_types'] = $this->db->get('billing_types')->result();
                 $order['payers'] = $this->db->get('tax_payers')->result();
                 
                 $this->load->view('page/Dashboard/order-origanated' , $order);
@@ -811,6 +824,7 @@ class Order extends CI_Controller {
             $order['order'] = $this->db->query('select * from order_details,order_receiver,order_airway_bill where order_details.receiver_id = order_receiver.id and order_details.order_id = order_airway_bill.order_id order by order_details.order_id desc')->result();
             
             $this->load->view('Order/listOrders' ,$order);
+            
             
         }
 }
