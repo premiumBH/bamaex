@@ -37,7 +37,7 @@ $this->load->view('layout/container');
 
                 <div class="caption">
 
-                    <i class="fa fa-cogs"></i>Notification Categories</div>
+                    <i class="fa fa-cogs"></i>Notification Control</div>
 
                 <div class="tools">
 

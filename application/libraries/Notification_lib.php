@@ -20,7 +20,7 @@ class Notification_lib{
 
 
     public $notificationCategoryTable       = 'notification_category';
-    public $notificationTable               = 'NotificationLib';
+    public $notificationTable               = 'notification';
     public $notificationControlTable        = 'notification_control';
     public $notificationControlUserType     = 'notification_control_user_type';
     public $notificationUsersType           = 'notification_users_type';

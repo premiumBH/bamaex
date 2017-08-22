@@ -31,22 +31,22 @@ class Notification_model extends CI_Model
         if($type){
             $this->db->where('type', $type);
         }
-        $query		= $this->db->get('NotificationLib');
+        $query		= $this->db->get('notification');
         $Result 	= $query->result();
         return $Result;
     }
     public function insert($data){
-        $this->db->insert('NotificationLib', $data);
+        $this->db->insert('notification', $data);
         return $this->db->insert_id();
     }
 
     public function update( $data){
         $this->db->where('id', $data['id']);
-        $this->db->update('NotificationLib',$data);
+        $this->db->update('notification',$data);
     }
     public function delete($id){
         $this->db->where('id',$id);
-        $this->db->delete('NotificationLib');
+        $this->db->delete('notification');
         return true;
     }
 
@@ -58,7 +58,7 @@ class Notification_model extends CI_Model
         $this->db->where('notify_cat_id', $catId);
         $this->db->where('user_type', $userType);
         $this->db->where('status', 1);
-        $query		= $this->db->get('NotificationLib');
+        $query		= $this->db->get('notification');
         $Result 	= $query->result();
         return $Result;
 

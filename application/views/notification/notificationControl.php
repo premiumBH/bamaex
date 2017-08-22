@@ -41,7 +41,7 @@ $this->load->view('layout/container');
         <div class="col-md-6">
             <div class="form-group">
                 <label>User Type</label>
-                <select class="form-control" name="userType[]" id="userType" multiple required style="height: 70px;">
+                <select class="form-control" name="userType[]" id="userType" multiple required style="height: 140px;">
                     <?php foreach ($notifyCatUserType as $notifyCatUserTypeIN){?>
                         <option value="<?php echo $notifyCatUserTypeIN->notification_users_type_id?>" <?php if(isset($notifyControlRecord) && in_array($notifyCatUserTypeIN->notification_users_type_id, $notifyControlSelectedUserType)){echo 'selected';}?>> <?php echo $notifyCatUserTypeIN->user_type?></option>
                     <?}?>

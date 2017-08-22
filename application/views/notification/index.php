@@ -114,8 +114,6 @@ $this->load->view('layout/container');
 
 </div>
 <div class="clearfix">&nbsp;</div>
-<?php echo $this->session->flashdata('success');?>
-<?php echo validation_errors('<div class="alert alert-danger alert-dismissible">', '</div>'); ?>
 <div class="row">
 
     <div class="col-md-12">
