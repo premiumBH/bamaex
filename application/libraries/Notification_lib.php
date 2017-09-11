@@ -10,8 +10,9 @@ class Notification_lib{
 
     private $Obj;
 
-    public $newClientEmailCode              = 'NClientN';
-    public $resetPasswordEmailCode          = 'RPN';
+    public $newClientEmailCode                              = 'NClientN';
+    public $assignOrderToCourierNotification                = 'AOTCN';
+    public $resetPasswordEmailCode                          = 'RPN';
 
 
     public $typeEmail                       = 'email';
@@ -42,7 +43,7 @@ class Notification_lib{
 
 
 
-    public function newClientEmailNotification($emailTo, $smsTo, $shortCodeArray){
+    public function newClientEmailNotification($data){
         $code                       = $this->newClientEmailCode;
         $typeEmail                  = $this->typeEmail;
         $typeSms                    = $this->typeSms;
@@ -53,22 +54,41 @@ class Notification_lib{
 
             if($NotificationControlIn->user_type == 'Client'){
 
+                $userType                           = 'Client';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['email'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
+
+
+                $defaultSmsTemp                 = 'New Client Email
+                        Email: '.$shortCodeArray['userEmail'].' 
+                        Password: '.$shortCodeArray['password'].'';
+
+                $defaultEmailTempSub            = 'New Client Email';
+
                 if($NotificationControlIn->notification_type == 'email'){
 
                     // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
                     $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
-                    $templateEmailData          = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateEmailData){
-                        $template       = $templateEmailData[0]->template;
-                        $subject        = $templateEmailData[0]->name;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template   = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['userEmail'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
-                        $subject    = 'New Client Email';
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
                     $from           = $this->emailFrom;
                     $subject        = $subject;
                     $message        = $template;
+
+
                     foreach ($emailTo as $emailToIn){
                         $this->send_email($from, $emailToIn, $subject, $message);
                     }
@@ -79,15 +99,16 @@ class Notification_lib{
                 else if($NotificationControlIn->notification_type == 'sms'){
 
                     //sms Section Start
+                    $template       = $defaultSmsTemp;
+
                     $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
-                    $templateSmsData       = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateSmsData){
-                        $template       = $templateSmsData[0]->template;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template       = 'New Client Email
-                        Email: '.$shortCodeArray['userEmail'].' 
-                        Password: '.$shortCodeArray['password'].'';
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
 
                     $this->sendSms($smsTo, $template);
@@ -97,19 +118,23 @@ class Notification_lib{
 
                 else if($NotificationControlIn->notification_type == 'email&sms'){
                     // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
                     $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
-                    $templateEmailData          = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateEmailData){
-                        $template       = $templateEmailData[0]->template;
-                        $subject        = $templateEmailData[0]->name;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template   = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['userEmail'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
-                        $subject    = 'New Client Email';
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
                     $from           = $this->emailFrom;
                     $subject        = $subject;
                     $message        = $template;
+
                     foreach ($emailTo as $emailToIn){
                         $this->send_email($from, $emailToIn, $subject, $message);
                     }
@@ -118,24 +143,130 @@ class Notification_lib{
                     //------------------------------------
 
                     //sms Section Start
+                    $template       = $defaultSmsTemp;
+
                     $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
-                    $templateSmsData       = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateSmsData){
-                        $template       = $templateSmsData[0]->template;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template       = 'New Client Email
-                        Email: '.$shortCodeArray['userEmail'].' 
-                        Password: '.$shortCodeArray['password'].'';
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
 
-                    $this->sendSms($emailTo, $template);
+                    $this->sendSms($smsTo, $template);
                     //sms Section end
                 }
 
             }
+
             else if($NotificationControlIn->user_type == 'Admin'){
-                //if admin is in option
+
+                $userType               = 'Admin';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['userEmail'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
+
+                $defaultSmsTemp                 = 'New Client Email
+                        Email: '.$shortCodeArray['userEmail'].' 
+                        Password: '.$shortCodeArray['password'].'';
+
+                $defaultEmailTempSub            = 'New Client Email';
+
+                if($NotificationControlIn->notification_type == 'email'){
+
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'sms'){
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'email&sms'){
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                    //------------------------------------
+
+                    //sms Section Start
+                    $template           = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+                }
 
             }
         }
@@ -143,7 +274,7 @@ class Notification_lib{
     }
 
 
-    public function resetPasswordNotification($emailTo, $smsTo, $shortCodeArray){
+    public function resetPasswordNotification($data){
         $code                       = $this->resetPasswordEmailCode;
         $typeEmail                  = $this->typeEmail;
         $typeSms                    = $this->typeSms;
@@ -154,22 +285,39 @@ class Notification_lib{
 
             if($NotificationControlIn->user_type == 'Client'){
 
+                $userType                           = 'Client';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
+
+                $defaultSmsTemp                 = 'Reset Password
+                        Password: '.$shortCodeArray['password'].'';
+
+                $defaultEmailTempSub            = 'Reset Password';
+
                 if($NotificationControlIn->notification_type == 'email'){
 
                     // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
                     $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
-                    $templateEmailData          = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateEmailData){
-                        $template       = $templateEmailData[0]->template;
-                        $subject        = $templateEmailData[0]->name;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template   = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
-                        $subject    = 'Reset Password';
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
                     $from           = $this->emailFrom;
                     $subject        = $subject;
                     $message        = $template;
+
+
                     foreach ($emailTo as $emailToIn){
                         $this->send_email($from, $emailToIn, $subject, $message);
                     }
@@ -180,14 +328,16 @@ class Notification_lib{
                 else if($NotificationControlIn->notification_type == 'sms'){
 
                     //sms Section Start
+                    $template       = $defaultSmsTemp;
+
                     $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
-                    $templateSmsData       = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateSmsData){
-                        $template       = $templateSmsData[0]->template;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template       = 'Reset Password
-                        Password: '.$shortCodeArray['password'].'';
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
 
                     $this->sendSms($smsTo, $template);
@@ -197,19 +347,23 @@ class Notification_lib{
 
                 else if($NotificationControlIn->notification_type == 'email&sms'){
                     // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
                     $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
-                    $templateEmailData          = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateEmailData){
-                        $template       = $templateEmailData[0]->template;
-                        $subject        = $templateEmailData[0]->name;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template   = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
-                        $subject    = 'Reset Password';
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
                     $from           = $this->emailFrom;
                     $subject        = $subject;
                     $message        = $template;
+
                     foreach ($emailTo as $emailToIn){
                         $this->send_email($from, $emailToIn, $subject, $message);
                     }
@@ -218,28 +372,467 @@ class Notification_lib{
                     //------------------------------------
 
                     //sms Section Start
+                    $template       = $defaultSmsTemp;
+
                     $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
-                    $templateSmsData       = $this->getUserTypeTemp($catAllTemp,'Client');
-                    if($templateSmsData){
-                        $template       = $templateSmsData[0]->template;
-                        $template       = $this->shortCodeReplace($template, $shortCodeArray);
-                    }else{
-                        $template       = 'Reset Password
-                        Password: '.$shortCodeArray['password'].'';
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
                     }
 
-                    $this->sendSms($emailTo, $template);
+                    $this->sendSms($smsTo, $template);
                     //sms Section end
                 }
 
             }
+
             else if($NotificationControlIn->user_type == 'Admin'){
-                //if admin is in option
+
+                $userType               = 'Admin';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
+
+                $defaultSmsTemp                 = 'Reset Password
+                        Password: '.$shortCodeArray['password'].'';
+
+                $defaultEmailTempSub            = 'Reset Password';
+
+                if($NotificationControlIn->notification_type == 'email'){
+
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'sms'){
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'email&sms'){
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                    //------------------------------------
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+                }
 
             }
         }
         return true;
 
+    }
+
+
+    public function OrderAssignmentToCourierNotification($data){
+        $code                       = $this->assignOrderToCourierNotification;
+        $typeEmail                  = $this->typeEmail;
+        $typeSms                    = $this->typeSms;
+
+
+        $NotificationControl        = $this->getNotificationControl($code);
+
+        foreach ($NotificationControl as $NotificationControlIn){
+
+            if($NotificationControlIn->user_type == 'Courier'){
+
+                $userType                           = 'Courier';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<b>New Order Assigned. Order ID is  '.$shortCodeArray['orderId'].'</b>';
+
+                $defaultSmsTemp                 = 'New Order Assigned. Order ID is  '.$shortCodeArray['orderId'].'';
+
+                $defaultEmailTempSub            = 'New Order Assigned';
+
+                if($NotificationControlIn->notification_type == 'email'){
+
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'sms'){
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'email&sms'){
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                    //------------------------------------
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+                }
+
+            }
+
+            else if($NotificationControlIn->user_type == 'Receiver'){
+
+                $userType                           = 'Receiver';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<b>Your Order ID '.$shortCodeArray['orderId'].' is Assigned to Courier.</b>';
+
+                $defaultSmsTemp                 = 'Your Order ID '.$shortCodeArray['orderId'].' is Assigned to Courier.';
+
+                $defaultEmailTempSub            = 'Order Assigned to Courier';
+
+                if($NotificationControlIn->notification_type == 'email'){
+
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'sms'){
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'email&sms'){
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                    //------------------------------------
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+                }
+
+            }
+
+            else if($NotificationControlIn->user_type == 'Admin'){
+
+                $userType               = 'Admin';
+                $shortCodeArray                     = $data[$userType]['shortCode'];
+                $emailTo                            = $data[$userType]['email'];
+                $smsTo                              = $data[$userType]['number'];
+
+                $defaultEmailTemp               = '<b>New Order Assigned Courier. Order ID is  '.$shortCodeArray['orderId'].' And Courier Email is '.$shortCodeArray['courierName'].'</b>';
+
+                $defaultSmsTemp                 = 'New Order Assigned Courier. Order ID is  '.$shortCodeArray['orderId'].' And Courier Email is '.$shortCodeArray['courierName'].'';
+
+                $defaultEmailTempSub            = 'New Order Assigned';
+
+                if($NotificationControlIn->notification_type == 'email'){
+
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'sms'){
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+
+                }
+
+                else if($NotificationControlIn->notification_type == 'email&sms'){
+                    // email Section Start
+                    $template   = $defaultEmailTemp;
+                    $subject    = $defaultEmailTempSub;
+
+                    $catAllTemp                 = $this->getEmailTemplate($code, $typeEmail);
+                    if($catAllTemp) {
+                        $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+                        if ($templateEmailData) {
+                            $template = $templateEmailData[0]->template;
+                            $subject = $templateEmailData[0]->name;
+                            $template = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+                    $from           = $this->emailFrom;
+                    $subject        = $subject;
+                    $message        = $template;
+
+
+                    foreach ($emailTo as $emailToIn){
+                        $this->send_email($from, $emailToIn, $subject, $message);
+                    }
+                    // email Section End
+
+                    //------------------------------------
+
+                    //sms Section Start
+                    $template       = $defaultSmsTemp;
+
+                    $catAllTemp         = $this->getEmailTemplate($code, $typeSms);
+
+                    if($catAllTemp){
+                        $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+                        if($templateSmsData){
+                            $template       = $templateSmsData[0]->template;
+                            $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                        }
+                    }
+
+                    $this->sendSms($smsTo, $template);
+                    //sms Section end
+                }
+
+            }
+        }
+        return true;
     }
 
     public function sendSms($RecipientsArray, $msgBody){
@@ -328,19 +921,31 @@ class Notification_lib{
 
     public function shortCodeReplace($template, $data){
 
-        if(isset($data['firstName'])){
-            $template = str_replace('[user_first_name]',$data['firstName'],$template);
+        if(isset($data['client_first_name'])){
+            $template = str_replace('[client_first_name]',$data['client_first_name'],$template);
 
         }
-        if(isset($data['lastName'])){
-            $template = str_replace('[user_last_name]',$data['lastName'],$template);
+        if(isset($data['client_last_name'])){
+            $template = str_replace('[client_last_name]',$data['client_last_name'],$template);
         }
-        if(isset($data['userEmail'])){
-            $template = str_replace('[user_email]',$data['userEmail'],$template);
+        if(isset($data['client_email'])){
+            $template = str_replace('[client_email]',$data['client_email'],$template);
 
         }
-        if(isset($data['password'])){
-            $template = str_replace('[user_password]',$data['password'],$template);
+        if(isset($data['client_password'])){
+            $template = str_replace('[client_password]',$data['client_password'],$template);
+        }
+        if(isset($data['order_id'])){
+            $template = str_replace('[order_id]',$data['order_id'],$template);
+        }
+        if(isset($data['courier_email'])){
+            $template = str_replace('[courier_email]',$data['courier_email'],$template);
+        }
+        if(isset($data['receiver_email'])){
+            $template = str_replace('[receiver_email]',$data['receiver_email'],$template);
+        }
+        if(isset($data['receiver_name'])){
+            $template = str_replace('[receiver_name]',$data['receiver_name'],$template);
         }
 
         return $template;

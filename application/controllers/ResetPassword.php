@@ -22,6 +22,7 @@ class ResetPassword extends CI_Controller {
         //	$this->load->helper('dynmic-css-js');
         $this->load->model('User_model');
         $this->load->model('Admin_model');
+        $this->load->model('Client_model');
 
         $this->load->library('Notification_lib');
         $this->load->helper('cookie');
@@ -39,25 +40,57 @@ class ResetPassword extends CI_Controller {
             //bZCfN0yX3Dxrt2cEFQMn3gMtQDBdHAxHUt7Jl6Yjy/UhqkD0zz9lOnKwVlRM9Di99GwubbUp5Z58VUMQvDFzfA==  -- 112233
             $password       = mt_rand(100000,999999);
 
-            $email          = $_POST['email'];
-            $userId         = false;
-            $data           = $this->User_model->userEmailExistExceptId($userId ,$email);
-            $id             = $data[0]->intUserId;
+            $email                          = $_POST['email'];
+            $userId                         = false;
+            $data                           = $this->User_model->userEmailExistExceptId($userId ,$email);
+
+            if($data[0]->intUserTypeId == '5'){
+                $clientDetail               = $this->Client_model->getClientDetailsByEmail($email);
+                $client_id                  = $clientDetail[0]->client_id;
+                $clientDetail               = $this->Client_model->getPrimaryUser($client_id);
+                $data[0]->varFirstName      = $clientDetail[0]->first_name;
+                $data[0]->varLastName       = $clientDetail[0]->last_name;
+            }
+
+            $id                             = $data[0]->intUserId;
 
             $insert                         = array();
             $insert['intUserId']            = $id;
             $insert['varPassword']          = $this->encrypt->encode($password);
             $this->User_model->updateUser($insert);
 
-            $emailTo                        = array($email);
-            $smsTo                          = array($data[0]->varMobileNo);
-            $shortCodeArray                 = array();
-            $shortCodeArray['firstName']    = $data[0]->varFirstName;
-            $shortCodeArray['lastName']     = $data[0]->varLastName;
-            $shortCodeArray['userEmail']    = $data[0]->varEmailId;
-            $shortCodeArray['password']     = $password;
+            $shortCodeArray                             = array();
+            $shortCodeArray['client_first_name']        = $data[0]->varFirstName;
+            $shortCodeArray['client_last_name']         = $data[0]->varLastName;
+            $shortCodeArray['client_email']             = $data[0]->varEmailId;
+            $shortCodeArray['client_password']          = $password;
 
-            $this->custom_email->resetPasswordNotification($emailTo, $smsTo, $shortCodeArray);
+            $notificationArray                                              = array();
+            $userType                                                       = 'Client';
+            $notificationArray[$userType]                                   = array();
+
+            $notificationArray[$userType]['email']                          = array($email);
+            $notificationArray[$userType]['number']                         = array($data[0]->varMobileNoaq);
+            $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+            $userType                                                       = 'Admin';
+            $notificationArray[$userType]                                   = array();
+
+            $allAdmins          = $this->User_model->getUsersByUserType('Admin');
+            $adminEmails        = array();
+            $adminNumbers       = array();
+            if($allAdmins){
+                foreach ($allAdmins as $Admin){
+                    $adminEmails[] = $Admin->varEmailId;
+                    $adminNumbers[] = $Admin->varMobileNo;
+                }
+            }
+
+            $notificationArray[$userType]['email']                          = $adminEmails;
+            $notificationArray[$userType]['number']                         = $adminNumbers;
+            $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+            $this->notification_lib->resetPasswordNotification($notificationArray);
 
             $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Password Reset Please Check Your Email</div>');
             redirect(SITE.'ResetPassword');

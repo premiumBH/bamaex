@@ -254,6 +254,16 @@
             $this->db->delete('user');
         }
 
+        public function getUsersByUserType($userType){
+            $this->db->select('*');
+            $this->db->from('user');
+            $this->db->join('user_type', 'user.intUserTypeId = user_type.intUserTypeId');
+            $this->db->where('user_type.varUserTypeName', $userType);
+            $query		= $this->db->get();
+            $Result 	= $query->result();
+            return $Result;
+        }
+
 		
 
 }

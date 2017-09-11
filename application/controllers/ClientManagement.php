@@ -19,7 +19,7 @@ class ClientManagement extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	 
+
 	public function __construct() {
 		parent::__construct();
         $isLoggedIn = $this->session->userdata('logged_in');
@@ -38,10 +38,10 @@ class ClientManagement extends CI_Controller {
         $this->load->library('Notification_lib');
         $this->load->library('encrypt');
 
-        $this->load->helper('cookie');			 
+        $this->load->helper('cookie');
 
 	}
-	 
+
 	public function index()
 	{
         $this->load->view('backend');
@@ -232,15 +232,41 @@ class ClientManagement extends CI_Controller {
         $user_id = $this->db->insert_id();
         $this->Client_model->updatePropect($client_id, $user_id);
 
-        $emailTo                        = array($client_email);
-        $smsTo                          = array($client[0]->phone_no);
-        $shortCodeArray                 = array();
-        $shortCodeArray['firstName']    = $client[0]->company_name;
-        $shortCodeArray['lastName']     = '';
-        $shortCodeArray['userEmail']    = $client[0]->email;
-        $shortCodeArray['password']     = $password;
+        $clientDetail = $this->Client_model->getPrimaryUser($client_id);
 
-        $this->notification_lib->newClientEmailNotification($emailTo, $smsTo, $shortCodeArray);
+
+        $shortCodeArray                             = array();
+        $shortCodeArray['client_first_name']        = $clientDetail[0]->first_name;
+        $shortCodeArray['client_last_name']         = $clientDetail[0]->last_name;;
+        $shortCodeArray['client_email']             = $client[0]->email;
+        $shortCodeArray['client_password']          = $password;
+
+        $notificationArray                                              = array();
+        $userType                                                       = 'Client';
+        $notificationArray[$userType]                                   = array();
+
+        $notificationArray[$userType]['email']                          = array($client_email);
+        $notificationArray[$userType]['number']                         = array($client[0]->phone_no);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $userType                                                       = 'Admin';
+        $notificationArray[$userType]                                   = array();
+
+        $allAdmins          = $this->User_model->getUsersByUserType('Admin');
+        $adminEmails        = array();
+        $adminNumbers       = array();
+        if($allAdmins){
+            foreach ($allAdmins as $Admin){
+                $adminEmails[] = $Admin->varEmailId;
+                $adminNumbers[] = $Admin->varMobileNo;
+            }
+        }
+
+        $notificationArray[$userType]['email']                          = $adminEmails;
+        $notificationArray[$userType]['number']                         = $adminNumbers;
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $this->notification_lib->newClientEmailNotification($notificationArray);
 
         $owner_id = $this->session->userdata['UserId'];
         $owner['intUserId']= $user_id ;
@@ -253,7 +279,7 @@ class ClientManagement extends CI_Controller {
     }
 
     public function sendNotification(){
-        
+
     }
 
 	/*public function order_list()
