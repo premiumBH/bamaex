@@ -22,6 +22,7 @@
 ?>
 
             <div class="row">
+                <?php echo $this->session->flashdata('error')?>
                 <div class="col-md-12">
                     <h2>Client Management</h2>
                 </div>

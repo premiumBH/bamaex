@@ -40,6 +40,8 @@ if(isset($_REQUEST['edit-id']))
 
 			$result = $this->db->query($sqlQuery);
 
+			$userData = $result->result();
+
 			
 
 			if($result->num_rows()>0) {
@@ -79,12 +81,54 @@ if(isset($_REQUEST['edit-id']))
 
 
 
+                $allUserType                = $this->User_model->getAllUserType();
+                $allowUserType              = array();
+
+                if($this->session->all_userdata()['UserTypeCode'] == 1007){
+                    $allowUserType = array();
+                }
+                else if($this->session->all_userdata()['UserTypeCode'] == 1004){
+                    $allowUserType = array();
+                }
+                else if($this->session->all_userdata()['UserTypeCode'] == 1001){
+                    foreach ($allUserType as $allUserTypeIn){
+                        if($allUserTypeIn->intUserTypeId != 1 && $allUserTypeIn->intUserTypeId != 5){
+                            $allowUserType[] = $allUserTypeIn;
+                        }
+
+                    }
+                }
+                else if($this->session->all_userdata()['UserTypeCode'] == 1002){
+                    foreach ($allUserType as $allUserTypeIn){
+                        if($allUserTypeIn->intUserTypeId != 1 && $allUserTypeIn->intUserTypeId != 5){
+                            $allowUserType[] = $allUserTypeIn;
+                        }
+                    }
+                }
+                else if($this->session->all_userdata()['UserTypeCode'] == 1003){
+                    foreach ($allUserType as $allUserTypeIn){
+                        if($allUserTypeIn->intUserTypeId == 8){
+                            $allowUserType[] = $allUserTypeIn;
+                        }
+
+                    }
+                }
+                else if($this->session->all_userdata()['UserTypeCode'] == 1006){
+                    foreach ($allUserType as $allUserTypeIn){
+                        if($allUserTypeIn->intUserTypeId != 1 && $allUserTypeIn->intUserTypeId != 2 && $allUserTypeIn->intUserTypeId != 7 && $allUserTypeIn->intUserTypeId != 5){
+                            $allowUserType[] = $allUserTypeIn;
+                        }
+
+                    }
+                }
+
+
 		?>
 
         <!-- BEGIN PAGE BASE CONTENT -->
 
                    <div class="row">
-
+                       <?php echo $this->session->flashdata('error')?>
 				   <div class="col-md-12">
 
 				  <h2>User Registration</h2>
@@ -93,7 +137,7 @@ if(isset($_REQUEST['edit-id']))
 
 				   </div>
 
-                    <form action="<?=CTRL?>user/create" method="POST" autocomplete="off">
+                    <form action="<?=CTRL?>user/create" method="POST" id="addUserForm" autocomplete="off">
 
     				   <div class="row">
 
@@ -175,90 +219,12 @@ if(isset($_REQUEST['edit-id']))
 
                                                     <select name="staff_level_id" required class="form-control">                 
 
-                                                   <?php
-
-echo $sid1;
-
-
-
-             $UserType = ($this->session->userdata['UserType']);
-
-	$col = '';		 
-
-if($UserType == "Administrator" || $UserType == "Admin")
-
-{
-
-}
-
-else if($UserType == "Staff")
-
-{
-
-	$col = 'AND  intUserTypeId != 2';
-
-}
-
-else if($UserType == "Client")
-
-{
-
-		$col = 'AND  intUserTypeId != 2 AND  intUserTypeId != 3';
-
-}
-
-else
-
-{
-
-		$col = 'AND  intUserTypeId != 2 AND  intUserTypeId != 3 AND  intUserTypeId != 4';
-
-}
-
-			$sqlQuery = " SELECT "
-
-			                ." intUserTypeId AS id, "
-
-			                ." varUserTypeName AS name"
-
-			        ." FROM user_type where intUserTypeId != 1 $col";
-
-			$result = $this->db->query($sqlQuery);
-
-
-
-			
-
-			if($result->num_rows()>0) {
-
-                if($_REQUEST['edit-id'] != ''){
-                    foreach($result->result() AS $result11)
-
-                    {
-                        if(isset($selectedUserType) && $selectedUserType != $result11->id){
-                            if($result11->id != '5'){
-                                echo '<option value="'.$result11->id.'">'.$result11->name.'</option>';
-                            }
-
-                        }
-                    }
-                }else{
-                    foreach($result->result() AS $result11)
-                    {
-                        if($result11->id != '5'){
-                            echo '<option value="'.$result11->id.'">'.$result11->name.'</option>';
-                        }
-
-                    }
-                }
-
-
-            } 
-
-
-
-?>
-
+                                                   <?php foreach($allowUserType as $allowUserTypeIn){?>
+                                                       <option value="<?php echo $allowUserTypeIn->intUserTypeId?>"
+                                                       <?php if(isset($_REQUEST['edit-id']) && $_REQUEST['edit-id'] != '' && $allowUserTypeIn->intUserTypeId == $userData[0]->intUserTypeId){echo 'selected';}?> >
+                                                           <?php echo $allowUserTypeIn->varUserTypeName?>
+                                                       </option>
+                                                  <?php }?>
 
 
                                                 </select>
@@ -374,4 +340,12 @@ else
         $this->load->view('layout/footer');   
 
         ?>
+                <!--<script>
+                    $(function(){
+                        $('#addUserForm').submit(function () {
+                            $.post( "test.php", { func: "getNameAndTime" }, function( data ) {
 
+                            }, "json");
+                        });
+                    })
+                </script>-->

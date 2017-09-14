@@ -48,11 +48,13 @@ $this->load->view('backend');
 	      //  echo json_encode($result);
 	        if(($result['status']==true)) {
      $newdata = array(
-        'UserId'     => $result['userinfo'][0]->UserId,
-        'username'  => $result['userinfo'][0]->FirstName. ' '. $result['userinfo'][0]->FirstName,
-        'email'     => $result['userinfo'][0]->EmailId,
-        'UserType'     => $result['userinfo'][0]->UserType,
-        'logged_in' => TRUE
+         'UserId' => $result['userinfo'][0]->UserId,
+         'username' => $result['userinfo'][0]->FirstName . ' ' . $result['userinfo'][0]->FirstName,
+         'email' => $result['userinfo'][0]->EmailId,
+         'UserType' => $result['userinfo'][0]->UserType,
+         'UserTypeCode'=>$result['userinfo'][0]->UserTypeCode,
+         'UserTypeId'=>$result['userinfo'][0]->UserTypeId,
+         'logged_in' => TRUE
 );
 
            $this->session->set_userdata($newdata);

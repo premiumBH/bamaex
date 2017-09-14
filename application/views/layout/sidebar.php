@@ -31,7 +31,8 @@ else
 	$col = 'enumOther';
 }
     
-			$menu = get_menu_tree($col, 0);
+			//$menu = get_menu_tree($col, 0);
+			$menu = get_menu_tree($this->session->userdata['UserTypeId'], 0);
 			echo $menu;
 
  }

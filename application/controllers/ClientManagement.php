@@ -47,8 +47,35 @@ class ClientManagement extends CI_Controller {
         $this->load->view('backend');
 	}
 
+    public function isEmailExist(){
+        $email      = $_POST['email'];
+        $response   = array();
+        if(isset($_POST['id']) && $_POST['id'] != ''){
+            $id         = $_POST['id'];
+        }else{
+            $id         = false;
+        }
+        $isEmailExist = $this->User_model->isEmailExist($email, $id);
+        if(!empty($isEmailExist)){
+            $response['error'] = '1';
+            $response['msg'] = 'Email Already Exist. Please Enter another';
+        }else{
+            $response['error'] = '0';
+            $response['msg'] = '';
+        }
+        return $response;
+        //echo json_encode($response); exit;
+    }
+
     public  function create()
     {
+        if(isset($_POST['email'])){
+            $isEmailExist = $this->isEmailExist();
+            if($isEmailExist['error'] == 1){
+                $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                redirect(SITE.'ClientManagement/create');
+            }
+        }
         $data['client_id']=$this->input->post('client_id');
         $data['company_name']=$this->input->post('company_name');
         $data['company_website']=$this->input->post('company_website');
@@ -78,6 +105,8 @@ class ClientManagement extends CI_Controller {
             if($this->input->post('client_type') != 'CONTACT')
             {
                 $data['domestic_rates']=$this->input->post('domestic_rate');
+                $data['credit_days']=$this->input->post('credit_days');
+                $data['weight_per_price']=$this->input->post('weight_per_price');
 
                 $zones=$this->input->post('zone');
                 $zone_id=$this->input->post('zone_id');
@@ -124,6 +153,18 @@ class ClientManagement extends CI_Controller {
     }
     public function update()
     {
+
+        if(isset($_POST['email'])){
+            if($this->input->get('edit-id')){
+                $_POST['id'] = $this->input->get('edit-id');
+                $isEmailExist = $this->isEmailExist();
+                if($isEmailExist['error'] == 1){
+                    $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                    redirect(SITE.'ClientManagement/update?edit-id='.$this->input->post('edit-id'));
+                }
+            }
+
+        }
         $client_id = $this->input->get('edit-id');
         $result = $this->Client_model->getClientDetails($client_id);
         $data['company_name']=$result[0]->company_name;
@@ -137,6 +178,8 @@ class ClientManagement extends CI_Controller {
         if($data['level_id'] != 'CONTACT')
         {
             $data['domestic_rate'] = $result[0]->domestic_rates;
+            $data['credit_days'] = $result[0]->credit_days;
+            $data['weight_per_price'] = $result[0]->weight_per_price;
             //die(var_dump($this->Client_rates_model->getClientRates($client_id)));
             $data['zone_rates'] = $this->Client_rates_model->getClientRates($client_id);
             $primary_user = $this->Client_model->getPrimaryUser($client_id);

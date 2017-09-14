@@ -174,6 +174,26 @@
 
 				return true;
 		}
-		
+
+        public function insertAccessControlUserTypeRef($data){
+            $this->db->insert('access_control_user_type_ref', $data);
+		}
+
+        public function deleteAccessControlUserTypeRef($userTypeId){
+            $this->db->where('user_type_id',$userTypeId);
+            $this->db->delete('access_control_user_type_ref');
+		}
+
+        public function getAccessControlUserTypeRef($pageId = false, $userTypeId = false){
+            if($pageId){
+                $this->db->where('access_control_id',$pageId);
+            }
+            if($userTypeId){
+                $this->db->where('user_type_id',$userTypeId);
+            }
+            $query		= $this->db->get('access_control_user_type_ref');
+            $Result 	= $query->result();
+            return $Result;
+		}
 
 }

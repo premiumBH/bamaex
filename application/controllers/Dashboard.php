@@ -83,6 +83,7 @@ class Dashboard extends CI_Controller {
     }
     public function user()
     {
+        $data = array();
         $data1['UserId'] = ($this->session->userdata['UserId']);
         if($data1['UserId'] != '')
         {

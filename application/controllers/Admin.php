@@ -69,6 +69,8 @@ $this->load->view('backend');
                     'username' => $result['userinfo'][0]->FirstName . ' ' . $result['userinfo'][0]->FirstName,
                     'email' => $result['userinfo'][0]->EmailId,
                     'UserType' => $result['userinfo'][0]->UserType,
+                    'UserTypeCode'=>$result['userinfo'][0]->UserTypeCode,
+                    'UserTypeId'=>$result['userinfo'][0]->UserTypeId,
                     'profileImage' => $userProfileImage,
                     'logged_in' => TRUE
                 );

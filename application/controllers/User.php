@@ -79,7 +79,46 @@ class User extends CI_Controller {
 
 	}
 
+    public function isEmailExist(){
+        $email      = $_POST['email'];
+        $response   = array();
+        if(isset($_POST['id']) && $_POST['id'] != ''){
+            $id         = $_POST['id'];
+        }else{
+            $id         = false;
+        }
+	    $isEmailExist = $this->User_model->isEmailExist($email, $id);
+        if(!empty($isEmailExist)){
+            $response['error'] = '1';
+            $response['msg'] = 'Email Already Exist. Please Enter another';
+        }else{
+            $response['error'] = '0';
+            $response['msg'] = '';
+        }
+        return $response;
+        //echo json_encode($response); exit;
+	}
+
 	public function create() {
+
+        if(isset($_POST['email'])){
+            if($this->input->post('update_user')){
+                $_POST['id'] = $this->input->post('update_user');
+                $isEmailExist = $this->isEmailExist();
+                if($isEmailExist['error'] == 1){
+                    $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                    redirect(SITE.'user/create?edit-id='.$this->input->post('update_user'));
+                }
+            }
+            else{
+                $isEmailExist = $this->isEmailExist();
+                if($isEmailExist['error'] == 1){
+                    $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                    redirect(SITE.'user/create');
+                }
+            }
+
+        }
 
 	    $data['first_name']=$this->input->post('first_name');
 
@@ -120,10 +159,7 @@ class User extends CI_Controller {
 
 	         $this->load->view('page/create-user', $result);
 
-	        } 
-
-	        
-
+	        }
 	    }  
 
 		else if(isset($data['update_user']))

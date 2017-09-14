@@ -1,15 +1,61 @@
-// invert both files name
-D:\xampp\htdocs\bamaex\application\controllers\Admin.php
+
+
+email validation
+
+D:\xampp\htdocs\bamaex\application\models\User_model.php
+D:\xampp\htdocs\bamaex\application\controllers\User.php
+D:\xampp\htdocs\bamaex\application\views\page\create-user.php
+D:\xampp\htdocs\bamaex\application\controllers\ClientManagement.php
+D:\xampp\htdocs\bamaex\application\views\admin\create.php
+
+
+//
+D:\xampp\htdocs\bamaex\application\controllers\AccessControl.php
+D:\xampp\htdocs\bamaex\application\views\page\Access Control\pages.php
+D:\xampp\htdocs\bamaex\application\views\layout\head_script.php
+D:\xampp\htdocs\bamaex\application\models\User_model.php
+D:\xampp\htdocs\bamaex\application\models\Admin_model.php
+
+D:\xampp\htdocs\bamaex\application\controllers\Staff.php
 D:\xampp\htdocs\bamaex\application\controllers\Client.php
-invert view folder of admin and client name
-D:\xampp\htdocs\bamaex\application\views\backend.php
-D:\xampp\htdocs\bamaex\application\views\admin\login.php
+D:\xampp\htdocs\bamaex\application\controllers\Admin.php
+
+D:\xampp\htdocs\bamaex\application\views\layout\sidebar.php
+D:\xampp\htdocs\bamaex\application\helpers\sidebar_menu_helper.php
+
+
+
+create user allow type
+D:\xampp\htdocs\bamaex\application\views\page\create-user.php
 D:\xampp\htdocs\bamaex\application\controllers\Dashboard.php
+D:\xampp\htdocs\bamaex\application\controllers\Client.php
+D:\xampp\htdocs\bamaex\application\controllers\Admin.php
 
 
 
+9-09-2017
+D:\xampp\htdocs\bamaex\application\libraries\Notification_lib.php
+D:\xampp\htdocs\bamaex\application\controllers\ClientManagement.php
+D:\xampp\htdocs\bamaex\application\controllers\ResetPassword.php
+D:\xampp\htdocs\bamaex\application\models\User_model.php
+D:\xampp\htdocs\bamaex\application\views\Order\listOrders.php
+D:\xampp\htdocs\bamaex\application\controllers\OrderManagement.php
+D:\xampp\htdocs\bamaex\application\views\Order\paddingOrders.php
+D:\xampp\htdocs\bamaex\application\views\notification\smsForm.php
+D:\xampp\htdocs\bamaex\application\views\notification\form.php
 
-http://bamaex.bahrain.gq/admin/login
-Login: Admin@gmail.com
-Passwrd: admin
-http://files.bahrain.gq/metronics/metronic_v4.7.5/theme/admin_6/
+update table
+ order_pickup_status Assigned to Courier
+
+ INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '26', 'Admin');
+ INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '26', 'Courier');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '26', 'Receiver');
+
+
+
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Admin');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Supervisor');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Agent');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Client');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Manager');
+INSERT INTO `notification_users_type` (`notification_users_type_id`, `notification_category_id`, `user_type`) VALUES (NULL, '25', 'Courier');

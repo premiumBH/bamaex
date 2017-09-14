@@ -112,7 +112,9 @@
 
 			                ." (SELECT `varUserTypeName` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserType,"
 
-			                ." (SELECT `varUserTypeCode` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserTypeCode "
+			                ." (SELECT `varUserTypeCode` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserTypeCode, "
+
+                            ." (SELECT `intUserTypeId` from user_type where user_type.intUserTypeId= user.`intUserTypeId`) as UserTypeId "
 
 			        ."FROM `user` where `enumStatus`='1' AND `varEmailId`='".$data['emailId']."'";
 
@@ -264,6 +266,25 @@
             return $Result;
         }
 
-		
+        public function getUserType(){
+            $this->db->where('varUserTypeName != ','Administrator');
+            $query		= $this->db->get('user_type');
+            $Result 	= $query->result();
+            return $Result;
+        }
+        public function getAllUserType(){
+            $query		= $this->db->get('user_type');
+            $Result 	= $query->result();
+            return $Result;
+        }
 
+        public function isEmailExist($email, $id = false){
+            $this->db->where('varEmailId', $email);
+            if($id){
+                $this->db->where('intUserId != ', $id);
+            }
+            $query		= $this->db->get('user');
+            $Result 	= $query->result();
+            return $Result;
+        }
 }

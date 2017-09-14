@@ -20,7 +20,7 @@ $ci->load->database();
 
 	$menu = "";
 
-			$sqlQuery = " SELECT "
+			/*$sqlQuery = " SELECT "
 
 			                ." intID AS id,"
 
@@ -32,7 +32,24 @@ $ci->load->database();
 
 			                ." varPageSlug AS PageSlug"
 
-			        ." FROM access_control where $col = 1 and inParentId='" .$parent_id . "'";
+			        ." FROM access_control where $col = 1 and inParentId='" .$parent_id . "'";*/
+                $sqlQuery = " SELECT "
+
+                    ." intID AS id,"
+
+                    ." Label  AS label,"
+
+                    ." inParentId AS parent_id,"
+
+                    ." varIcon AS icon,"
+
+                    ." varPageSlug AS PageSlug"
+
+                    ." FROM access_control
+                     JOIN access_control_user_type_ref ON access_control.	intID = access_control_user_type_ref.access_control_id
+                     where access_control.inParentId='" .$parent_id . "'
+                     AND access_control_user_type_ref.user_type_id= '".$col."'
+                     ";
 
 			$result = $ci->db->query($sqlQuery);
 
@@ -124,6 +141,20 @@ function hasSubMenu($col, $parent_id){
 
     $menu = "";
 
+/*    $sqlQuery = " SELECT "
+
+        ." intID AS id,"
+
+        ." Label  AS label,"
+
+        ." inParentId AS parent_id,"
+
+        ." varIcon AS icon,"
+
+        ." varPageSlug AS PageSlug"
+
+        ." FROM access_control where $col = 1 and inParentId='" .$parent_id . "'";*/
+
     $sqlQuery = " SELECT "
 
         ." intID AS id,"
@@ -136,7 +167,10 @@ function hasSubMenu($col, $parent_id){
 
         ." varPageSlug AS PageSlug"
 
-        ." FROM access_control where $col = 1 and inParentId='" .$parent_id . "'";
+        ." FROM access_control
+                     JOIN access_control_user_type_ref ON access_control.	intID = access_control_user_type_ref.access_control_id
+                     where access_control.inParentId='" .$parent_id . "'
+                     AND access_control_user_type_ref.user_type_id= '".$col."'";
 
     $result = $ci->db->query($sqlQuery);
 

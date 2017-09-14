@@ -11,8 +11,8 @@
             
         }	  
         $varPageSlug = $this->uri->uri_string();
-        $UserType = ($this->session->userdata['UserType']);			 
-        if($UserType == "Administrator" || $UserType == "Admin")
+        $UserTypeId = ($this->session->userdata['UserTypeId']);
+        /*if($UserType == "Administrator" || $UserType == "Admin")
         {	
             $col = 'enumAdministrator';
             
@@ -28,15 +28,31 @@
         }else
         {	$col = 'enumOther';
         
-        }			
-                $sqlQuery = " SELECT "
+        }*/
+        $sqlQuery           = " SELECT "
+                                ." intID AS id,"
+                                ." varPageSlug AS PageSlug"
+                                ." FROM access_control where varPageSlug='" .$varPageSlug . "'";
+        $result             = $this->db->query($sqlQuery);
+        if($result->num_rows()>0){
+            $pageData       = $result->result();
+            $pageId         = $pageData[0]->id;
+            $ci =&get_instance();
+            $ci->load->model('Admin_model');
+            $pageAccessData = $ci->Admin_model->getAccessControlUserTypeRef($pageId, $UserTypeId);
+            if(empty($pageAccessData)){
+                show_404(); //redirect(CTRL.'404');
+            }
+        }
+
+                /*$sqlQuery = " SELECT "
                         ." intID AS id,"
                         ." varPageSlug AS PageSlug"
                         ." FROM access_control where $col = 0 and varPageSlug='" .$varPageSlug . "'";
-                $result = $this->db->query($sqlQuery);
-                if($result->num_rows()>0) {				  
+                 = $this->db->query($sqlQuery);
+                if($result->num_rows()>0) {
                     show_404(); //redirect(CTRL.'404');
-                }			
+                }		*/
         ?> 
 <head>        
     <meta charset="utf-8" />        
