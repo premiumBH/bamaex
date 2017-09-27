@@ -61,10 +61,12 @@ class AccessControl extends CI_Controller {
             if($result['status']==true) {
 
                 $data['result1'] = $this->Admin_model->get_pages($data);
+                redirect(SITE.'pages');
                 $this->load->view('page/Access Control/pages', $data);
             }
             else {
                 $data['result1'] = $this->Admin_model->get_pages($data);
+                redirect(SITE.'pages');
                 $this->load->view('page/Access Control/pages', $data);
             }
 
@@ -76,10 +78,12 @@ class AccessControl extends CI_Controller {
             if($result['status']==true) {
 
                 $data['result1'] = $this->Admin_model->get_pages($data);
+                redirect(SITE.'pages');
                 $this->load->view('page/Access Control/pages', $data);
             }
             else {
                 $data['result1'] = $this->Admin_model->get_pages($data);
+                redirect(SITE.'pages');
                 $this->load->view('page/Access Control/pages', $data);
             }
 

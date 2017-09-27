@@ -59,12 +59,12 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['email'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
+                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['client_email'].'</p> <br/><p> Password: '.$shortCodeArray['client_password'].'</p>';
 
 
                 $defaultSmsTemp                 = 'New Client Email
-                        Email: '.$shortCodeArray['userEmail'].' 
-                        Password: '.$shortCodeArray['password'].'';
+                        Email: '.$shortCodeArray['client_email'].' 
+                        Password: '.$shortCodeArray['client_password'].'';
 
                 $defaultEmailTempSub            = 'New Client Email';
 
@@ -168,11 +168,11 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['userEmail'].'</p> <br/><p> Password: '.$shortCodeArray['password'].'</p>';
+                $defaultEmailTemp               = '<h3>Login Detail</h3><br/> <p>Email: '.$shortCodeArray['client_email'].'</p> <br/><p> Password: '.$shortCodeArray['client_password'].'</p>';
 
                 $defaultSmsTemp                 = 'New Client Email
-                        Email: '.$shortCodeArray['userEmail'].' 
-                        Password: '.$shortCodeArray['password'].'';
+                        Email: '.$shortCodeArray['client_email'].' 
+                        Password: '.$shortCodeArray['client_password'].'';
 
                 $defaultEmailTempSub            = 'New Client Email';
 
@@ -290,10 +290,10 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
+                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['client_password'].'</b>';
 
                 $defaultSmsTemp                 = 'Reset Password
-                        Password: '.$shortCodeArray['password'].'';
+                        Password: '.$shortCodeArray['client_password'].'';
 
                 $defaultEmailTempSub            = 'Reset Password';
 
@@ -397,10 +397,10 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['password'].'</b>';
+                $defaultEmailTemp               = '<b>Your new password is '.$shortCodeArray['client_password'].'</b>';
 
                 $defaultSmsTemp                 = 'Reset Password
-                        Password: '.$shortCodeArray['password'].'';
+                        Password: '.$shortCodeArray['client_password'].'';
 
                 $defaultEmailTempSub            = 'Reset Password';
 
@@ -520,9 +520,9 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<b>New Order Assigned. Order ID is  '.$shortCodeArray['orderId'].'</b>';
+                $defaultEmailTemp               = '<b>New Order Assigned. Order ID is  '.$shortCodeArray['order_id'].'</b>';
 
-                $defaultSmsTemp                 = 'New Order Assigned. Order ID is  '.$shortCodeArray['orderId'].'';
+                $defaultSmsTemp                 = 'New Order Assigned. Order ID is  '.$shortCodeArray['order_id'].'';
 
                 $defaultEmailTempSub            = 'New Order Assigned';
 
@@ -626,9 +626,9 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<b>Your Order ID '.$shortCodeArray['orderId'].' is Assigned to Courier.</b>';
+                $defaultEmailTemp               = '<b>Your Order ID '.$shortCodeArray['order_id'].' is Assigned to Courier.</b>';
 
-                $defaultSmsTemp                 = 'Your Order ID '.$shortCodeArray['orderId'].' is Assigned to Courier.';
+                $defaultSmsTemp                 = 'Your Order ID '.$shortCodeArray['order_id'].' is Assigned to Courier.';
 
                 $defaultEmailTempSub            = 'Order Assigned to Courier';
 
@@ -732,9 +732,9 @@ class Notification_lib{
                 $emailTo                            = $data[$userType]['email'];
                 $smsTo                              = $data[$userType]['number'];
 
-                $defaultEmailTemp               = '<b>New Order Assigned Courier. Order ID is  '.$shortCodeArray['orderId'].' And Courier Email is '.$shortCodeArray['courierName'].'</b>';
+                $defaultEmailTemp               = '<b>New Order Assigned Courier. Order ID is  '.$shortCodeArray['order_id'].' And Courier Email is '.$shortCodeArray['courier_email'].'</b>';
 
-                $defaultSmsTemp                 = 'New Order Assigned Courier. Order ID is  '.$shortCodeArray['orderId'].' And Courier Email is '.$shortCodeArray['courierName'].'';
+                $defaultSmsTemp                 = 'New Order Assigned Courier. Order ID is  '.$shortCodeArray['order_id'].' And Courier Email is '.$shortCodeArray['courier_email'].'';
 
                 $defaultEmailTempSub            = 'New Order Assigned';
 

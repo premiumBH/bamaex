@@ -16,19 +16,21 @@ class Order_model extends CI_Model
     }
 
     public function insertOrderCourierManRef($data){
-        $this->deleteOrderCourierManRef($data['order_id']);
+        $this->deleteOrderCourierManRef($data['order_id'], $data['type']);
         $this->db->insert('order_courier_man_ref', $data);
         return $this->db->insert_id();
     }
-    public function getOrderCourierManByOrderId($orderId){
+    public function getOrderCourierManByOrderId($orderId, $type){
         $this->db->where('order_id', $orderId);
+        $this->db->where('type', $type);
         $query		= $this->db->get('order_courier_man_ref');
         $Result 	= $query->result();
         return $Result;
     }
 
-    public function deleteOrderCourierManRef($orderId){
+    public function deleteOrderCourierManRef($orderId, $type){
         $this->db->where('order_id',$orderId);
+        $this->db->where('type', $type);
         $this->db->delete('order_courier_man_ref');
         return true;
     }
@@ -36,6 +38,11 @@ class Order_model extends CI_Model
     public function updateOrderStatus($data){
         $this->db->where('order_id', $data['order_id']);
         $this->db->update('order_details',$data);
+        return true;
+    }
+    public function updateOrderStatusInPayments($data){
+        $this->db->where('order_id', $data['order_id']);
+        $this->db->update('order_payments',$data);
         return true;
     }
     public function getOrderReceiverByOrderId($orderId){

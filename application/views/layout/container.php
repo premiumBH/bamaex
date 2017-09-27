@@ -10,6 +10,7 @@
                         </li>
                     </ul>
                     <!-- END BREADCRUMBS -->
+                    <?php if($this->session->userdata('UserType') == 'Admin'){?>
                     <div class="content-header-menu">
                         <!-- BEGIN DROPDOWN AJAX MENU -->
                         <div class="dropdown-ajax-menu btn-group">
@@ -44,6 +45,7 @@
                         </button>
                         <!-- END MENU TOGGLER -->
                     </div>
+                    <?php } ?>
                 </div>
     <?php
         $this->load->view('layout/sidebar');

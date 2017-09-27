@@ -188,6 +188,19 @@ var TableDatatablesButtons = function () {
         });
     }
 
+    var initTable4 = function () {
+        var table = $('#datatable_ajax');
+
+        var oTable = table.dataTable({
+        });
+
+        // handle datatable custom tools
+        $('#datatable_ajax_tools > li > a.tool-action').on('click', function() {
+            var action = $(this).attr('data-action');
+            table.DataTable().button(action).trigger();
+        });
+    }
+
     var initAjaxDatatables = function () {
 
         //init date pickers
@@ -201,6 +214,7 @@ var TableDatatablesButtons = function () {
         grid.init({
             src: $("#datatable_ajax"),
             onSuccess: function (grid, response) {
+                response.data = [];
                 // grid:        grid object
                 // response:    json object of server side ajax response
                 // execute some code after table records loaded
@@ -310,8 +324,9 @@ var TableDatatablesButtons = function () {
             initTable1();
             initTable2();
             initTable3();
+            initTable4();
 
-            initAjaxDatatables();
+            //initAjaxDatatables();
         }
 
     };
