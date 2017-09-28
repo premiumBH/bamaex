@@ -4,46 +4,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class OrderManagement extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
-	 
-	public function __construct() {
-		parent::__construct();
+    /**
+     * Index Page for this controller.
+     *
+     * Maps to the following URL
+     * 		http://example.com/index.php/welcome
+     *	- or -
+     * 		http://example.com/index.php/welcome/index
+     *	- or -
+     * Since this controller is set as the default controller in
+     * config/routes.php, it's displayed at http://example.com/
+     *
+     * So any other public methods not prefixed with an underscore will
+     * map to /index.php/welcome/<method_name>
+     * @see https://codeigniter.com/user_guide/general/urls.html
+     */
+
+    public function __construct() {
+        parent::__construct();
         $isLoggedIn = $this->session->userdata('logged_in');
         if(!$isLoggedIn){
             redirect(SITE.'backend');
         }
-		$this->load->database();
+        $this->load->database();
 
-	//	$this->load->helper('dynmic-css-js');
-		$this->load->model('User_model');
-		$this->load->model('Admin_model');
-		$this->load->model('Order_model');
-		$this->load->model('Order_management_model');
+        //	$this->load->helper('dynmic-css-js');
+        $this->load->model('User_model');
+        $this->load->model('Admin_model');
+        $this->load->model('Order_model');
+        $this->load->model('Order_management_model');
         $this->load->library('Notification_lib');
 
-        $this->load->helper('cookie');			 
+        $this->load->helper('cookie');
 
-	}
-	 
-	public function index()
-	{
-$this->load->view('backend');
-	//  
-	}
+    }
+
+    public function index()
+    {
+        $this->load->view('backend');
+        //
+    }
 
     public function orderList(){
         $viewData                   = array();
@@ -87,6 +87,9 @@ $this->load->view('backend');
         $updateOrderData['order_id']        = $orderId;
         $updateOrderData['order_status']    = $_POST['orderStatus'];
         $this->Order_model->updateOrderStatus($updateOrderData);
+        $_POST['orderId']               = $orderId;
+        $_POST['OrderStatusId']         = $_POST['orderStatus'];
+        $this->orderTracking('pickup');
     }
 
     public function SendNotification($courierManId){
@@ -400,7 +403,7 @@ $this->load->view('backend');
             $orders                                             = $this->Order_management_model->getDeliveryStatusOrder($mData);
             $viewData['orderQuery']                             = str_replace("\n"," ",$this->db->last_query());
             $viewData['orders']                                 = $orders;
-             $viewData['orderStatuses']                          = $this->db->query('select * from order_pickup_status')->result();
+            $viewData['orderStatuses']                          = $this->db->query('select * from order_pickup_status')->result();
             $viewData['domesticDeliveryStatus']                 = $this->db->query('select * from domestic_delivery_status')->result();
             $viewData['expressDeliveryStatus']                  = $this->db->query('select * from express_delivery_status')->result();
             $viewData['preFillStatus']                          = true;
@@ -610,6 +613,7 @@ $this->load->view('backend');
     public function changeOrderStatusPickUp(){
         $orderId                            = $_POST['orderId'];
         $orderStatus                        = $_POST['OrderStatusId'];
+        $this->orderTracking('pickup');
         $updateOrderData                    = array();
         $updateOrderData['order_id']        = $orderId;
         $updateOrderData['order_status']    = $orderStatus;
@@ -630,6 +634,7 @@ $this->load->view('backend');
     public function changeOrderStatusDelivery(){
         $orderId                            = $_POST['orderId'];
         $orderStatus                        = $_POST['OrderStatusId'];
+        $this->orderTracking('delivery');
         $updateOrderData                    = array();
         $updateOrderData['order_id']        = $orderId;
         //$updateOrderData['order_status']    = $orderStatus;
@@ -641,6 +646,53 @@ $this->load->view('backend');
         $updateOrderData['order_status']    = $orderStatus;
         $this->Order_model->updateOrderStatusInPayments($updateOrderData);
         redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function orderTracking($type){
+        $orderId                                            = $_POST['orderId'];
+        $orderStatusId                                      = $_POST['OrderStatusId'];
+        $mData                                              = array();
+        $mData['orderId']                                   = $orderId;
+        $orderData                                          = $this->Order_management_model->orderRegion($mData);
+
+        if(!empty($orderData)){
+
+            if($type == 'pickup'){
+                $orderStatusData                        = $this->Order_management_model->getStatusById('order_pickup_status',$orderStatusId);
+
+            }else if($type == 'delivery'){
+
+                if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
+
+                    $orderStatusData                    = $this->Order_management_model->getStatusById('domestic_delivery_status',$orderStatusId);
+                }else{
+
+                    $orderStatusData                    = $this->Order_management_model->getStatusById('express_delivery_status',$orderStatusId);
+                }
+            }
+
+            $insert                                 = array();
+            $insert['order_id']                     = $orderId;
+            //$insert['order_status_id']              = $orderStatusId;
+            if(!empty($orderStatusData)){
+                $insert['catalog_subject']          = $orderStatusData[0]->status;
+                $insert['catalog_info']             = $orderStatusData[0]->status;
+            }else{
+                $insert['catalog_subject']          = 'Order Status Not Exist';
+                $insert['catalog_info']             = 'Order Status Not Exist';
+            }
+
+            $insert['updated_by']                   = 'admin';
+            $insert['created_by']                   = 'admin';
+            $insert['shipper_id']                   = '';
+
+            if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
+                $this->Order_management_model->insertOrderTracking('domestic_order_catalog', $insert);
+            }else {
+                $this->Order_management_model->insertOrderTracking('international_order_catalog', $insert);
+            }
+        }
+
     }
 
 
@@ -790,7 +842,7 @@ $this->load->view('backend');
                         if ($courierMenIn->intUserId) {
                             $temp .= '<option value="' . $courierMenIn->intUserId . '"';
                             if($courierMenIn->intUserId == $order->CMID){
-                            $temp .= "selected";
+                                $temp .= "selected";
                             }
                             $temp .= '>';
                             $temp .= $courierMenIn->varEmailId;
@@ -1016,36 +1068,36 @@ $this->load->view('backend');
                                     <label for="sel1">Update status:</label>
                                     <select class="form-control OrderStatus" id="OrderStatus-' . $order->order_id . '">
                                     <option value="">Select Status </option>';
-                                            foreach ($domesticDeliveryStatus as $domesticDeliveryStatusIn) {
-                                                if ($domesticDeliveryStatusIn->id) {
-                                                    $temp .= '<option value="' . $domesticDeliveryStatusIn->id . '"';
-                                                    if ($_POST['preFillStatus'] == 'yes' && $domesticDeliveryStatusIn->id == $order->order_delivery_status) {
-                                                        $temp .= "selected";
-                                                    }
-                                                    $temp .= '>';
-                                                    $temp .= $domesticDeliveryStatusIn->status;
-                                                    $temp .= '</option>';
-                                                }
-                                            }
-                                            $temp .= '    </select>
+                        foreach ($domesticDeliveryStatus as $domesticDeliveryStatusIn) {
+                            if ($domesticDeliveryStatusIn->id) {
+                                $temp .= '<option value="' . $domesticDeliveryStatusIn->id . '"';
+                                if ($_POST['preFillStatus'] == 'yes' && $domesticDeliveryStatusIn->id == $order->order_delivery_status) {
+                                    $temp .= "selected";
+                                }
+                                $temp .= '>';
+                                $temp .= $domesticDeliveryStatusIn->status;
+                                $temp .= '</option>';
+                            }
+                        }
+                        $temp .= '    </select>
                                     </div>';
                     }else{
                         $temp .= '<div class="form-group">
                                     <label for="sel1">Update status:</label>
                                     <select class="form-control OrderStatus" id="OrderStatus-'.$order->order_id.'">
                                     <option value="">Select Status </option>';
-                                            foreach ($expressDeliveryStatus as $expressDeliveryStatusIn) {
-                                                if ($expressDeliveryStatusIn->id) {
-                                                    $temp .= '<option value="'.$expressDeliveryStatusIn->id.'"';
-                                                    if ($_POST['preFillStatus'] == 'yes' && $expressDeliveryStatusIn->id == $order->order_delivery_status) {
-                                                        $temp .= "selected";
-                                                    }
-                                                    $temp .= '>';
-                                                    $temp .= $expressDeliveryStatusIn->status;
-                                                    $temp .= '</option>';
-                                                }
-                                            }
-                                            $temp .= '    </select>
+                        foreach ($expressDeliveryStatus as $expressDeliveryStatusIn) {
+                            if ($expressDeliveryStatusIn->id) {
+                                $temp .= '<option value="'.$expressDeliveryStatusIn->id.'"';
+                                if ($_POST['preFillStatus'] == 'yes' && $expressDeliveryStatusIn->id == $order->order_delivery_status) {
+                                    $temp .= "selected";
+                                }
+                                $temp .= '>';
+                                $temp .= $expressDeliveryStatusIn->status;
+                                $temp .= '</option>';
+                            }
+                        }
+                        $temp .= '    </select>
                                     </div>';
                     }
 
@@ -1062,7 +1114,7 @@ $this->load->view('backend');
         }
     }
     //Search function End
-	
+
 }
 
 
