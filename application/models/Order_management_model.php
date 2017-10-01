@@ -135,11 +135,11 @@ class Order_management_model extends CI_Model
 
         if($data['OrderType'] == 'dom'){
             $statusTable = 'domestic_delivery_status';
-            $ignore = array(1,2,3,4,5,7,12);
+            $ignore = array(1,2,3,4,5,7,17);
 
         }else{
             $statusTable = 'express_delivery_status';
-            $ignore = array(1,9,8,10,11,13,18);
+            $ignore = array(1,9,8,10,11,13,22);
         }
         $this->db->select('order_details.*, 
                             order_payments.*, 

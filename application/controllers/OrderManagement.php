@@ -317,7 +317,7 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Assigned to courier';
+            $viewData['title']                                  = 'Assign delivery to Courier';
             $viewData['orderStatus']                            = 1;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -333,6 +333,17 @@ class OrderManagement extends CI_Controller {
                     $orders[$key]->CMID                 = $OrderCourierManRef[0]->courier_man_id;
                 }else{
                     $orders[$key]->CMID                 = 0;
+                }
+                if(!empty($OrderCourierManRef)){
+                    $userData = $this->db->query('select * from user where 	intUserId = '.$OrderCourierManRef[0]->courier_man_id.'')->result();
+                    if(!empty($userData)){
+                        $orders[$key]->CMName                 = $userData[0]->varEmailId;
+                    }else{
+                        $orders[$key]->CMName                 = 'Courier Not Exist';
+                    }
+
+                }else{
+                    $orders[$key]->CMName                 = 'Not Assign';
                 }
             }
 
@@ -341,12 +352,15 @@ class OrderManagement extends CI_Controller {
             $viewData['domesticDeliveryStatus']                 = $this->db->query('select * from domestic_delivery_status')->result();
             $viewData['expressDeliveryStatus']                  = $this->db->query('select * from express_delivery_status')->result();
             $viewData['preFillStatus']                          = true;
+            $viewData['IsShowCourierCol']                       = true;
+            $viewData['showCourierAssignedName']                = true;
+            $viewData['showCourierAssignedNameTitle']           = 'Delivery Agent Assigned';
             $this->load->view('orderManagament/deliveryOrderListing', $viewData);
 
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Assigned to Agent';
+            $viewData['title']                                  = 'Assign delivery to Agent';
             $viewData['orderStatus']                            = 1;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -360,8 +374,20 @@ class OrderManagement extends CI_Controller {
                 $OrderCourierManRef                     = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
                 if(!empty($OrderCourierManRef)){
                     $orders[$key]->CMID                 = $OrderCourierManRef[0]->courier_man_id;
+
                 }else{
                     $orders[$key]->CMID                 = 0;
+                }
+                if(!empty($OrderCourierManRef)){
+                    $userData = $this->db->query('select * from user where 	intUserId = '.$OrderCourierManRef[0]->courier_man_id.'')->result();
+                    if(!empty($userData)){
+                        $orders[$key]->CMName                 = $userData[0]->varEmailId;
+                    }else{
+                        $orders[$key]->CMName                 = 'Courier Not Exist';
+                    }
+
+                }else{
+                    $orders[$key]->CMName                 = 'Not Assign';
                 }
             }
             $viewData['courierMen']                             = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 4')->result();
@@ -369,6 +395,9 @@ class OrderManagement extends CI_Controller {
             $viewData['domesticDeliveryStatus']                 = $this->db->query('select * from domestic_delivery_status')->result();
             $viewData['expressDeliveryStatus']                  = $this->db->query('select * from express_delivery_status')->result();
             $viewData['preFillStatus']                          = true;
+            $viewData['IsShowCourierCol']                       = true;
+            $viewData['showCourierAssignedName']                = true;
+            $viewData['showCourierAssignedNameTitle']           = 'Delivery Agent Assigned';
             $this->load->view('orderManagament/deliveryOrderListing', $viewData);
 
         }
@@ -536,7 +565,7 @@ class OrderManagement extends CI_Controller {
 
             $viewData                                           = array();
             $viewData['title']                                  = 'Returned Order';
-            $viewData['orderStatus']                            = 12;
+            $viewData['orderStatus']                            = 17;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
             $mData['OrderType']                                 = $type;
@@ -555,7 +584,7 @@ class OrderManagement extends CI_Controller {
 
             $viewData                                           = array();
             $viewData['title']                                  = 'Returned Order';
-            $viewData['orderStatus']                            = 18;
+            $viewData['orderStatus']                            = 22;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
             $mData['OrderType']                                 = $type;
@@ -584,10 +613,35 @@ class OrderManagement extends CI_Controller {
             $orders                                             = $this->Order_management_model->getAllOtherDeliveryStatusOrder($mData);
             $viewData['orderQuery']                             = str_replace("\n"," ",$this->db->last_query());
             $viewData['orders']                                 = $orders;
+            foreach ($orders as $key=>$order){
+
+                $orderId                                = $order->order_id;
+                $OrderCourierManRef                     = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
+                if(!empty($OrderCourierManRef)){
+                    $orders[$key]->CMID                 = $OrderCourierManRef[0]->courier_man_id;
+                }else{
+                    $orders[$key]->CMID                 = 0;
+                }
+                if(!empty($OrderCourierManRef)){
+                    $userData = $this->db->query('select * from user where 	intUserId = '.$OrderCourierManRef[0]->courier_man_id.'')->result();
+                    if(!empty($userData)){
+                        $orders[$key]->CMName                 = $userData[0]->varEmailId;
+                    }else{
+                        $orders[$key]->CMName                 = 'Courier Not Exist';
+                    }
+
+                }else{
+                    $orders[$key]->CMName                 = 'Not Assign';
+                }
+            }
             $viewData['orderStatuses']                          = $this->db->query('select * from order_pickup_status')->result();
             $viewData['domesticDeliveryStatus']                 = $this->db->query('select * from domestic_delivery_status')->result();
             $viewData['expressDeliveryStatus']                  = $this->db->query('select * from express_delivery_status')->result();
             $viewData['preFillStatus']                          = true;
+            $viewData['IsShowCourierCol']                       = true;
+            $viewData['hideUpdateCourier']                      = true;
+            $viewData['showCourierAssignedName']                = true;
+            $viewData['showCourierAssignedNameTitle']           = 'Delivery Courier Assigned';
             $this->load->view('orderManagament/deliveryOrderListing', $viewData);
 
         }else {
@@ -601,10 +655,35 @@ class OrderManagement extends CI_Controller {
             $orders                                             = $this->Order_management_model->getAllOtherDeliveryStatusOrder($mData);
             $viewData['orderQuery']                             = str_replace("\n"," ",$this->db->last_query());
             $viewData['orders']                                 = $orders;
+            foreach ($orders as $key=>$order){
+
+                $orderId                                = $order->order_id;
+                $OrderCourierManRef                     = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
+                if(!empty($OrderCourierManRef)){
+                    $orders[$key]->CMID                 = $OrderCourierManRef[0]->courier_man_id;
+                }else{
+                    $orders[$key]->CMID                 = 0;
+                }
+                if(!empty($OrderCourierManRef)){
+                    $userData = $this->db->query('select * from user where 	intUserId = '.$OrderCourierManRef[0]->courier_man_id.'')->result();
+                    if(!empty($userData)){
+                        $orders[$key]->CMName                 = $userData[0]->varEmailId;
+                    }else{
+                        $orders[$key]->CMName                 = 'Courier Not Exist';
+                    }
+
+                }else{
+                    $orders[$key]->CMName                 = 'Not Assign';
+                }
+            }
             $viewData['orderStatuses']                          = $this->db->query('select * from order_pickup_status')->result();
             $viewData['domesticDeliveryStatus']                 = $this->db->query('select * from domestic_delivery_status')->result();
             $viewData['expressDeliveryStatus']                  = $this->db->query('select * from express_delivery_status')->result();
             $viewData['preFillStatus']                          = true;
+            $viewData['IsShowCourierCol']                       = true;
+            $viewData['hideUpdateCourier']                      = true;
+            $viewData['showCourierAssignedName']                = true;
+            $viewData['showCourierAssignedNameTitle']           = 'Delivery Agent Assigned';
             $this->load->view('orderManagament/deliveryOrderListing', $viewData);
 
         }
@@ -637,9 +716,23 @@ class OrderManagement extends CI_Controller {
         $this->orderTracking('delivery');
         $updateOrderData                    = array();
         $updateOrderData['order_id']        = $orderId;
-        //$updateOrderData['order_status']    = $orderStatus;
         $updateOrderData['order_delivery_status']    = $orderStatus;
-        //$updateOrderData['order_state']    = '';
+
+        $mData                                              = array();
+        $mData['orderId']                                   = $orderId;
+        $orderData                                          = $this->Order_management_model->orderRegion($mData);
+        if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
+            if($_POST['OrderStatusId'] == '7' || $_POST['OrderStatusId'] == '17'){
+                $updateOrderData['order_state']    = '1';
+            }
+        }else if(isset($orderData[0]->countryId) && $orderData[0]->countryId != 15){
+            if($_POST['OrderStatusId'] == '13' || $_POST['OrderStatusId'] == '22'){
+                $updateOrderData['order_state']    = '1';
+            }
+        }
+
+        //$updateOrderData['order_status']    = $orderStatus;
+
         $this->Order_model->updateOrderStatus($updateOrderData);
         $updateOrderData                    = array();
         $updateOrderData['order_id']        = $orderId;
@@ -1005,11 +1098,22 @@ class OrderManagement extends CI_Controller {
 
         foreach ($orders as $key=>$order){
             $orderId                        = $order->order_id;
-            $OrderCourierManRef             = $this->Order_model->getOrderCourierManByOrderId($orderId,'pickup');
+            $OrderCourierManRef             = $this->Order_model->getOrderCourierManByOrderId($orderId,'delivery');
             if(!empty($OrderCourierManRef)){
                 $orders[$key]->CMID         = $OrderCourierManRef[0]->courier_man_id;
             }else{
                 $orders[$key]->CMID         = 0;
+            }
+            if(!empty($OrderCourierManRef)){
+                $userData = $this->db->query('select * from user where 	intUserId = '.$OrderCourierManRef[0]->courier_man_id.'')->result();
+                if(!empty($userData)){
+                    $orders[$key]->CMName                 = $userData[0]->varEmailId;
+                }else{
+                    $orders[$key]->CMName                 = 'Courier Not Exist';
+                }
+
+            }else{
+                $orders[$key]->CMName                 = 'Not Assign';
             }
         }
         $viewData['orders']             = $orders;
@@ -1034,15 +1138,23 @@ class OrderManagement extends CI_Controller {
                     if($order->CMID == 0){
                         $temp .= "<td></td>";
                     }else{
-                        $temp .= "<td>Courier Assigned</td>";
-
+                        if(isset($order->CMName) && $order->CMName != ''){
+                            $temp .= "<td>".$order->CMName."</td>";
+                        }else{
+                            $temp .= "<td></td>";
+                        }
                     }
 
                 }
                 $temp .=  '<td>';
 
                 //courier data start
-                if($_POST['IsShowCourierCol'] == 'yes') {
+                if($_POST['IsShowCourierCol'] == 'yes' && $_POST['hideUpdateCourier'] == 'no') {
+                    if($order->countryId == 15){
+                        $courierMen                     = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 8')->result();
+                    }else if($order->countryId != 15){
+                        $courierMen                     = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 4')->result();
+                    }
 
                     $temp .= '   <div class="form-group">
                                     <label for="sel1">Assign courier:</label>
@@ -1051,7 +1163,9 @@ class OrderManagement extends CI_Controller {
                     foreach ($courierMen as $courierMenIn) {
                         if ($courierMenIn->intUserId) {
                             $temp .= '<option value="'.$courierMenIn->intUserId.'"';
-                            $temp .= "selected";
+                            if($courierMenIn->intUserId == $order->CMID) {
+                                $temp .= "selected";
+                            }
                             $temp .= '>';
                             $temp .= $courierMenIn->varEmailId;
                             $temp .= '</option>';

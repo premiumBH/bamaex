@@ -4,31 +4,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ClientManagement extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+    /**
+     * Index Page for this controller.
+     *
+     * Maps to the following URL
+     * 		http://example.com/index.php/welcome
+     *	- or -
+     * 		http://example.com/index.php/welcome/index
+     *	- or -
+     * Since this controller is set as the default controller in
+     * config/routes.php, it's displayed at http://example.com/
+     *
+     * So any other public methods not prefixed with an underscore will
+     * map to /index.php/welcome/<method_name>
+     * @see https://codeigniter.com/user_guide/general/urls.html
+     */
 
-	public function __construct() {
-		parent::__construct();
+    public function __construct() {
+        parent::__construct();
         $isLoggedIn = $this->session->userdata('logged_in');
         if(!$isLoggedIn){
             redirect(SITE.'backend');
         }
-		$this->load->database();
+        $this->load->database();
 
-	//	$this->load->helper('dynmic-css-js');
+        //	$this->load->helper('dynmic-css-js');
         $this->load->model('User_model');
         $this->load->model('Zone_model');
         $this->load->model('Client_model');
@@ -40,12 +40,12 @@ class ClientManagement extends CI_Controller {
 
         $this->load->helper('cookie');
 
-	}
+    }
 
-	public function index()
-	{
+    public function index()
+    {
         $this->load->view('backend');
-	}
+    }
 
     public function isEmailExist(){
         $email      = $_POST['email'];
@@ -69,13 +69,8 @@ class ClientManagement extends CI_Controller {
 
     public  function create()
     {
-        if(isset($_POST['email'])){
-            $isEmailExist = $this->isEmailExist();
-            if($isEmailExist['error'] == 1){
-                $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
-                redirect(SITE.'ClientManagement/create');
-            }
-        }
+
+
         $data['client_id']=$this->input->post('client_id');
         $data['company_name']=$this->input->post('company_name');
         $data['company_website']=$this->input->post('company_website');
@@ -91,6 +86,29 @@ class ClientManagement extends CI_Controller {
         $data['level_id']=$this->Client_type->getLevelid($this->input->post('client_type'));
 
         //$data['level_id']='1';
+        if(isset($data['add_new_client']) && $data['add_new_client'] == '1'){
+            if(isset($_POST['email'])){
+                $isEmailExist = $this->isEmailExist();
+                if($isEmailExist['error'] == 1){
+                    $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                    redirect(SITE.'ClientManagement/create');
+                }
+            }
+        }else if(isset($data['update_client']) && $data['update_client'] == '1'){
+
+            if(isset($_POST['email'])){
+                if($this->input->get('edit-id')){
+                    $_POST['id'] = $this->input->get('edit-id');
+                    $isEmailExist = $this->isEmailExist();
+                    if($isEmailExist['error'] == 1){
+                        $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible">Email Already Exist</div>');
+                        redirect(SITE.'ClientManagement/update?edit-id='.$this->input->post('edit-id'));
+                    }
+                }
+
+            }
+
+        }
 
 
 
@@ -195,13 +213,13 @@ class ClientManagement extends CI_Controller {
     }
 
     public function deleteClient($clientId){
-	    $clientData = $this->Client_model->getClientDetailsByID($clientId);
-	    if($clientData && isset($clientData[0]->intUserId) && $clientData[0]->intUserId != ''){
-	        $userId = $clientData[0]->intUserId;
+        $clientData = $this->Client_model->getClientDetailsByID($clientId);
+        if($clientData && isset($clientData[0]->intUserId) && $clientData[0]->intUserId != ''){
+            $userId = $clientData[0]->intUserId;
         }
-	    $this->Client_model->deleteClient($clientId, $userId);
+        $this->Client_model->deleteClient($clientId, $userId);
         $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible">Client has deleted successfully</div>');
-	    redirect(SITE.'dashboard/client');
+        redirect(SITE.'dashboard/client');
     }
     public function toProspect()
     {
@@ -325,38 +343,38 @@ class ClientManagement extends CI_Controller {
 
     }
 
-	/*public function order_list()
-	{
-	        $this->load->view('page/Client Management/Table of clients/client-order-list');
-	}
-	public function under_clients()
-	{
-	        $this->load->view('page/Client Management/Table of clients/users-under-clients');
-	}
-	public function add_client()
-	{
-	        $this->load->view('page/Client Management/add-client');
-	}
-	public function contact()
-	{
-	        $this->load->view('page/Client Management/Edit Client Status/contact');
-	}
-	public function prospect()
-	{
-	        $this->load->view('page/Client Management/Edit Client Status/prospect');
-	}
-	public function account()
-	{
-	        $this->load->view('page/Client Management/Edit Client Status/account');
-	}
-	public function suspended()
-	{
-	        $this->load->view('page/Client Management/Edit Client Status/suspended');
-	}
-	public function blacklisted()
-	{
-	        $this->load->view('page/Client Management/Edit Client Status/blacklisted');
-	}*/
+    /*public function order_list()
+    {
+            $this->load->view('page/Client Management/Table of clients/client-order-list');
+    }
+    public function under_clients()
+    {
+            $this->load->view('page/Client Management/Table of clients/users-under-clients');
+    }
+    public function add_client()
+    {
+            $this->load->view('page/Client Management/add-client');
+    }
+    public function contact()
+    {
+            $this->load->view('page/Client Management/Edit Client Status/contact');
+    }
+    public function prospect()
+    {
+            $this->load->view('page/Client Management/Edit Client Status/prospect');
+    }
+    public function account()
+    {
+            $this->load->view('page/Client Management/Edit Client Status/account');
+    }
+    public function suspended()
+    {
+            $this->load->view('page/Client Management/Edit Client Status/suspended');
+    }
+    public function blacklisted()
+    {
+            $this->load->view('page/Client Management/Edit Client Status/blacklisted');
+    }*/
 }
 
 

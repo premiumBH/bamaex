@@ -90,6 +90,10 @@ $this->load->view('layout/container');
                         <th width="10%"> Sender&nbsp;Name </th>
                         <th width="10%"> Receiver&nbsp;Name </th>
                         <th width="10%"> Order Status</th>
+                        <?php if(isset($showCourierAssignedName)){?>
+                            <th><?php echo $showCourierAssignedNameTitle;?></th>
+                        <?php }?>
+
                         <th width="10%"> Actions </th>
                     </tr>
                     <tr role="row" class="filter">
@@ -125,6 +129,11 @@ $this->load->view('layout/container');
 
                         <td>-----
                            <!-- <input type="text" class="form-control form-filter input-sm" name="order_status">--> </td>
+
+                        <?php if(isset($showCourierAssignedName)){?>
+                            <td>----- </td>
+                        <?php }?>
+
                         <td>
                             <div class="margin-bottom-5">
                                 <button class="btn btn-sm green btn-outline filter-submit margin-bottom search">
@@ -151,6 +160,10 @@ $this->load->view('layout/container');
                             <td><?php echo $order->senderName;?></td>
                             <td><?php echo $order->receiverName;?></td>
                             <td><?php echo $order->status;?></td>
+                            <?php if(isset($showCourierAssignedName) &&  isset($order->CMName)){?>
+                                <td><?php echo $order->CMName;?></td>
+                            <?php }?>
+
                             <td>
                                 <?if(!isset($noAction)){?>
                                 <?php if(isset($courierMen)){?>
@@ -307,6 +320,7 @@ $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP
             var orderStatusId           = $("#orderStatusId").val();
             var orderQuery              = "<?php echo $orderQuery;?>";
             var IsShowCourierCol        = "<?php echo (isset($IsShowCourierCol))?'yes':'no';?>";
+            var hideUpdateCourier        = "<?php echo (isset($hideUpdateCourier))?'yes':'no';?>";
             var IsOrderOriginated       = "<?php echo (isset($IsOrderOriginated))?'yes':'no';?>";
             var IsPUAssignCour       = "<?php echo (isset($IsPUAssignCour))?'yes':'no';?>";
             var preFillStatus    = "<?php echo (isset($preFillStatus))?'yes':'no';?>";
@@ -321,6 +335,7 @@ $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP
                     endDate:endDate,
                     orderStatusId : orderStatusId,
                     IsShowCourierCol:IsShowCourierCol,
+                    hideUpdateCourier:hideUpdateCourier,
                     orderQuery: orderQuery,
                     IsOrderOriginated:IsOrderOriginated,
                     IsPUAssignCour:IsPUAssignCour,

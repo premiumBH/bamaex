@@ -92,7 +92,7 @@ $this->load->view('layout/container');
                             <td>Assigned Courier</td>
                         <?php }?>
                         <?php if(isset($IsShowCourierCol)){?>
-                        <th width="10%"> Is Courier Assign</th>
+                        <th width="10%"> Assigned courier</th>
                         <?php }?>
                         <th width="20%"> Actions </th>
                     </tr>
