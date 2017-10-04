@@ -141,7 +141,14 @@ class OrderManagement extends CI_Controller {
 
     public function order_originated(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Order Originated (unscheduled)';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                              = 'Order Originated (unscheduled)';
+        }
         $viewData['orderStatus']                            = 1;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -159,7 +166,14 @@ class OrderManagement extends CI_Controller {
 
     public function schedule_pickup(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Schedule Pickup';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                              = 'Schedule Pickup';
+        }
         $viewData['orderStatus']                            = 1;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -172,7 +186,15 @@ class OrderManagement extends CI_Controller {
 
     public function pending_pickup(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Order Originated';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Order Originated';
+        }
+
         $viewData['orderStatus']                            = 1;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -185,7 +207,15 @@ class OrderManagement extends CI_Controller {
 
     public function assign_to_courier(){
         $viewData                                   = array();
-        $viewData['title']                          = 'Assign To Courier';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                          = 'Assign To Courier';
+        }
+
         $viewData['orderStatus']                    = 1;
         $mData                                      = array();
         $mData['orderStatus1']                      = $viewData['orderStatus'];
@@ -213,7 +243,15 @@ class OrderManagement extends CI_Controller {
 
     public function collections_progress(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Collections In Progress';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Collections In Progress';
+        }
+
         $viewData['orderStatus']                            = 12;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -242,7 +280,15 @@ class OrderManagement extends CI_Controller {
 
     public function reschedule_pickup(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Pick Up Reschedule';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Pick Up Reschedule';
+        }
+
         $viewData['orderStatus']                            = 2;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -255,7 +301,15 @@ class OrderManagement extends CI_Controller {
 
     public function rescheduled_pickup(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Rescheduled Pick Up';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Rescheduled Pick Up';
+        }
+
         $viewData['orderStatus']                            = 3;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -279,7 +333,15 @@ class OrderManagement extends CI_Controller {
     }
     public function consignement_picked_uup(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Consignment picked up';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Consignment picked up';
+        }
+
         $viewData['orderStatus']                            = 4;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -294,7 +356,15 @@ class OrderManagement extends CI_Controller {
 
     public function collected_consignments(){
         $viewData                                           = array();
-        $viewData['title']                                  = 'Received in warehouse';
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                                  = 'Received in warehouse';
+        }
+
         $viewData['orderStatus']                            = 5;
         $mData                                              = array();
         $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -317,7 +387,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Assign delivery to Courier';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Assign delivery to Courier';
+            }
+
             $viewData['orderStatus']                            = 1;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -358,9 +436,16 @@ class OrderManagement extends CI_Controller {
             $this->load->view('orderManagament/deliveryOrderListing', $viewData);
 
         }else {
-
             $viewData                                           = array();
-            $viewData['title']                                  = 'Assign delivery to Agent';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Assign delivery to Agent';
+            }
+
             $viewData['orderStatus']                            = 1;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -407,7 +492,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivery scheduled';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivery scheduled';
+            }
+
             $viewData['orderStatus']                            = 3;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -424,7 +517,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivery scheduled';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivery scheduled';
+            }
+
             $viewData['orderStatus']                            = 9;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -445,7 +546,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Call Delivery Reschedule';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Call Delivery Reschedule';
+            }
+
             $viewData['orderStatus']                            = 4;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -463,7 +572,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Call Delivery Reschedule';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Call Delivery Reschedule';
+            }
+
             $viewData['orderStatus']                            = 10;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -485,7 +602,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivery Rescheduled';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivery Rescheduled';
+            }
+
             $viewData['orderStatus']                            = 5;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -502,7 +627,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivery Rescheduled';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivery Rescheduled';
+            }
+
             $viewData['orderStatus']                            = 11;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -523,7 +656,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivered Order';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivered Order';
+            }
+
             $viewData['orderStatus']                            = 7;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -542,7 +683,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Delivered Order';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Delivered Order';
+            }
+
             $viewData['orderStatus']                            = 13;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -564,7 +713,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Returned Order';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Returned Order';
+            }
+
             $viewData['orderStatus']                            = 17;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -583,7 +740,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'Returned Order';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'Returned Order';
+            }
+
             $viewData['orderStatus']                            = 22;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -605,7 +770,15 @@ class OrderManagement extends CI_Controller {
         if($type == 'dom'){
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'All Other Delivery Status';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'All Other Delivery Status';
+            }
+
             $viewData['orderStatus']                            = 5;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -647,7 +820,15 @@ class OrderManagement extends CI_Controller {
         }else {
 
             $viewData                                           = array();
-            $viewData['title']                                  = 'All Other Delivery Status';
+            $mData                                              = array();
+            $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__."/exp" ;
+            $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+            if(!empty($menuInfo)){
+                $viewData['title']                              = $menuInfo[0]->Label;
+            }else{
+                $viewData['title']                                  = 'All Other Delivery Status';
+            }
+
             $viewData['orderStatus']                            = 11;
             $mData                                              = array();
             $mData['orderStatus1']                              = $viewData['orderStatus'];
@@ -922,49 +1103,59 @@ class OrderManagement extends CI_Controller {
                     }
 
                 }
-                $temp .=  '<td>';
 
-                //courier data start
-                if($_POST['IsShowCourierCol'] == 'yes'  || $_POST['orderStatusId'] == 3) {
-
-                    $temp .= '   <div class="form-group">
-                                    <label for="sel1">Assign courier:</label>
-                                    <select class="form-control courierMan" id="CMDID-'.$order->order_id.'">
-                                        <option value="">Select Status </option>';
-                    foreach ($courierMen as $courierMenIn) {
-                        if ($courierMenIn->intUserId) {
-                            $temp .= '<option value="' . $courierMenIn->intUserId . '"';
-                            if($courierMenIn->intUserId == $order->CMID){
-                                $temp .= "selected";
-                            }
-                            $temp .= '>';
-                            $temp .= $courierMenIn->varEmailId;
-                            $temp .= '</option>';
-                        }
-                    }
-                    $temp .= '</select>
-                                </div>';
+                $show = true;
+                $userTypeId = $this->session->userdata('UserTypeId');
+                if($userTypeId == 4 || $userTypeId == 5){
+                    $show = false;
                 }
-                //courier data end
 
-                if($_POST['orderStatusId'] != 3) {
-                    $temp .= '<div class="form-group">
-                <label for="sel1">Update status:</label>
-                <select class="form-control OrderStatus" id="OrderStatus-'.$order->order_id.'">
-                <option value="">Select Status </option>';
-                    foreach ($orderStatuses as $orderStatusIn) {
-                        if ($orderStatusIn->id) {
-                            $temp .= '<option value="'.$orderStatusIn->id.'"';
-                            if ($orderStatusIn->id == $order->order_status_id) {
-                                $temp .= "selected";
+                $temp .=  '<td>';
+                if($show) {
+                    //courier data start
+                    if ($_POST['IsShowCourierCol'] == 'yes' || $_POST['orderStatusId'] == 3) {
+
+                        $temp .= '   <div class="form-group">
+                                    <label for="sel1">Assign courier:</label>
+                                    <select class="form-control courierMan" id="CMDID-' . $order->order_id . '">
+                                        <option value="">Select Status </option>';
+                        foreach ($courierMen as $courierMenIn) {
+                            if ($courierMenIn->intUserId) {
+                                $temp .= '<option value="' . $courierMenIn->intUserId . '"';
+                                if ($courierMenIn->intUserId == $order->CMID) {
+                                    $temp .= "selected";
+                                }
+                                $temp .= '>';
+                                $temp .= $courierMenIn->varEmailId;
+                                $temp .= '</option>';
                             }
-                            $temp .= '>';
-                            $temp .= $orderStatusIn->status;
-                            $temp .= '</option>';
                         }
+                        $temp .= '</select>
+                                </div>';
                     }
-                    $temp .= '    </select>
+                    //courier data end
+
+                    if ($_POST['orderStatusId'] != 3) {
+                        $temp .= '<div class="form-group">
+                <label for="sel1">Update status:</label>
+                <select class="form-control OrderStatus" id="OrderStatus-' . $order->order_id . '">
+                <option value="">Select Status </option>';
+                        foreach ($orderStatuses as $orderStatusIn) {
+                            if ($orderStatusIn->id) {
+                                $temp .= '<option value="' . $orderStatusIn->id . '"';
+                                if ($orderStatusIn->id == $order->order_status_id) {
+                                    $temp .= "selected";
+                                }
+                                $temp .= '>';
+                                $temp .= $orderStatusIn->status;
+                                $temp .= '</option>';
+                            }
+                        }
+                        $temp .= '    </select>
                 </div>';
+                    }
+                }else{
+                    $temp .= '------';
                 }
                 $temp .= '   </td>';
                 $temp .=    " </tr>";
@@ -1148,74 +1339,91 @@ class OrderManagement extends CI_Controller {
                 }
                 $temp .=  '<td>';
 
-                //courier data start
-                if($_POST['IsShowCourierCol'] == 'yes' && $_POST['hideUpdateCourier'] == 'no') {
-                    if($order->countryId == 15){
-                        $courierMen                     = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 8')->result();
-                    }else if($order->countryId != 15){
-                        $courierMen                     = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 4')->result();
-                    }
-
-                    $temp .= '   <div class="form-group">
-                                    <label for="sel1">Assign courier:</label>
-                                    <select class="form-control courierMan" id="CMDID-'.$order->order_id.'">
-                                        <option value="">Select Status </option>';
-                    foreach ($courierMen as $courierMenIn) {
-                        if ($courierMenIn->intUserId) {
-                            $temp .= '<option value="'.$courierMenIn->intUserId.'"';
-                            if($courierMenIn->intUserId == $order->CMID) {
-                                $temp .= "selected";
-                            }
-                            $temp .= '>';
-                            $temp .= $courierMenIn->varEmailId;
-                            $temp .= '</option>';
+                $show = true;
+                $userTypeId = $this->session->userdata('UserTypeId');
+                if($userTypeId == 4 || $userTypeId == 5){
+                    if($userTypeId == 5){
+                        $show = false;
+                    }else if($userTypeId == 4){
+                        if($order->countryId != 15){
+                            $show = false;
                         }
                     }
-                    $temp .= '</select>
-                                </div>';
                 }
-                //courier data end
 
-                if(true) {
-                    if($order->countryId == 15) {
-                        $temp .= '<div class="form-group">
+                if($show) {
+
+                    //courier data start
+                    if ($_POST['IsShowCourierCol'] == 'yes' && $_POST['hideUpdateCourier'] == 'no') {
+                        if ($order->countryId == 15) {
+                            $courierMen = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 8')->result();
+                        } else if ($order->countryId != 15) {
+                            $courierMen = $this->db->query('select * from user,user_type where user.intUserTypeId = user_type.intUserTypeId and user.intUserTypeId = 4')->result();
+                        }
+
+                        $temp .= '   <div class="form-group">
+                                    <label for="sel1">Assign courier:</label>
+                                    <select class="form-control courierMan" id="CMDID-' . $order->order_id . '">
+                                        <option value="">Select Status </option>';
+                        foreach ($courierMen as $courierMenIn) {
+                            if ($courierMenIn->intUserId) {
+                                $temp .= '<option value="' . $courierMenIn->intUserId . '"';
+                                if ($courierMenIn->intUserId == $order->CMID) {
+                                    $temp .= "selected";
+                                }
+                                $temp .= '>';
+                                $temp .= $courierMenIn->varEmailId;
+                                $temp .= '</option>';
+                            }
+                        }
+                        $temp .= '</select>
+                                </div>';
+                    }
+                    //courier data end
+
+                    if (true) {
+                        if ($order->countryId == 15) {
+                            $temp .= '<div class="form-group">
                                     <label for="sel1">Update status:</label>
                                     <select class="form-control OrderStatus" id="OrderStatus-' . $order->order_id . '">
                                     <option value="">Select Status </option>';
-                        foreach ($domesticDeliveryStatus as $domesticDeliveryStatusIn) {
-                            if ($domesticDeliveryStatusIn->id) {
-                                $temp .= '<option value="' . $domesticDeliveryStatusIn->id . '"';
-                                if ($_POST['preFillStatus'] == 'yes' && $domesticDeliveryStatusIn->id == $order->order_delivery_status) {
-                                    $temp .= "selected";
+                            foreach ($domesticDeliveryStatus as $domesticDeliveryStatusIn) {
+                                if ($domesticDeliveryStatusIn->id) {
+                                    $temp .= '<option value="' . $domesticDeliveryStatusIn->id . '"';
+                                    if ($_POST['preFillStatus'] == 'yes' && $domesticDeliveryStatusIn->id == $order->order_delivery_status) {
+                                        $temp .= "selected";
+                                    }
+                                    $temp .= '>';
+                                    $temp .= $domesticDeliveryStatusIn->status;
+                                    $temp .= '</option>';
                                 }
-                                $temp .= '>';
-                                $temp .= $domesticDeliveryStatusIn->status;
-                                $temp .= '</option>';
                             }
-                        }
-                        $temp .= '    </select>
+                            $temp .= '    </select>
                                     </div>';
-                    }else{
-                        $temp .= '<div class="form-group">
+                        } else {
+                            $temp .= '<div class="form-group">
                                     <label for="sel1">Update status:</label>
-                                    <select class="form-control OrderStatus" id="OrderStatus-'.$order->order_id.'">
+                                    <select class="form-control OrderStatus" id="OrderStatus-' . $order->order_id . '">
                                     <option value="">Select Status </option>';
-                        foreach ($expressDeliveryStatus as $expressDeliveryStatusIn) {
-                            if ($expressDeliveryStatusIn->id) {
-                                $temp .= '<option value="'.$expressDeliveryStatusIn->id.'"';
-                                if ($_POST['preFillStatus'] == 'yes' && $expressDeliveryStatusIn->id == $order->order_delivery_status) {
-                                    $temp .= "selected";
+                            foreach ($expressDeliveryStatus as $expressDeliveryStatusIn) {
+                                if ($expressDeliveryStatusIn->id) {
+                                    $temp .= '<option value="' . $expressDeliveryStatusIn->id . '"';
+                                    if ($_POST['preFillStatus'] == 'yes' && $expressDeliveryStatusIn->id == $order->order_delivery_status) {
+                                        $temp .= "selected";
+                                    }
+                                    $temp .= '>';
+                                    $temp .= $expressDeliveryStatusIn->status;
+                                    $temp .= '</option>';
                                 }
-                                $temp .= '>';
-                                $temp .= $expressDeliveryStatusIn->status;
-                                $temp .= '</option>';
                             }
-                        }
-                        $temp .= '    </select>
+                            $temp .= '    </select>
                                     </div>';
+                        }
+
+
                     }
-
-
+                }else{
+                    $temp .= '------';
                 }
                 $temp .= '   </td>';
                 $temp .=    " </tr>";

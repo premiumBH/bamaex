@@ -165,6 +165,20 @@ $this->load->view('layout/container');
                             <?php }?>
 
                             <td>
+                                <?php
+                                $show = true;
+                                $userTypeId = $this->session->userdata('UserTypeId');
+                                if($userTypeId == 4 || $userTypeId == 5){
+                                    if($userTypeId == 5){
+                                        $show = false;
+                                    }else if($userTypeId == 4){
+                                        if($order->countryId != 15){
+                                            $show = false;
+                                        }
+                                    }
+                                }
+
+                                if($show){?>
                                 <?if(!isset($noAction)){?>
                                 <?php if(isset($courierMen)){?>
                                     <div class="form-group">
@@ -217,6 +231,7 @@ $this->load->view('layout/container');
 
                                 <?php }else{?>
                                     -----
+                                <?php }?>
                                 <?php }?>
 
                             </td>

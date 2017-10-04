@@ -123,7 +123,7 @@ class Order_management_model extends CI_Model
         //$this->db->where('order_details.order_state', 0);
         //$this->db->where('order_details.order_status', $data['orderStatus1']);
         if(isset($data['orderStatus2'])){
-            $this->db->or_where('order_details.order_status', $data['orderStatus2']);
+            $this->db->or_where('order_details.order_delivery_status', $data['orderStatus2']);
         }
         $this->db->order_by("order_details.order_id", "desc");
         $result = $this->db->get();
@@ -171,7 +171,7 @@ class Order_management_model extends CI_Model
         //$this->db->where('order_details.order_state', 0);
         //$this->db->where('order_details.order_status', $data['orderStatus1']);
         if(isset($data['orderStatus2'])){
-            $this->db->or_where('order_details.order_status', $data['orderStatus2']);
+            $this->db->or_where('order_details.order_delivery_status', $data['orderStatus2']);
         }
         $this->db->order_by("order_details.order_id", "desc");
         $result = $this->db->get();
@@ -211,6 +211,16 @@ class Order_management_model extends CI_Model
 
     public function getStatusById($table, $id){
         $this->db->where('id', $id);
+        $result = $this->db->get($table);
+        $result = $result->result();
+        return $result;
+    }
+
+    public function getMyData($table, $where){
+
+        foreach ($where as $key => $val){
+            $this->db->where($key, $val);
+        }
         $result = $this->db->get($table);
         $result = $result->result();
         return $result;

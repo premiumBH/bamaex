@@ -66,7 +66,7 @@
           border-bottom: none;
           color: #4e5962;
           background: #2f373e;
-          width: 250px;
+          width: 600px;
           height: 60px;
           font-size: 15px;
           border-left-color: #f4f6f7;
@@ -273,7 +273,7 @@
       transition-property: all;
       transition-timing-function: cubic-bezier(0.7, 1, 0.7, 1); }
     .page-header .search-form.open .input-group .form-control {
-      width: 330px;
+      width: 600px;
       transition-duration: 300ms;
       transition-property: all;
       transition-timing-function: cubic-bezier(0.7, 1, 0.7, 1); } }

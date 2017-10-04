@@ -171,6 +171,14 @@ $this->load->view('layout/container');
                             <?php }?>
                             <td>
 
+                                <?php
+                                $show = true;
+                                $userTypeId = $this->session->userdata('UserTypeId');
+                                if($userTypeId == 4 || $userTypeId == 5){
+                                    $show = false;
+                                }
+
+                                if($show){?>
                                 <?php if(isset($courierMen)){?>
                                 <div class="form-group">
                                     <label for="sel1">Assign courier:</label>
@@ -202,6 +210,9 @@ $this->load->view('layout/container');
 
                                     </select>
                                 </div>
+                                <?php }?>
+                                <?php }else{?>
+                                    ------
                                 <?php }?>
                             </td>
                         </tr>

@@ -71,6 +71,8 @@ class Order_model extends CI_Model
             $this->db->where('user_id', $data['userId']);
         }
         $this->db->where('order_delivery_status', '0');
+        $this->db->where('order_pickup_date !=', '');
+        $this->db->where('order_pickup_time !=', '');
         $this->db->where('order_status', '1');
         $query		= $this->db->get('order_details');
         $Result 	= $query->result();
@@ -117,7 +119,12 @@ class Order_model extends CI_Model
         $this->db->where('order_payments.payment_status', '0');
         $query		= $this->db->get();
         $Result 	= $query->result();
-        return count($Result);
+
+        $payableAmount = 0;
+        foreach ($Result as $ResultIn){
+            $payableAmount = $payableAmount+$ResultIn->payable_amount;
+        }
+        return $payableAmount;
     }
     /*public function dashboardOrderPickupForAgent($data){
         $this->db->select('*');
