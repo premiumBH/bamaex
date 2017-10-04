@@ -37,6 +37,7 @@ class Dashboard extends CI_Controller {
         $this->load->model('Zone_model');
         $this->load->model('Country_model');
         $this->load->model('Client_model');
+        $this->load->model('Order_model');
         $this->load->helper('cookie');
         $this->load->library('session');
         
@@ -59,9 +60,43 @@ class Dashboard extends CI_Controller {
 
 	}
 	 
-	public function index()
-	{
-        $this->load->view('admin/home');
+	public function index(){
+        $viewData                           = array();
+        $userType                           = $this->session->userdata('UserType');
+        $userId                             = $this->session->userdata('UserId');
+	    if($userType == 'Client' || $userType == 'Agent'){
+	        if($userType == 'Client'){
+
+                $mData                      = array();
+                $mData['clientId']          = $userId;
+                $pickupCount                = $this->Order_model->dashboardOrderPickup($mData);
+                $pendingDeliveryCount       = $this->Order_model->dashboardOrderPendingDelivery($mData);
+                $deliveredCount             = $this->Order_model->dashboardOrderDelivered($mData);
+                $orderDuePayment            = $this->Order_model->dashboardOrderDuePayment($mData);
+
+            }else{
+
+                $mData                      = array();
+                $mData['userId']            = $userId;
+                $pickupCount                = $this->Order_model->dashboardOrderPickupForAgent($mData);
+                $pendingDeliveryCount       = $this->Order_model->dashboardOrderPendingDelivery($mData);
+                $deliveredCount             = $this->Order_model->dashboardOrderDelivered($mData);
+                $orderDuePayment            = $this->Order_model->dashboardOrderDuePayment($mData);
+            }
+
+        }else{
+            $pickupCount                    = $this->Order_model->dashboardOrderPickup(array());
+            $pendingDeliveryCount           = $this->Order_model->dashboardOrderPendingDelivery(array());
+            $deliveredCount                 = $this->Order_model->dashboardOrderDelivered(array());
+            $orderDuePayment                = $this->Order_model->dashboardOrderDuePayment(array());
+        }
+
+        $viewData['pickupCount']                        = $pickupCount;
+        $viewData['pendingDeliveryCount']               = $pendingDeliveryCount;
+        $viewData['deliveredCount']                     = $deliveredCount;
+        $viewData['orderDuePayment']                    = $orderDuePayment;
+
+        $this->load->view('admin/home', $viewData);
 	}
     public function logout(){
 

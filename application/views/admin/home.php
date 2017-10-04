@@ -11,7 +11,7 @@ $this->load->view('layout/container');
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="1349">0</span>
+                    <span data-counter="counterup" data-value="<?php echo $pickupCount;?>">0</span>
                 </div>
                 <div class="desc"> Orders pending pickup </div>
             </div>
@@ -24,7 +24,8 @@ $this->load->view('layout/container');
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="12,5">0</span>M$ </div>
+                    <!--<span data-counter="counterup" data-value="<?php /*echo $pendingDeliveryCount;*/?>">0</span>M$ </div>-->
+                    <span data-counter="counterup" data-value="<?php echo $pendingDeliveryCount;?>">0</span> </div>
                 <div class="desc">Orders pending delivery</div>
             </div>
         </a>
@@ -36,7 +37,7 @@ $this->load->view('layout/container');
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="549">0</span>
+                    <span data-counter="counterup" data-value="<?php echo $deliveredCount;?>">0</span>
                 </div>
                 <div class="desc"> Orders delivered </div>
             </div>
@@ -49,7 +50,7 @@ $this->load->view('layout/container');
             </div>
             <div class="details">
                 <div class="number"> +
-                    <span data-counter="counterup" data-value="89"></span>% </div>
+                    <span data-counter="counterup" data-value="<?php echo $orderDuePayment;?>"></span>% </div>
                 <div class="desc"> Payments due </div>
             </div>
         </a>

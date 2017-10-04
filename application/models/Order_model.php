@@ -63,5 +63,74 @@ class Order_model extends CI_Model
         return $Result;
     }
 
+    public function dashboardOrderPickup($data){
+        if(isset($data['clientId'])){
+            $this->db->where('client_id', $data['clientId']);
+        }
+        else if(isset($data['userId'])){
+            $this->db->where('user_id', $data['userId']);
+        }
+        $this->db->where('order_delivery_status', '0');
+        $this->db->where('order_status', '1');
+        $query		= $this->db->get('order_details');
+        $Result 	= $query->result();
+        return count($Result);
+    }
+
+    public function dashboardOrderPendingDelivery($data){
+        if(isset($data['clientId'])){
+            $this->db->where('client_id', $data['clientId']);
+        }
+        else if(isset($data['userId'])){
+            $this->db->where('user_id', $data['userId']);
+        }
+        $this->db->where('order_delivery_status', '0');
+        $this->db->where('order_status', '5');
+        $query		= $this->db->get('order_details');
+        $Result 	= $query->result();
+        return count($Result);
+    }
+    public function dashboardOrderDelivered($data){
+        if(isset($data['clientId'])){
+            $this->db->where('client_id', $data['clientId']);
+        }
+        else if(isset($data['userId'])){
+            $this->db->where('user_id', $data['userId']);
+        }
+        $this->db->where('order_delivery_status', '7');
+        $this->db->or_where('order_delivery_status', '13');
+        $this->db->where('order_state', '1');
+        $query		= $this->db->get('order_details');
+        $Result 	= $query->result();
+        return count($Result);
+    }
+    public function dashboardOrderDuePayment($data){
+        $this->db->select('*');
+        $this->db->from('order_details');
+        $this->db->join('order_payments', 'order_details.order_id = order_payments.order_id', 'INNER');
+        if(isset($data['clientId'])){
+            $this->db->where('client_id', $data['clientId']);
+        }
+        else if(isset($data['userId'])){
+            $this->db->where('user_id', $data['userId']);
+        }
+        $this->db->where('order_payments.payment_status', '0');
+        $query		= $this->db->get();
+        $Result 	= $query->result();
+        return count($Result);
+    }
+    /*public function dashboardOrderPickupForAgent($data){
+        $this->db->select('*');
+        $this->db->from('order_details');
+        $this->db->join('order_courier_man_ref', 'order_details.order_id = order_courier_man_ref.order_id', 'INNER');
+        $this->db->where('order_courier_man_ref.courier_man_id', $data['courierId']);
+        $this->db->where('order_details.order_pickup_time', '');
+        $this->db->where('order_details.order_delivery_status', '0');
+        $this->db->where('order_details.order_status', '1');
+        $query		= $this->db->get();
+        $Result 	= $query->result();
+        return count($Result);
+    }*/
+
 
 }
