@@ -49,8 +49,8 @@ $this->load->view('layout/container');
                 <i class="fa fa-globe"></i>
             </div>
             <div class="details">
-                <div class="number"> +
-                    <span data-counter="counterup" data-value="<?php echo $orderDuePayment;?>"></span>% </div>
+                <div class="number">
+                    <span data-counter="counterup" data-value="<?php echo $orderDuePayment;?>"></span> BD </div>
                 <div class="desc"> Payments due </div>
             </div>
         </a>

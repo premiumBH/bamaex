@@ -46,6 +46,7 @@ class AccessControl extends CI_Controller {
         $data['page_label']=$this->input->post('page_label');
         $data['page_icon']=$this->input->post('page_icon');
         $data['page_add']=$this->input->post('page_add');
+        $data['order_number']=$this->input->post('orderNumber');
         $data['add_new_page']=$this->input->post('add_new_page');
         $data['update_page']=$this->input->post('update_page');
         $data1['update_access_pages']=$this->input->post('update_access_pages');

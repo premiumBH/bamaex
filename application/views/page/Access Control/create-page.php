@@ -7,6 +7,7 @@ $pl1 = '';
 $ps1 = '';
 $pi1 = '';
 $id1 = '';
+$orderNumber = '0';
 if(isset($_REQUEST['edit-id']))
 { 
   if($_REQUEST['edit-id'] != '')
@@ -17,6 +18,7 @@ if(isset($_REQUEST['edit-id']))
     t.Label,
     t.varPageSlug,
     t.varIcon,
+    t.order_number,
     (select s.Label from access_control as s where s.intID = t.inParentId) as ParentName
 from access_control as t where t.intID = $id1";
 			$result = $this->db->query($sqlQuery);
@@ -30,6 +32,7 @@ from access_control as t where t.intID = $id1";
 						$pl1 = $result11->Label;
 						$ps1 = $result11->varPageSlug;
 						$pi1 = '<option value="'.$result11->varIcon.'">'.$result11->varIcon.'</option>';
+						$orderNumber = $result11->order_number;
                  }
             } 
   }
@@ -99,6 +102,12 @@ from access_control as t where t.intID = $id1";
                          </select>
 							</div>
 							</div>
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label>Menu Order</label>
+                                   <input class="form-control spinner" type='text' name='orderNumber' required size='35' value="<?php echo $orderNumber; ?>">
+                               </div>
+                           </div>
 							<div class="col-md-6">
 							<div class="form-group">
 							<br/>

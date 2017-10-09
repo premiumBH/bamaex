@@ -43,12 +43,14 @@ $ci->load->database();
 
                     ." varIcon AS icon,"
 
-                    ." varPageSlug AS PageSlug"
+                    ." varPageSlug AS PageSlug, "
+                    ." order_number AS orderNumber"
 
                     ." FROM access_control
                      JOIN access_control_user_type_ref ON access_control.	intID = access_control_user_type_ref.access_control_id
                      where access_control.inParentId='" .$parent_id . "'
                      AND access_control_user_type_ref.user_type_id= '".$col."'
+                     ORDER BY order_number ASC;
                      ";
 
 			$result = $ci->db->query($sqlQuery);
@@ -165,12 +167,15 @@ function hasSubMenu($col, $parent_id){
 
         ." varIcon AS icon,"
 
-        ." varPageSlug AS PageSlug"
+        ." varPageSlug AS PageSlug,"
+        ." order_number AS orderNumber"
 
         ." FROM access_control
                      JOIN access_control_user_type_ref ON access_control.	intID = access_control_user_type_ref.access_control_id
                      where access_control.inParentId='" .$parent_id . "'
-                     AND access_control_user_type_ref.user_type_id= '".$col."'";
+                     AND access_control_user_type_ref.user_type_id= '".$col."'
+                     ORDER BY order_number ASC;
+                     ";
 
     $result = $ci->db->query($sqlQuery);
 

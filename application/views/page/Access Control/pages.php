@@ -35,7 +35,7 @@ $this->load->view('layout/container');
                                         <tr>
                                         <td>Serial No.</td>
                                         <td>Menu Label</td>
-                                        <td>Page slug</td>
+                                        <!--<td>Page slug</td>-->
                                         <td>Menu Icon</td>';?>
                                         <?php foreach($userType as $userTypeIn){?>
                                             <td><?php echo $userTypeIn->varUserTypeName?></td>
@@ -46,6 +46,7 @@ $this->load->view('layout/container');
                                         <td>Other</td>-->
                             <?php echo '            <td>Created On</td>
                                         <td>Edit Page</td>
+                                        <td>Delete Page</td>
                                         </tr>
                                 </thead>
                                 <tbody>';
@@ -60,7 +61,7 @@ $this->load->view('layout/container');
                                 echo '<tr>'
                                     .'<td><input type="hidden" value="'.$result->Id.'" name="id[]" />'.$result->Id.'</td>'
                                     .'<td>'.$result->label.'</td>'
-                                    .'<td>'.$result->PageSlug.'</td>'
+                                    //.'<td>'.$result->PageSlug.'</td>'
                                     .'<td>'.$result->icon.'</td>';?>
 
                                 <?php foreach($userType as $userTypeIn){?>

@@ -65,7 +65,8 @@
 			$pl = $data['page_label'];
 			$pi = $data['page_icon'];
 			$pg = $data['page_add'];
-			 $sqlQuery="INSERT INTO `access_control`(`inParentId`, `Label`, `varPageType`, `varPageSlug`, `varIcon`, `dtcreated`) VALUES($pp, '$pl', 'page','$pg', '$pi', '$dt')";
+            $orderNumber = $data['order_number'];
+			 $sqlQuery="INSERT INTO `access_control`(`inParentId`, `Label`, `varPageType`, `varPageSlug`, `varIcon`, `dtcreated`, `order_number`) VALUES($pp, '$pl', 'page','$pg', '$pi', '$dt','$orderNumber')";
 			$result = $this->db->query($sqlQuery);
 				$response['status']="true";
 				return $response;
@@ -87,7 +88,8 @@
 			$pl = $data['page_label'];
 			$pi = $data['page_icon'];
 			$pg = $data['page_add'];
-			 $sqlQuery="UPDATE access_control SET inParentId = $pp, Label = '$pl', varPageSlug = '$pg', varIcon = '$pi', dtcreated = '$dt' WHERE intID=$id";
+            $orderNumber = $data['order_number'];
+			 $sqlQuery="UPDATE access_control SET inParentId = $pp, Label = '$pl', varPageSlug = '$pg', varIcon = '$pi', dtcreated = '$dt', order_number = '$orderNumber' WHERE intID=$id";
 			$result = $this->db->query($sqlQuery);
 
 				$response['status']="true";

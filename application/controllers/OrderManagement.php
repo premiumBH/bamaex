@@ -76,7 +76,13 @@ class OrderManagement extends CI_Controller {
         $this->Order_model->insertOrderCourierManRef($insert);
         if(!isset($_POST['type'])){
             $this->OrderStatusAssignToCourier($_POST['orderId']);
+        }else{
+            $_POST['orderId']               = $_POST['orderId'];
+            $_POST['OrderStatusId']         = $_POST['orderStatus'];
+            $customStatus                  = array('Delivery Courier Assigned','Delivery Agent Assigned');
+            $this->orderTracking('delivery', $customStatus);
         }
+
         //$this->SendNotification($_POST['CMID']);
         redirect($_SERVER['HTTP_REFERER']);
     }
@@ -922,26 +928,28 @@ class OrderManagement extends CI_Controller {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
-    public function orderTracking($type){
+    public function orderTracking($type, $customStatus = array()){
         $orderId                                            = $_POST['orderId'];
         $orderStatusId                                      = $_POST['OrderStatusId'];
         $mData                                              = array();
         $mData['orderId']                                   = $orderId;
         $orderData                                          = $this->Order_management_model->orderRegion($mData);
-
+        $customStatusFilter                                 = '';
         if(!empty($orderData)){
 
             if($type == 'pickup'){
                 $orderStatusData                        = $this->Order_management_model->getStatusById('order_pickup_status',$orderStatusId);
-
+                $customStatusFilter                     = $customStatus[0];
             }else if($type == 'delivery'){
 
                 if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
 
                     $orderStatusData                    = $this->Order_management_model->getStatusById('domestic_delivery_status',$orderStatusId);
+                    $customStatusFilter                 = $customStatus[0];
                 }else{
 
                     $orderStatusData                    = $this->Order_management_model->getStatusById('express_delivery_status',$orderStatusId);
+                    $customStatusFilter                 = $customStatus[1];
                 }
             }
 
@@ -955,10 +963,16 @@ class OrderManagement extends CI_Controller {
                 $insert['catalog_subject']          = 'Order Status Not Exist';
                 $insert['catalog_info']             = 'Order Status Not Exist';
             }
+            if($customStatusFilter != ''){
+                $insert['catalog_subject']          = $customStatusFilter;
+                $insert['catalog_info']             = $customStatusFilter;
+            }
 
-            $insert['updated_by']                   = 'admin';
-            $insert['created_by']                   = 'admin';
-            $insert['shipper_id']                   = '';
+            $userTypeId                             = $this->session->userdata('UserTypeId');
+
+            $insert['updated_by']                   = $this->session->userdata('UserType');
+            $insert['created_by']                   = $this->session->userdata('UserType');
+            $insert['shipper_id']                   = $userTypeId;
 
             if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
                 $this->Order_management_model->insertOrderTracking('domestic_order_catalog', $insert);
@@ -968,12 +982,6 @@ class OrderManagement extends CI_Controller {
         }
 
     }
-
-
-
-
-
-
 
 
 
