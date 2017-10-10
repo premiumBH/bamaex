@@ -71,9 +71,12 @@ class Order_model extends CI_Model
             $this->db->where('user_id', $data['userId']);
         }
         $this->db->where('order_delivery_status', '0');
-        $this->db->where('order_pickup_date !=', '');
-        $this->db->where('order_pickup_time !=', '');
         $this->db->where('order_status', '1');
+        $this->db->or_where('order_status', '2');
+        $this->db->or_where('order_status', '3');
+        $this->db->or_where('order_status', '11');
+        $this->db->or_where('order_status', '12');
+        $this->db->or_where('order_status', '13');
         $query		= $this->db->get('order_details');
         $Result 	= $query->result();
         return count($Result);
@@ -86,8 +89,8 @@ class Order_model extends CI_Model
         else if(isset($data['userId'])){
             $this->db->where('user_id', $data['userId']);
         }
-        $this->db->where('order_delivery_status', '0');
-        $this->db->where('order_status', '5');
+        $this->db->where('order_delivery_status != ', '0');
+        $this->db->where('order_state', '0');
         $query		= $this->db->get('order_details');
         $Result 	= $query->result();
         return count($Result);
