@@ -110,6 +110,24 @@
                              <input name='client_type' required class="form-control spinner" type="text" placeholder="Client Type" value="<?php echo $level_id; ?>" readonly> 
                          </div>
                      </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Assign To</label>
+                            <select required class="form-control spinner" name="creater_id">
+                                <?php
+                                foreach ($users as $user)
+                                {
+                                    if($creater_id == $user->intUserId)
+                                        echo '<option value='.$user->intUserId.' selected>'.$user->varEmailId.'</option>';
+                                    else
+                                        echo '<option value='.$user->intUserId.'>'.$user->varEmailId.'</option>';
+
+
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                 <!--</div>-->
                 <?php
                                  

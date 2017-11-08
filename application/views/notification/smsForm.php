@@ -51,7 +51,15 @@ $this->load->view('layout/container');
         <div class="col-md-12">
             <div class="form-group">
                 <label>Template</label>
-                <p style="text-align: right;">[client_first_name] , [client_last_name] , [client_email] , [client_password] , [order_id] , [courier_email] , [receiver_email] , [receiver_name]</p>
+                <p style="text-align: right;">
+                    [order_tracking_id] ,<br/>
+                    [receiver_name] , [receiver_email] , [receiver_mobile] ,<br/>
+                    [sender_name] , [sender_email] , [sender_mobile] ,<br/>
+                    [client_first_name] , [client_last_name] , [client_name] , [client_email] , [client_password] ,<br/>
+                    [client_creator_name] , [client_creator_email] , [client_creator_mobile] ,<br/>
+                    [order_creator_name] , [order_creator_email] , [order_creator_mobile] ,<br/>
+                    [courier_name] , [courier_Email] , [courier_mobile] ,<br/>
+                </p>
                 <textarea class="form-control" required name="template" rows="6" data-error-container="#editor2_error"><?php echo isset($notification)?$notification->template:''?></textarea>
             </div>
         </div>

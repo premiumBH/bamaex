@@ -41,46 +41,54 @@ $this->load->view('layout/container');
                     {
                         ?>
                         <tr>
-                            <td> <?php echo $ordr->order_tracking_id; ?> </td>
-                            <td> <?php echo explode(' ',$ordr->created_on)[0]; ?> </td>
+                            <td> <?php echo $ordr['order_tracking_id']; ?> </td>
+                            <td> <?php echo explode(' ',$ordr['created_on'])[0]; ?> </td>
                             <?php
-                            if($ordr->order_state == '' || $ordr->order_state == '0')
-                            {
-                                if($ordr->order_status == '' || $ordr->order_status == '1' || $ordr->order_status == '2' || $ordr->order_status == '3')
-                                {
-                                    echo '<td class="numeric"> Pending Pickup </td>';
-                                }
-                                else if($ordr->order_status == '4' || $ordr->order_status == '5')
-                                {
-                                    echo '<td class="numeric"> Delivery in Progress  </td>';
-                                }
-                                else if($ordr->order_status == '7'){
-                                    echo '<td class="numeric"> Assigned to Courier </td>';
-                                }
-                            }
-                            else if ($ordr->order_state == '1')
-                            {
-                                echo '<td class="numeric"> Order Delivered  </td>';
-                            }
-                            else
-                            {
-                                echo '<td class="numeric"> Closed By Team  </td>';
-                            }
+//                            if($ordr->order_state == '' || $ordr->order_state == '0')
+//                            {
+//                                if($ordr->order_status == '' || $ordr->order_status == '1' || $ordr->order_status == '2' || $ordr->order_status == '3')
+//                                {
+//                                    echo '<td class="numeric"> Pending Pickup </td>';
+//                                }
+//                                else if($ordr->order_status == '4' || $ordr->order_status == '5')
+//                                {
+//                                    echo '<td class="numeric"> Delivery in Progress  </td>';
+//                                }
+//                                else if($ordr->order_status == '11'){
+//                                    echo '<td class="numeric"> Assigned to Courier </td>';
+//                                }
+//                                else if($ordr->order_status == '12'){
+//                                    echo '<td class="numeric"> Collections In Progress </td>';
+//                                }
+//                                else
+//                                {
+//                                    echo '<td class="numeric"> See Details </td>';
+//                                }
+//                            }
+//                            else if ($ordr->order_state == '1')
+//                            {
+//                                echo '<td class="numeric"> Order Delivered  </td>';
+//                            }
+//                            else
+//                            {
+//                                echo '<td class="numeric"> Closed By Team  </td>';
+//                            }
                             ?>
-                            <td class="numeric"> <?php echo $ordr->company_name; ?> </td>
-                            <td class="numeric"> <?php echo $ordr->airway_bill; ?> </td>
+                            <td class="numeric"> <?php echo $ordr['order_status']; ?> </td>
+                            <td class="numeric"> <?php echo $ordr['company_name']; ?> </td>
+                            <td class="numeric"> <?php echo $ordr['airway_bill']; ?> </td>
                             <td class="numeric text-center">
-                                <a href="<?php echo base_url().'Order\downloadAirway?ref-id='.$ordr->airway_bill;?>" class="btn btn-outline btn-circle purple">
+                                <a href="<?php echo base_url().'Order\downloadAirway?ref-id='.$ordr['airway_bill'];?>" class="btn btn-outline btn-circle purple">
                                     <i class="fa fa-file-pdf-o"></i> PDF
                                 </a>
                             </td>
                             <td class="numeric text-center">
-                                <a href="<?php echo base_url().'Order\view_order?ref-id='.$ordr->order_tracking_id;?>" class="btn btn-outline btn-circle blue">
+                                <a href="<?php echo base_url().'Order\view_order?ref-id='.$ordr['order_tracking_id'];?>" class="btn btn-outline btn-circle blue">
                                     <i class="fa fa-eye"></i> View
                                 </a>
                             </td>
                             <td class="numeric text-center">
-                                <a href="<?php echo base_url().'Order\downloadManifest?ref-id='.$ordr->airway_bill;?>" class="btn btn-outline btn-circle purple">
+                                <a href="<?php echo base_url().'Order\downloadManifest?ref-id='.$ordr['airway_bill'];?>" class="btn btn-outline btn-circle purple">
                                     <i class="fa fa-file-pdf-o"></i> PDF
                                 </a>
                             </td>

@@ -34,11 +34,22 @@ class Agent extends CI_Controller
             $result = $this->User_model->login($data);
 
             if (($result['status'] == true) && $result['userinfo'][0]->UserType == 'Agent') {
+
+                $address = $this->User_model->getUserAddressByUserId($result['userinfo'][0]->UserId);
+                if (!empty($address)) {
+                    $userProfileImage = $address[0]->profile_image;
+                } else {
+                    $userProfileImage = '';
+                }
+
                 $newdata = array(
                     'UserId' => $result['userinfo'][0]->UserId,
                     'username' => $result['userinfo'][0]->FirstName . ' ' . $result['userinfo'][0]->FirstName,
                     'email' => $result['userinfo'][0]->EmailId,
                     'UserType' => $result['userinfo'][0]->UserType,
+                    'UserTypeCode'=>$result['userinfo'][0]->UserTypeCode,
+                    'UserTypeId'=>$result['userinfo'][0]->UserTypeId,
+                    'profileImage' => $userProfileImage,
                     'logged_in' => TRUE
                 );
 

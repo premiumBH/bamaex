@@ -287,4 +287,45 @@
             $Result 	= $query->result();
             return $Result;
         }
+
+        public function getOrderNotificationUsers($orderId, $orderType = 'client'){
+            $select         = '
+                                order_details.order_tracking_id as orderTrackingId,
+                                order_receiver.name as receiverName,
+                                order_receiver.email as receiverEmail, 
+                                order_receiver.mobile as receiverMobile,
+                                order_sender.name as senderName,
+                                order_sender.email as senderEmail,
+                                order_sender.mobile as senderMobile,
+                                ';
+            if($orderType == 'client') {
+                $select .= '
+                                client_table.client_id as clientId,
+                                client_table.company_name as clientName,
+                                client_table.email as clientEmail,
+                                client_table.phone_no as clientMobile,
+                                CONCAT (user.varFirstName, " ", user.	varLastName) as clientCreatorName,
+                                user.varEmailId as clientCreatorEmail,
+                                user.varMobileNo as clientCreatorMobile,
+                            ';
+            }
+            $select         .= '
+                                CONCAT (orderCreator.varFirstName, " ", orderCreator.	varLastName) as orderCreatorName,
+                                orderCreator.varEmailId as orderCreatorEmail,
+                                orderCreator.varMobileNo as orderCreatorMobile,
+            ';
+            $this->db->select($select);
+            $this->db->from('order_details');
+            $this->db->join('order_receiver', 'order_receiver.id = order_details.receiver_id', 'INNER');
+            $this->db->join('order_sender', 'order_sender.id = order_details.sender_id', 'INNER');
+            if($orderType == 'client'){
+                $this->db->join('client_table', 'client_table.client_id = order_details.client_id', 'INNER');
+                $this->db->join('user', 'client_table.creater_id = user.intUserId', 'INNER');
+            }
+            $this->db->join('user as orderCreator', 'orderCreator.intUserId = order_details.user_id', 'INNER');
+            $this->db->where('order_details.order_id', $orderId);
+            $result = $this->db->get();
+            $result = $result->result();
+            return $result;
+        }
 }

@@ -5,7 +5,8 @@
  * Date: 8/2/2017
  * Time: 2:42 PM
  */
-require_once realpath('.').'/system/CLX_sms_integration/vendor/autoload.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/system/CLX_sms_integration/vendor/autoload.php';
 class Notification_lib{
 
     private $Obj;
@@ -18,7 +19,9 @@ class Notification_lib{
     public $typeEmail                       = 'email';
     public $typeSms                         = 'sms';
 
-
+    public $userType                        = array('Admin', 'Client', 'Receiver', 'Manager',
+                                                    'Supervisor', 'Agent' , 'Courier', 'Order Creator',
+                                                    'Client Creator', 'Sender');
 
     public $notificationCategoryTable       = 'notification_category';
     public $notificationTable               = 'notification';
@@ -39,6 +42,94 @@ class Notification_lib{
         $this->servicePlanId    = 'mycon22';
         $this->token            = 'e308e13792394aee9521ee9867b8350c';
         $this->senderNum        = '12345';
+    }
+
+    public function notificationTypeEmail($data){
+        $code               = $data['code'];
+        $userType           = $data['userType'];
+        $shortCodeArray     = $data['shortCodeArray'];
+        $emailTo            = $data['emailTo'];
+
+        $catAllTemp                 = $this->getEmailTemplate($code, $this->typeEmail);
+
+        if($catAllTemp) {
+            $templateEmailData      = $this->getUserTypeTemp($catAllTemp, $userType);
+
+            if ($templateEmailData) {
+                $template = $templateEmailData[0]->template;
+                $subject = $templateEmailData[0]->name;
+                $template = $this->shortCodeReplace($template, $shortCodeArray);
+                //
+                $from           = $this->emailFrom;
+                $subject        = $subject;
+                $message        = $template;
+                foreach ($emailTo as $emailToIn){
+                    $this->send_email($from, $emailToIn, $subject, $message);
+                }
+            }
+        }
+
+    }
+
+    public function notificationTypeSms($data)
+    {
+        $code               = $data['code'];
+        $userType           = $data['userType'];
+        $shortCodeArray     = $data['shortCodeArray'];
+        $smsTo              = $data['smsTo'];
+        //sms Section Start
+
+        $catAllTemp         = $this->getEmailTemplate($code, $this->typeSms);
+
+        if($catAllTemp){
+            $templateSmsData       = $this->getUserTypeTemp($catAllTemp,$userType);
+            if($templateSmsData){
+                $template       = $templateSmsData[0]->template;
+                $template       = $this->shortCodeReplace($template, $shortCodeArray);
+                //
+                $this->sendSms($smsTo, $template);
+            }
+        }
+        //sms Section end
+    }
+
+    public function notificationTypeSmsAndEmail($data)
+    {
+        $this->notificationTypeEmail($data);
+        $this->notificationTypeSms($data);
+    }
+
+
+    public function orderStatusUpdateNotification($data, $code){
+
+        $NotificationControl        = $this->getNotificationControl($code);
+        if(!empty($NotificationControl)) {
+            foreach ($NotificationControl as $NotificationControlIn) {
+                if (in_array($NotificationControlIn->user_type, $this->userType)) {
+
+                    $userType = $NotificationControlIn->user_type;
+                    $shortCodeArray = $data[$userType]['shortCode'];
+                    $emailTo = $data[$userType]['email'];
+                    $smsTo = $data[$userType]['number'];
+
+                    $FPData = array();
+                    $FPData['code'] = $code;
+                    $FPData['userType'] = $userType;
+                    $FPData['shortCodeArray'] = $shortCodeArray;
+                    $FPData['emailTo'] = $emailTo;
+                    $FPData['smsTo'] = $smsTo;
+
+                    if ($NotificationControlIn->notification_type == 'email') {
+                        $this->notificationTypeEmail($FPData);
+                    } else if ($NotificationControlIn->notification_type == 'sms') {
+                        $this->notificationTypeSms($FPData);
+                    } else if ($NotificationControlIn->notification_type == 'email&sms') {
+                        $this->notificationTypeSmsAndEmail($FPData);
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -835,6 +926,7 @@ class Notification_lib{
         return true;
     }
 
+
     public function sendSms($RecipientsArray, $msgBody){
         $client = new Clx\Xms\Client($this->servicePlanId, $this->token);
         try {
@@ -921,12 +1013,40 @@ class Notification_lib{
 
     public function shortCodeReplace($template, $data){
 
+        if(isset($data['order_tracking_id'])){
+            $template = str_replace('[order_tracking_id]',$data['order_tracking_id'],$template);
+        }
+        if(isset($data['receiver_name'])){
+            $template = str_replace('[receiver_name]',$data['receiver_name'],$template);
+        }
+        if(isset($data['receiver_email'])){
+            $template = str_replace('[receiver_email]',$data['receiver_email'],$template);
+        }
+        if(isset($data['receiver_mobile'])){
+            $template = str_replace('[receiver_mobile]',$data['receiver_mobile'],$template);
+        }
+
+        if(isset($data['sender_name'])){
+            $template = str_replace('[sender_name]',$data['sender_name'],$template);
+        }
+        if(isset($data['sender_email'])){
+            $template = str_replace('[sender_email]',$data['sender_email'],$template);
+        }
+        if(isset($data['sender_mobile'])){
+            $template = str_replace('[sender_mobile]',$data['sender_mobile'],$template);
+        }
+
+
         if(isset($data['client_first_name'])){
             $template = str_replace('[client_first_name]',$data['client_first_name'],$template);
 
         }
         if(isset($data['client_last_name'])){
             $template = str_replace('[client_last_name]',$data['client_last_name'],$template);
+        }
+        if(isset($data['client_name'])){
+            $template = str_replace('[client_name]',$data['client_name'],$template);
+
         }
         if(isset($data['client_email'])){
             $template = str_replace('[client_email]',$data['client_email'],$template);
@@ -935,21 +1055,38 @@ class Notification_lib{
         if(isset($data['client_password'])){
             $template = str_replace('[client_password]',$data['client_password'],$template);
         }
-        if(isset($data['order_id'])){
-            $template = str_replace('[order_id]',$data['order_id'],$template);
+
+        if(isset($data['client_creator_name'])){
+            $template = str_replace('[client_creator_name]',$data['client_creator_name'],$template);
+        }
+        if(isset($data['client_creator_email'])){
+            $template = str_replace('[client_creator_email]',$data['client_creator_email'],$template);
+        }
+        if(isset($data['client_creator_mobile'])){
+            $template = str_replace('[client_creator_mobile]',$data['client_creator_mobile'],$template);
+        }
+
+        if(isset($data['order_creator_name'])){
+            $template = str_replace('[order_creator_name]',$data['order_creator_name'],$template);
+        }
+        if(isset($data['order_creator_email'])){
+            $template = str_replace('[order_creator_email]',$data['order_creator_email'],$template);
+        }
+        if(isset($data['order_creator_mobile'])){
+            $template = str_replace('[order_creator_mobile]',$data['order_creator_mobile'],$template);
+        }
+
+        if(isset($data['courier_name'])){
+            $template = str_replace('[courier_name]',$data['courier_name'],$template);
         }
         if(isset($data['courier_email'])){
             $template = str_replace('[courier_email]',$data['courier_email'],$template);
         }
-        if(isset($data['receiver_email'])){
-            $template = str_replace('[receiver_email]',$data['receiver_email'],$template);
-        }
-        if(isset($data['receiver_name'])){
-            $template = str_replace('[receiver_name]',$data['receiver_name'],$template);
+        if(isset($data['courier_mobile'])){
+            $template = str_replace('[courier_mobile]',$data['courier_mobile'],$template);
         }
 
         return $template;
-
     }
 
 }

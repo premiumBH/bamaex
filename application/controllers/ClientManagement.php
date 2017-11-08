@@ -81,9 +81,12 @@ class ClientManagement extends CI_Controller {
         $data['country_id']=$this->input->post('country_id');
         $data['update_client']=$this->input->post('update_client');
         $data['add_new_client']=$this->input->post('add_new_client');
+        $data['creater_id']= $this->input->post('creater_id');
         $data['countries']=$this->Country_model->get_countries();
         //$data['domestic_rate']=$this->input->post('domestic_rate');
         $data['level_id']=$this->Client_type->getLevelid($this->input->post('client_type'));
+
+        $data['users']= $this->Client_model->getUsersClientAssignment();
 
         //$data['level_id']='1';
         if(isset($data['add_new_client']) && $data['add_new_client'] == '1'){
@@ -193,6 +196,8 @@ class ClientManagement extends CI_Controller {
         $data['city']=$result[0]->city;
         $data['country_id']=$result[0]->country_id;
         $data['level_id']=$result[0]->level_name;
+        $data['creater_id']=$result[0]->creater_id;
+        $data['users']= $this->Client_model->getUsersClientAssignment();
         if($data['level_id'] != 'CONTACT')
         {
             $data['domestic_rate'] = $result[0]->domestic_rates;

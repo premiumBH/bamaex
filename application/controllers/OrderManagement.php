@@ -33,6 +33,7 @@ class OrderManagement extends CI_Controller {
         $this->load->model('Admin_model');
         $this->load->model('Order_model');
         $this->load->model('Order_management_model');
+        $this->load->model('Client_model');
         $this->load->library('Notification_lib');
 
         $this->load->helper('cookie');
@@ -65,6 +66,7 @@ class OrderManagement extends CI_Controller {
     }
 
     public function assignCourierMan(){
+
         $insert                         = array();
         $insert['order_id']             = $_POST['orderId'];
         $insert['courier_man_id']       = $_POST['CMID'];
@@ -78,12 +80,10 @@ class OrderManagement extends CI_Controller {
             $this->OrderStatusAssignToCourier($_POST['orderId']);
         }else{
             $_POST['orderId']               = $_POST['orderId'];
-            $_POST['OrderStatusId']         = $_POST['orderStatus'];
+            $_POST['OrderStatusId']         = isset($_POST['orderStatus'])?$_POST['orderStatus']:'';
             $customStatus                  = array('Delivery Courier Assigned','Delivery Agent Assigned');
             $this->orderTracking('delivery', $customStatus);
         }
-
-        //$this->SendNotification($_POST['CMID']);
         redirect($_SERVER['HTTP_REFERER']);
     }
 
@@ -96,53 +96,6 @@ class OrderManagement extends CI_Controller {
         $_POST['orderId']               = $orderId;
         $_POST['OrderStatusId']         = $_POST['orderStatus'];
         $this->orderTracking('pickup');
-    }
-
-    public function SendNotification($courierManId){
-
-        $courierManData                                 = $this->User_model->getUserById($courierManId);
-        $receiverData                                   = $this->Order_model->getOrderReceiverByOrderId($_POST['orderId']);
-
-        $shortCodeArray                                 = array();
-        $shortCodeArray['courier_email']                 = $courierManData[0]->varEmailId;
-        $shortCodeArray['order_id']                      = $_POST['orderId'];
-        $shortCodeArray['receiver_email']               = $receiverData[0]->email;
-        $shortCodeArray['receiver_name']                = $receiverData[0]->name;
-
-
-        $notificationArray                                              = array();
-        $userType                                                       = 'Courier';
-        $notificationArray[$userType]                                   = array();
-
-        $notificationArray[$userType]['email']                          = array($courierManData[0]->varEmailId);
-        $notificationArray[$userType]['number']                         = array($courierManData[0]->varMobileNo);
-        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
-
-        $userType                                                       = 'Receiver';
-        $notificationArray[$userType]                                   = array();
-
-        $notificationArray[$userType]['email']                          = array($receiverData[0]->email);
-        $notificationArray[$userType]['number']                         = array($receiverData[0]->mobile);
-        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
-
-        $userType                                                       = 'Admin';
-        $notificationArray[$userType]                                   = array();
-
-        $allAdmins          = $this->User_model->getUsersByUserType('Admin');
-        $adminEmails        = array();
-        $adminNumbers       = array();
-        if($allAdmins){
-            foreach ($allAdmins as $Admin){
-                $adminEmails[] = $Admin->varEmailId;
-                $adminNumbers[] = $Admin->varMobileNo;
-            }
-        }
-
-        $notificationArray[$userType]['email']                          = $adminEmails;
-        $notificationArray[$userType]['number']                         = $adminNumbers;
-        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
-
-        $this->notification_lib->OrderAssignmentToCourierNotification($notificationArray);
     }
 
     public function order_originated(){
@@ -188,6 +141,27 @@ class OrderManagement extends CI_Controller {
         $viewData['orderQuery']                             = str_replace("\n"," ",$this->db->last_query());
         $viewData['orderStatuses']                          = $this->db->query('select * from order_pickup_status')->result();
         $this->load->view('orderManagament/orderListing', $viewData);
+    }
+
+    public function incoming_to_bahrain(){
+        $viewData                                           = array();
+        $mData                                              = array();
+        $mData['varPageSlug']                               = 'orderManagement/'.__FUNCTION__ ;
+        $menuInfo                                           = $this->Order_management_model->getMyData('access_control', $mData);
+        if(!empty($menuInfo)){
+            $viewData['title']                              = $menuInfo[0]->Label;
+        }else{
+            $viewData['title']                              = 'Incoming to Bahrain';
+        }
+        $viewData['orderStatus']                            = 200;
+        $mData                                              = array();
+        $mData['orderStatus1']                              = array('200', '201', '202', '203', '204');//;$viewData['orderStatus'];
+        $orders                                             = $this->Order_management_model->getAgentOrderStatus($mData);
+        $viewData['orders']                                 = $orders;
+        $viewData['orderQuery']                             = str_replace("\n"," ",$this->db->last_query());
+        $viewData['orderStatuses']                          = $this->db->query('select * from order_agent_status')->result();
+        $viewData['orderStatuses'][5] = (object)array('id'=>'5', 'status'=>'Received in warehouse');
+        $this->load->view('orderManagament/agentOrderListing', $viewData);
     }
 
     public function pending_pickup(){
@@ -879,7 +853,13 @@ class OrderManagement extends CI_Controller {
     public function changeOrderStatusPickUp(){
         $orderId                            = $_POST['orderId'];
         $orderStatus                        = $_POST['OrderStatusId'];
-        $this->orderTracking('pickup');
+        $isAgentOrder                       = isset($_POST['AgentOrder'])?true:false;
+        if($isAgentOrder){
+            $this->orderTracking('agentPickup');
+        }else{
+            $this->orderTracking('pickup');
+        }
+
         $updateOrderData                    = array();
         $updateOrderData['order_id']        = $orderId;
         $updateOrderData['order_status']    = $orderStatus;
@@ -929,27 +909,64 @@ class OrderManagement extends CI_Controller {
     }
 
     public function orderTracking($type, $customStatus = array()){
+
+
         $orderId                                            = $_POST['orderId'];
-        $orderStatusId                                      = $_POST['OrderStatusId'];
+
+        $orderStatusId                                      = isset($_POST['OrderStatusId'])?$_POST['OrderStatusId']:'';
         $mData                                              = array();
         $mData['orderId']                                   = $orderId;
-        $orderData                                          = $this->Order_management_model->orderRegion($mData);
+        if($type == 'agentPickup'){
+            $orderData                                          = $this->Order_management_model->agentOrderRegion($mData);
+        }else{
+            $orderData                                          = $this->Order_management_model->orderRegion($mData);
+        }
+
         $customStatusFilter                                 = '';
         if(!empty($orderData)){
 
             if($type == 'pickup'){
                 $orderStatusData                        = $this->Order_management_model->getStatusById('order_pickup_status',$orderStatusId);
-                $customStatusFilter                     = $customStatus[0];
+                if(empty($customStatus)){
+                    $customStatusFilter                     = $orderStatusData[0]->status;
+                }else{
+                    $customStatusFilter                     = $customStatus[0];
+                }
+
+                $this->SendNotification($orderId, $orderStatusId, 'pickup');
+            }else if($type == 'agentPickup'){
+
+                $orderStatusData                        = $this->Order_management_model->getStatusById('order_agent_status',$orderStatusId);
+                if(empty($customStatus)){
+                    $customStatusFilter                     = $orderStatusData[0]->status;
+                }else{
+                    $customStatusFilter                     = $customStatus[0];
+                }
+
             }else if($type == 'delivery'){
 
                 if(isset($orderData[0]->countryId) && $orderData[0]->countryId == 15){
 
                     $orderStatusData                    = $this->Order_management_model->getStatusById('domestic_delivery_status',$orderStatusId);
-                    $customStatusFilter                 = $customStatus[0];
+                    if(empty($customStatus)){
+                        $customStatusFilter                     = $orderStatusData[0]->status;
+                        $this->SendNotification($orderId, $orderStatusId, 'DDelivery');
+                    }else{
+                        $customStatusFilter                     = $customStatus[0];
+                        $this->SendNotification($orderId, '', 'DDelivery');
+                    }
+
                 }else{
 
                     $orderStatusData                    = $this->Order_management_model->getStatusById('express_delivery_status',$orderStatusId);
-                    $customStatusFilter                 = $customStatus[1];
+                    if(empty($customStatus)){
+                        $customStatusFilter                     = $orderStatusData[0]->status;
+                        $this->SendNotification($orderId, $orderStatusId, 'EDelivery');
+                    }else{
+                        $customStatusFilter                     = $customStatus[1];
+                        $this->SendNotification($orderId, '', 'EDelivery');
+                    }
+
                 }
             }
 
@@ -979,6 +996,306 @@ class OrderManagement extends CI_Controller {
             }else {
                 $this->Order_management_model->insertOrderTracking('international_order_catalog', $insert);
             }
+
+        }
+
+    }
+
+
+    public function SendNotification($orderId, $orderStatusId, $type){
+
+        $code = '';
+        if($type == 'pickup' && $orderStatusId == '1'){
+            $code = 'CPP';
+        }
+        else if($type == 'pickup' && $orderStatusId == '2'){
+            $code = 'CRP';
+        }
+        else if($type == 'pickup' && $orderStatusId == '3'){
+            $code = 'CPURED';
+        }
+        else if($type == 'pickup' && $orderStatusId == '5'){
+            $code = 'CRIWH';
+        }
+        else if($type == 'pickup' && $orderStatusId == '11'){
+            $code = 'CPUATC';
+        }
+        else if($type == 'pickup' && $orderStatusId == '12'){
+            $code = 'CCIP';
+        }
+        else if($type == 'pickup' && $orderStatusId == '13'){
+            $code = 'CPUSED';
+        }
+
+        else if($type == 'DDelivery' && $orderStatusId == '1'){
+            $code = 'DCADTC';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '2'){
+            $code = 'DCAFC';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '3'){
+            $code = 'DCDS';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '4'){
+            $code = 'DCRD';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '5'){
+            $code = 'DCDR';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '6'){
+            $code = 'DCOFD';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '7'){
+            $code = 'DCD';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '8'){
+            $code = 'DCUCNA';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '9'){
+            $code = 'DCUCRS';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '10'){
+            $code = 'DCUIF';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '11'){
+            $code = 'DCUCR';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '12'){
+            $code = 'DCURTS';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '13'){
+            $code = 'DCUIAORWPN';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '14'){
+            $code = 'DCUNAFC';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '15'){
+            $code = 'DCUNOAGA';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == '17'){
+            $code = 'DCR';
+        }
+        else if($type == 'DDelivery' && $orderStatusId == ''){
+            $code = 'DCAEDDTC';
+        }
+
+
+        else if($type == 'EDelivery' && $orderStatusId == '1'){
+            $code = 'ECADTA';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '2'){
+            $code = 'ECDFCOO';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '3'){
+            $code = 'ECIT';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '4'){
+            $code = 'ECAACOD';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '5'){
+            $code = 'ECPCC';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '6'){
+            $code = 'ECCBDA';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '7'){
+            $code = 'ECIA';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '8'){
+            $code = 'ECAFC';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '9'){
+            $code = 'ECDS';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '10'){
+            $code = 'ECRD';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '11'){
+            $code = 'ECDR';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '12'){
+            $code = 'ECOFD';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '13'){
+            $code = 'ECD';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '14'){
+            $code = 'ECUCNA';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '15'){
+            $code = 'ECUCRS';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '16'){
+            $code = 'ECUIF';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '17'){
+            $code = 'ECUCR';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '18'){
+            $code = 'ECURTS';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '19'){
+            $code = 'ECUIAOWPN';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '20'){
+            $code = 'ECUNAFC';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '21'){
+            $code = 'ECUNOAGA';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == '22'){
+            $code = 'ECR';
+        }
+        else if($type == 'EDelivery' && $orderStatusId == ''){
+            $code = 'ECAEDDTA';
+        }
+
+
+
+        $orderUserData                                  = $this->User_model->getOrderNotificationUsers($orderId);
+
+        $shortCodeArray                                 = array();
+
+        $shortCodeArray['order_tracking_id']            = $orderUserData[0]->orderTrackingId;
+
+        $shortCodeArray['receiver_name']                = $orderUserData[0]->receiverName;
+        $shortCodeArray['receiver_email']               = $orderUserData[0]->receiverEmail;
+        $shortCodeArray['receiver_mobile']              = $orderUserData[0]->receiverMobile;
+
+        $shortCodeArray['sender_name']                = $orderUserData[0]->senderName;
+        $shortCodeArray['sender_email']               = $orderUserData[0]->senderEmail;
+        $shortCodeArray['sender_mobile']              = $orderUserData[0]->senderMobile;
+
+        $clientDetail                                   = $this->Client_model->getPrimaryUser($orderUserData[0]->clientId);
+        $shortCodeArray['client_first_name']            = $clientDetail[0]->first_name;
+        $shortCodeArray['client_last_name']             = $clientDetail[0]->last_name;
+        $shortCodeArray['client_name']                  = $clientDetail[0]->first_name.' '.$clientDetail[0]->last_name;;
+        $shortCodeArray['client_email']                 = $orderUserData[0]->clientEmail;
+        $shortCodeArray['client_mobile']                = $orderUserData[0]->clientMobile;
+
+        $shortCodeArray['client_creator_name']                = $orderUserData[0]->clientCreatorName;
+        $shortCodeArray['client_creator_email']               = $orderUserData[0]->clientCreatorEmail;
+        $shortCodeArray['client_creator_mobile']              = $orderUserData[0]->clientCreatorMobile;
+
+        $shortCodeArray['order_creator_name']                = $orderUserData[0]->orderCreatorName;
+        $shortCodeArray['order_creator_email']               = $orderUserData[0]->orderCreatorEmail;
+        $shortCodeArray['order_creator_mobile']              = $orderUserData[0]->orderCreatorMobile;
+
+        if(($type == 'DDelivery' && $orderStatusId == '') ||
+            ($type == 'EDelivery' && $orderStatusId == '') ||
+            ($type == 'pickup' && $orderStatusId == '11')){
+            $OrderCourierManRef = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
+            if(!empty($OrderCourierManRef)){
+                $OrderCourierManData = $this->User_model->getUserById($OrderCourierManRef[0]->courier_man_id);
+                if(!empty($OrderCourierManData)){
+                    $shortCodeArray['courier_name']                = $OrderCourierManData[0]->varFirstName.' '.$OrderCourierManData[0]->varLastName;
+                    $shortCodeArray['courier_email']               = $OrderCourierManData[0]->varEmailId;
+                    $shortCodeArray['courier_mobile']              = $OrderCourierManData[0]->varMobileNo;
+                }
+            }
+        }
+
+
+        $notificationArray                                              = array();
+
+
+        $userType                                                       = 'Receiver';
+        $notificationArray[$userType]                                   = array();
+        $notificationArray[$userType]['email']                          = array($orderUserData[0]->receiverEmail);
+        $notificationArray[$userType]['number']                         = array($orderUserData[0]->receiverMobile);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $userType                                                       = 'Sender';
+        $notificationArray[$userType]                                   = array();
+        $notificationArray[$userType]['email']                          = array($orderUserData[0]->senderEmail);
+        $notificationArray[$userType]['number']                         = array($orderUserData[0]->senderMobile);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $userType                                                       = 'Client';
+        $notificationArray[$userType]                                   = array();
+        $notificationArray[$userType]['email']                          = array($orderUserData[0]->clientEmail);
+        $notificationArray[$userType]['number']                         = array($orderUserData[0]->clientMobile);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $userType                                                       = 'Client Creator';
+        $notificationArray[$userType]                                   = array();
+        $notificationArray[$userType]['email']                          = array($orderUserData[0]->clientCreatorEmail);
+        $notificationArray[$userType]['number']                         = array($orderUserData[0]->clientCreatorMobile);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        $userType                                                       = 'Order Creator';
+        $notificationArray[$userType]                                   = array();
+        $notificationArray[$userType]['email']                          = array($orderUserData[0]->orderCreatorEmail);
+        $notificationArray[$userType]['number']                         = array($orderUserData[0]->orderCreatorMobile);
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        if($type == 'pickup' && $orderStatusId == '11'){
+            $OrderCourierManRef = $this->Order_model->getOrderCourierManByOrderId($orderId, 'pickup');
+            if(!empty($OrderCourierManRef)){
+                $OrderCourierManData = $this->User_model->getUserById($OrderCourierManRef[0]->courier_man_id);
+                if(!empty($OrderCourierManData)){
+                    $userType                                                       = 'Courier';
+                    $notificationArray[$userType]                                   = array();
+                    $notificationArray[$userType]['email']                          = array($OrderCourierManData[0]->varEmailId);
+                    $notificationArray[$userType]['number']                         = array($OrderCourierManData[0]->varMobileNo);
+                    $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+                }
+
+            }
+
+        }
+
+        if($type == 'EDelivery' && $orderStatusId == ''){
+            $OrderCourierManRef = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
+            if(!empty($OrderCourierManRef)){
+                $OrderCourierManData = $this->User_model->getUserById($OrderCourierManRef[0]->courier_man_id);
+                if(!empty($OrderCourierManData)){
+                    $userType                                                       = 'Courier';
+                    $notificationArray[$userType]                                   = array();
+                    $notificationArray[$userType]['email']                          = array($OrderCourierManData[0]->varEmailId);
+                    $notificationArray[$userType]['number']                         = array($OrderCourierManData[0]->varMobileNo);
+                    $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+                }
+
+            }
+        }
+
+        else if($type == 'DDelivery' && $orderStatusId == ''){
+            $OrderCourierManRef = $this->Order_model->getOrderCourierManByOrderId($orderId, 'delivery');
+            if(!empty($OrderCourierManRef)){
+                $OrderCourierManData = $this->User_model->getUserById($OrderCourierManRef[0]->courier_man_id);
+                if(!empty($OrderCourierManData)){
+                    $userType                                                       = 'Courier';
+                    $notificationArray[$userType]                                   = array();
+                    $notificationArray[$userType]['email']                          = array($OrderCourierManData[0]->varEmailId);
+                    $notificationArray[$userType]['number']                         = array($OrderCourierManData[0]->varMobileNo);
+                    $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+                }
+
+            }
+        }
+
+
+        $userType                                                       = 'Admin';
+        $notificationArray[$userType]                                   = array();
+
+        $allAdmins          = $this->User_model->getUsersByUserType('Admin');
+
+        $adminEmails        = array();
+        $adminNumbers       = array();
+        if($allAdmins){
+            foreach ($allAdmins as $Admin){
+                $adminEmails[] = $Admin->varEmailId;
+                $adminNumbers[] = $Admin->varMobileNo;
+            }
+        }
+
+        $notificationArray[$userType]['email']                          = $adminEmails;
+        $notificationArray[$userType]['number']                         = $adminNumbers;
+        $notificationArray[$userType]['shortCode']                      = $shortCodeArray;
+
+        if($code != ''){
+            $this->notification_lib->orderStatusUpdateNotification($notificationArray, $code);
         }
 
     }
